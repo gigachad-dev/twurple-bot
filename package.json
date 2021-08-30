@@ -1,0 +1,27 @@
+{
+  "name": "twurple-bot",
+  "version": "1.0.0",
+  "description": "Twitch chat bot built with Twurple",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "nodemon tsc",
+    "build": "rimraf dist/ && tsc"
+  },
+  "author": {
+    "name": "Vitalij Ryndin",
+    "email": "sys@crashmax.ru",
+    "url": "https://crashmax.ru"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.7.6",
+    "nodemon": "^2.0.12",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "@twurple/auth": "^5.0.0-pre.15",
+    "@twurple/chat": "^5.0.0-pre.15"
+  }
+}

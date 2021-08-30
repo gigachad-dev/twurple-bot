@@ -1,0 +1,11 @@
+{
+  "clientId": "",
+  "clientSecret": "",
+  "accessToken": "",
+  "refreshToken": "",
+  "expiresIn": 36000,
+  "scope": [
+    "chat:edit",
+    "chat:read"
+  ]
+}
