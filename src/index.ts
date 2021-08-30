@@ -19,7 +19,7 @@ type TwurpleConfig = AccessToken & Omit<RefreshConfig, 'onRefresh'>
     const newTokens = {
       clientId: config.clientId,
       clientSecret: config.clientSecret,
-      tokens
+      ...tokens
     }
 
     await fs.writeFile(
