@@ -3,9 +3,10 @@
   "clientSecret": "",
   "accessToken": "",
   "refreshToken": "",
-  "expiresIn": 36000,
   "scope": [
     "chat:edit",
     "chat:read"
-  ]
+  ],
+  "expiresIn": 15636,
+  "obtainmentTimestamp": 1630329705798
 }
