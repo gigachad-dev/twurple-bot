@@ -8,6 +8,10 @@ export default class Uptime extends BaseCommand {
     super(client, {
       name: 'uptime',
       userlevel: 'everyone',
+      aliases: [
+        'аптайм'
+      ],
+      description: 'Продолжительность трансляции',
       args: [
         {
           name: 'username'
