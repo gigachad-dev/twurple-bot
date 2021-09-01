@@ -1,9 +1,11 @@
 import path from 'path'
-import { TwurpleBot } from '../src'
+import { TwurpleClient } from '../src'
 
-const bot = new TwurpleBot({
-  config: path.join(__dirname, 'config.json'),
+const client = new TwurpleClient({
+  pathConfig: path.join(__dirname, 'config.json'),
   channels: ['vs_code', 'le_xot']
 })
 
-bot.connect()
+client.registerDefaultCommands()
+
+client.connect()

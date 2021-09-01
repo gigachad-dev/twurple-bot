@@ -2,6 +2,8 @@
   "name": "twurple-bot",
   "version": "1.0.0",
   "description": "Twitch chat bot built with Twurple",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon tsc",
@@ -23,6 +25,10 @@
   "dependencies": {
     "@twurple/api": "^5.0.0-pre.15",
     "@twurple/auth": "^5.0.0-pre.15",
-    "@twurple/chat": "^5.0.0-pre.15"
+    "@twurple/auth-tmi": "^5.0.0-pre.15",
+    "@twurple/chat": "^5.0.0-pre.15",
+    "recursive-readdir-sync": "^1.0.6",
+    "tmi.js": "^1.8.5",
+    "winston": "^3.3.3"
   }
 }

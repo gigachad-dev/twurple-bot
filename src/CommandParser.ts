@@ -1,4 +1,4 @@
-interface CommandArguments {
+export interface CommandArguments {
   command: string
   prefix?: string
   args?: string[]
