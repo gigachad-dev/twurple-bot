@@ -18,7 +18,7 @@ export class ChatChannel {
    * Get channel name
    */
   get name(): string {
-    return this.originalMessage.channel
+    return this.originalMessage.channel.slice(1)
   }
 
   /**
