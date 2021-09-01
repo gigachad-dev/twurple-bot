@@ -1,3 +1,4 @@
+import path from 'path'
 import winston from 'winston'
 import EventEmitter from 'events'
 import { PathLike, promises as fs } from 'fs'
@@ -11,15 +12,12 @@ import { ClientLogger } from './ClientLogger'
 import { ChatMessage } from './ChatMessage'
 import { BaseCommand } from './BaseCommand'
 import { CommandArguments, CommandParser } from './CommandParser'
-import path from 'path'
 
 type TwurpleConfig = AccessToken & Omit<RefreshConfig, 'onRefresh'>
 export type ChatterState = ChatUserstate & { message: string }
 
 interface TwurpleOptions {
   prefix?: string,
-  verboseLogging?: boolean
-  autoJoinBotChannel?: boolean
   botOwners?: string[],
   pathConfig: PathLike | fs.FileHandle
   channels: string[]
@@ -42,14 +40,12 @@ export class TwurpleClient extends EventEmitter {
 
     const defaultOptions = {
       prefix: '!',
-      verboseLogging: false,
-      autoJoinBotChannel: false,
       botOwners: []
     }
 
     this.options = Object.assign(defaultOptions, options)
-    this.parser = new CommandParser()
     this.logger = new ClientLogger().getLogger('main')
+    this.parser = new CommandParser()
     this.commands = []
   }
 
