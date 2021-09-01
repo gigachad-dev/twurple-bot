@@ -24,8 +24,8 @@ export default class Followage extends BaseCommand {
       ],
       args: [
         {
-          name: 'username',
           type: String,
+          name: 'username',
           prepare: (value: string) => {
             if (value.startsWith('@')) {
               return value.slice(1)
@@ -59,9 +59,9 @@ export default class Followage extends BaseCommand {
 
       if (followInfo.total) {
         const { date, days } = this.formatDate(followInfo.data[0].followed_at)
-        msg.reply(`отслеживает канал с ${date} (${days})`)
+        msg.reply(`${userInfo.displayName} отслеживает канал с ${date} (${days})`)
       } else {
-        msg.reply(`пользователь ${username} не подписан`)
+        msg.reply(`пользователь ${userInfo.displayName} не подписан`)
       }
     } catch (err) {
       msg.reply(`пользователь ${username} не найден`)
