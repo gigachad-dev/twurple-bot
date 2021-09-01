@@ -83,7 +83,6 @@ export class TwurpleClient extends EventEmitter {
     await this.loadConfig()
 
     this.logger.info('Current default prefix is ' + this.options.prefix)
-    this.logger.info('Connecting to Twitch Chat')
 
     this.auth = new RefreshingAuthProvider(
       {
