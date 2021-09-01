@@ -69,7 +69,7 @@ export interface CommandArgument {
   /**
    * Value typesafe
    */
-  type?: StringConstructor | NumberConstructor | BooleanConstructor
+  type: StringConstructor | NumberConstructor | BooleanConstructor
 
   /**
    * Default value

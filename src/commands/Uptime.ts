@@ -14,6 +14,7 @@ export default class Uptime extends BaseCommand {
       description: 'Продолжительность трансляции',
       args: [
         {
+          type: String,
           name: 'username'
         }
       ]
@@ -36,9 +37,9 @@ export default class Uptime extends BaseCommand {
         })
         .filter(v => v !== undefined)
 
-      msg.reply(`${stream.userDisplayName} online ${formatDate.join(' ')}`)
+      msg.reply(`${stream.userDisplayName} вещает ${formatDate.join(' ')}`)
     } else {
-      msg.reply(`${channel} is currently offline`)
+      msg.reply(`${channel} не в сети`)
     }
   }
 }
