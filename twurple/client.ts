@@ -3,7 +3,7 @@ import { TwurpleClient } from '../src'
 
 const client = new TwurpleClient({
   pathConfig: path.join(__dirname, 'config.json'),
-  channels: ['vs_code', 'le_xot']
+  channels: ['quakerlegend', 'vs_code', 'le_xot']
 })
 
 client.registerDefaultCommands()
