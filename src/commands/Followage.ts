@@ -1,8 +1,6 @@
-import { HelixFollowData } from '@twurple/api/lib'
-import { ChatMessage } from '../ChatMessage'
-import { BaseCommand } from '../BaseCommand'
-import { TwurpleClient } from '../TwurpleClient'
 import { declOfNum } from '../utils/declOfNum'
+import { HelixFollowData } from '@twurple/api/lib'
+import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
 interface FollowsData {
   total: number

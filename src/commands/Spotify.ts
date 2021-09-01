@@ -1,7 +1,5 @@
 import got from 'got'
-import { BaseCommand } from '../BaseCommand'
-import { ChatMessage } from '../ChatMessage'
-import { TwurpleClient } from '../TwurpleClient'
+import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
 export interface SpotifyApiResponse {
   isPlaying: boolean
