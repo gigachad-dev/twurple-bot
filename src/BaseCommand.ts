@@ -75,6 +75,11 @@ export interface CommandArgument {
    * Default value
    */
   defaultValue?: string | number | boolean
+
+  /**
+   * Prepare value
+   */
+  prepare?: (value: unknown, msg?: ChatMessage) => string | number | boolean | void
 }
 
 export enum UserLevel {
@@ -133,17 +138,25 @@ export class BaseCommand {
 
     if (this.options.args && this.options.args.length > 0) {
       for (let i = 0; i < this.options.args.length; i++) {
+        const args = this.options.args[i]
+
         if (parameters[i]) {
-          if (typeof this.options.args[i].type === 'function') {
-            namedParameters[this.options.args[i].name] = this.options.args[i].type(parameters[i])
-          } else {
-            namedParameters[this.options.args[i].name] = parameters[i]
+          if (args.type) {
+            namedParameters[args.name] = args.type(parameters[i])
+          }
+
+          if (args.prepare) {
+            const preparedValue = args.prepare(namedParameters[args.name] || parameters[i])
+
+            if (preparedValue) {
+              namedParameters[args.name] = preparedValue
+            }
           }
         } else {
-          if (this.options.args[i].defaultValue) {
-            namedParameters[this.options.args[i].name] = this.options.args[i].defaultValue
+          if (args.defaultValue) {
+            namedParameters[args.name] = args.defaultValue
           } else {
-            namedParameters[this.options.args[i].name] = null
+            namedParameters[args.name] = null
           }
         }
       }
