@@ -1,4 +1,4 @@
-import { declOfNum } from '../utils/declOfNum'
+import { declOfNum } from '../utils'
 import { HelixFollowData } from '@twurple/api/lib'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
