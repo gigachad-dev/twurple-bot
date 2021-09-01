@@ -1,12 +1,11 @@
 {
   "watch": [
     "src/*",
-    "twurple/*"
+    "index.ts"
   ],
   "ext": "ts",
   "ignore": [
-    "dist/*",
-    "twurple/*.json"
+    "dist/*"
   ],
-  "exec": "ts-node twurple/client.ts"
+  "exec": "ts-node index.ts"
 }

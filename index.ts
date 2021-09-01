@@ -1,5 +1,5 @@
 import path from 'path'
-import { TwurpleClient } from '../src'
+import { TwurpleClient } from './src/TwurpleClient'
 
 const client = new TwurpleClient({
   pathConfig: path.join(__dirname, 'config.json'),
