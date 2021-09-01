@@ -3,7 +3,6 @@ import { ChatClient } from '@twurple/chat'
 import { ApiClient } from '@twurple/api'
 import { PathLike, promises as fs } from 'fs'
 import { CommandParser } from './utils/CommandParser'
-import { DateTime, Duration } from 'luxon'
 
 type TwurpleConfig = AccessToken & Omit<RefreshConfig, 'onRefresh'>
 
@@ -106,17 +105,42 @@ export class TwurpleBot {
     ).getStream()
 
     if (stream) {
-      const current = DateTime.now()
-      const start = DateTime.fromISO(stream.startDate.toISOString())
-      const { hours, minutes, seconds } = current.diff(start, ['hours', 'minutes', 'seconds']).toObject()
+      const dates = this.dateDiff(stream.startDate)
 
-      if (hours > 0) {
-        this.chat.say(channel, `${stream.userDisplayName} стримит ${hours}h ${minutes}m ${Math.round(seconds)}s`)
-      } else {
-        this.chat.say(channel, `${stream.userDisplayName} стримит ${minutes}m ${Math.round(seconds)}s`)
-      }
+      const formatDate = Object.entries(dates)
+        .map(date => {
+          if (date[1] > 0) {
+            return date[1] + date[0].charAt(0)
+          }
+        })
+        .filter(v => v !== undefined)
+
+      this.chat.say(channel, `${stream.userDisplayName} online ${formatDate.join(' ')}`)
     } else {
-      this.chat.say(channel, `${args[0] || channel.slice(1)} не в сети`)
+      this.chat.say(channel, `${args[0] || channel.slice(1)} is currently offline`)
     }
+  }
+
+  dateDiff(startDate: string | number | Date) {
+    let difference = (Date.now() - new Date(startDate).getTime()) / 1000
+
+    const timespans = {
+      years: 31536000,
+      months: 2592000,
+      weeks: 604800,
+      days: 86400,
+      hours: 3600,
+      minutes: 60,
+      seconds: 1
+    }
+
+    let date = {} as typeof timespans
+
+    Object.keys(timespans).forEach(i => {
+      date[i] = Math.floor(difference / timespans[i])
+      difference -= date[i] * timespans[i]
+    })
+
+    return date
   }
 }
