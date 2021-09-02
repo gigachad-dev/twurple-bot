@@ -28,9 +28,11 @@
     "@twurple/chat": "^5.0.0-pre.15",
     "deckstrings": "^2.2.1",
     "got": "^11.8.2",
+    "html-entities": "^2.3.2",
     "lowdb": "^1.0.0",
     "recursive-readdir-sync": "^1.0.6",
     "tmi.js": "^1.8.5",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "youtube-search": "^1.1.6"
   }
 }
