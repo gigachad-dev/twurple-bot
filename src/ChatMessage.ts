@@ -10,10 +10,10 @@ export class ChatMessage {
   private _author: ChatUser
   private _timestamp: Date
 
-  constructor(originalMessage: ChatterState, channel: string, client: TwurpleClient) {
+  constructor(client: TwurpleClient, originalMessage: ChatterState, channel: string) {
     this.client = client
     this.originalMessage = originalMessage
-    this._channel = new ChatChannel({ channel, room_id: originalMessage['room-id'] }, client)
+    this._channel = new ChatChannel({ channel, room_id: originalMessage['room-id'] })
     this._author = new ChatUser(originalMessage, client)
     this._timestamp = new Date()
   }

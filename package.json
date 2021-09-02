@@ -26,6 +26,7 @@
     "@twurple/auth": "^5.0.0-pre.15",
     "@twurple/auth-tmi": "^5.0.0-pre.15",
     "@twurple/chat": "^5.0.0-pre.15",
+    "deckstrings": "^2.2.1",
     "got": "^11.8.2",
     "lowdb": "^1.0.0",
     "recursive-readdir-sync": "^1.0.6",

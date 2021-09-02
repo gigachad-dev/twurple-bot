@@ -2,13 +2,10 @@ import { Badges, CommonUserstate } from 'tmi.js'
 import { TwurpleClient, ChatterState } from './TwurpleClient'
 
 export class ChatUser {
-  private originalMessage: ChatterState
-  private client: TwurpleClient
-
-  constructor(originalMessage: ChatterState, client: TwurpleClient) {
-    this.originalMessage = originalMessage
-    this.client = client
-  }
+  constructor(
+    private originalMessage: ChatterState,
+    private client: TwurpleClient
+  ) { }
 
   /**
    * Get display-name
@@ -51,13 +48,6 @@ export class ChatUser {
    */
   async whisper(message: string): Promise<[string, string]> {
     return this.client.whisper(this.username, message)
-  }
-
-  /**
-   * Get the user #channel
-   */
-  get channel(): string {
-    return '#' + this.username
   }
 
   /**

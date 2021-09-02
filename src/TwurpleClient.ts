@@ -13,10 +13,10 @@ import { ChatMessage } from './ChatMessage'
 import { BaseCommand } from './BaseCommand'
 import { CommandArguments, CommandParser } from './CommandParser'
 
-type TwurpleConfig = AccessToken & Omit<RefreshConfig, 'onRefresh'>
+export type TwurpleConfig = AccessToken & Omit<RefreshConfig, 'onRefresh'>
 export type ChatterState = ChatUserstate & { message: string }
 
-interface TwurpleOptions {
+export interface TwurpleOptions {
   prefix?: string,
   botOwners?: string[],
   pathConfig: PathLike | fs.FileHandle
@@ -62,6 +62,9 @@ export class TwurpleClient extends EventEmitter {
   }
 
   private async refreshConfig(tokens: AccessToken) {
+    console.log('refreshConfig')
+    console.log(tokens)
+
     const newTokens = {
       clientId: this.config.clientId,
       clientSecret: this.config.clientSecret,
@@ -149,13 +152,10 @@ export class TwurpleClient extends EventEmitter {
     if (self) return
 
     const chatter = { ...userstate, message: messageText } as ChatterState
-    const msg = new ChatMessage(chatter, channel, this)
+    const msg = new ChatMessage(this, chatter, channel)
 
     if (msg.author.username === this.getUsername()) {
-      if (!(msg.author.isBroadcaster ||
-        msg.author.isModerator ||
-        msg.author.isVip
-      )) {
+      if (!(msg.author.isBroadcaster || msg.author.isModerator || msg.author.isVip)) {
         await new Promise(resolve => setTimeout(resolve, 1000))
       }
     }
@@ -189,6 +189,16 @@ export class TwurpleClient extends EventEmitter {
         return command
       }
     })
+  }
+
+  execCommand(command: string, msg?: ChatMessage): void {
+    const cmd = this.findCommand({ command })
+
+    if (cmd.execute) {
+      cmd.execute(msg)
+    } else {
+      this.logger.warn(`Command ${command} doesn't use execute() method!`)
+    }
   }
 
   async say(channel: string, message: string): Promise<[string]> {

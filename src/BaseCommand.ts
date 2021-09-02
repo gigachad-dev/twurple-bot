@@ -13,11 +13,6 @@ export interface CommandOptions {
   userlevel: keyof typeof UserLevel
 
   /**
-   * Command message text (used on text commands!)
-   */
-  text?: string
-
-  /**
    * Command description (required for output to !help <command>)
    */
   description?: string
@@ -103,13 +98,10 @@ export type NamedParameters = Record<string, string | number | boolean>
 export type CommandProvider = Record<string, CommandOptions>
 
 export class BaseCommand {
-  public options: CommandOptions
-  public client: TwurpleClient
-
-  constructor(client: TwurpleClient, options: CommandOptions) {
-    this.options = options
-    this.client = client
-  }
+  constructor(
+    public client: TwurpleClient,
+    public options: CommandOptions
+  ) { }
 
   /**
    * Method called when executeCommand
@@ -117,7 +109,7 @@ export class BaseCommand {
    * @param msg
    * @param chatter
    */
-  async execute(msg: ChatMessage): Promise<any> { }
+  async execute(msg?: ChatMessage): Promise<any> { }
 
   /**
    * Method called when command is executed

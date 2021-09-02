@@ -1,18 +1,12 @@
-import { TwurpleClient } from './TwurpleClient'
-
 export interface OriginalMessage {
   channel: string
-  room_id?: string
+  room_id: string
 }
 
 export class ChatChannel {
-  private originalMessage: OriginalMessage
-  private client: TwurpleClient
-
-  constructor(originalMessage: OriginalMessage, client: TwurpleClient) {
-    this.originalMessage = originalMessage
-    this.client = client
-  }
+  constructor(
+    private originalMessage: OriginalMessage
+  ) { }
 
   /**
    * Get channel name
