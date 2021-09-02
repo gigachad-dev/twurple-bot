@@ -8,9 +8,9 @@ Visit this site, with the CLIENT_ID and REDIRECT_URI placeholders replaced with 
 
 ```
 https://id.twitch.tv/oauth2/authorize?client_id=CLIENT_ID
-	&redirect_uri=REDIRECT_URI
-	&response_type=code
-	&scope=chat:read+chat:edit+whispers:read+whispers:edit+channel:moderate+channel:read:editors+channel:manage:broadcast
+  &redirect_uri=REDIRECT_URI
+  &response_type=code
+  &scope=chat:read+chat:edit+whispers:read+whispers:edit+channel:moderate+channel:read:editors+channel:manage:broadcast
 ```
 
 Log in with the account you want to use for your bot and confirm the access to Twitch. You should get redirected to your redirect URI with a query parameter named `code`.
@@ -19,10 +19,10 @@ Using a tool like [Insomnia](https://insomnia.rest) or [Postman](https://www.get
 
 ```
 https://id.twitch.tv/oauth2/token?client_id=CLIENT_ID
-    &client_secret=CLIENT_SECRET
-    &code=CODE_FROM_LAST_REQUEST
-    &grant_type=authorization_code
-    &redirect_uri=REDIRECT_URI
+  &client_secret=CLIENT_SECRET
+  &code=CODE_FROM_LAST_REQUEST
+  &grant_type=authorization_code
+  &redirect_uri=REDIRECT_URI
 ```
 
 The response body should look similar to the following:
@@ -45,7 +45,7 @@ The response body should look similar to the following:
 }
 ```
 
-Create a `config.json` file similar to [`config.example.json`](config.example.json). Write the `access_token` and `refresh_token` properties of the response body in `config.json`
+Create a `config.json` file similar to [`config.example.json`](config.example.json). Write the `accessToken`, `refreshToken`, `clientId` and `clientSecret` in `config.json`
 
 ## 4. Environment
 
