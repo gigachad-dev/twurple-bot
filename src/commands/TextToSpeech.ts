@@ -18,7 +18,7 @@ export default class TextToSpeech extends BaseCommand {
     this.voice = 'Microsoft Irina Desktop'
   }
 
-  async prepareRun(msg: ChatMessage, args: string[]) {
+  async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
     if (args.length) {
       let cmd = 'powershell.exe Add-Type -AssemblyName System.speech; $speak = New-Object System.Speech.Synthesis.SpeechSynthesizer;'
       cmd += `$speak.SelectVoice('${this.voice}');`

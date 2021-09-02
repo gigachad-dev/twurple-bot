@@ -22,7 +22,7 @@ export default class Commands extends BaseCommand {
     })
   }
 
-  async run(msg: ChatMessage, { command }) {
+  async run(msg: ChatMessage, { command }): Promise<void> {
     if (command?.length) {
       this.commandHelp(msg, command)
     } else {
@@ -30,7 +30,7 @@ export default class Commands extends BaseCommand {
     }
   }
 
-  async commandList(msg: ChatMessage) {
+  async commandList(msg: ChatMessage): Promise<void> {
     const commands: string[] = []
     const prefix = this.client.options.prefix
 
@@ -43,7 +43,7 @@ export default class Commands extends BaseCommand {
     msg.reply(`Команды: ${commands.join(', ')}`)
   }
 
-  commandHelp(msg: ChatMessage, command: string) {
+  commandHelp(msg: ChatMessage, command: string): void {
     const selectedCommand = this.client.commands.find(({ options }) => {
       return options.name === command && !options.hideFromHelp
     })

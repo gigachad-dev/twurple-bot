@@ -19,11 +19,11 @@ export default class Plan extends BaseCommand {
       ]
     })
 
-    const adapter = new FileSync(path.join(__dirname, '../config/plan.json'))
+    const adapter = new FileSync<PlanConfig>(path.join(__dirname, '../config/plan.json'))
     this.db = Lowdb(adapter)
   }
 
-  async prepareRun(msg: ChatMessage, args: string[]) {
+  async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
     const isMod = msg.author.isBroadcaster || msg.author.isModerator
 
     if (isMod && args.length) {
@@ -33,13 +33,13 @@ export default class Plan extends BaseCommand {
     }
   }
 
-  changePlan(msg: ChatMessage, args: string[]) {
+  changePlan(msg: ChatMessage, args: string[]): void {
     const plan = args.join(' ')
     this.db.assign({ plan }).write()
     msg.reply(`План стрима изменен: ${plan}`)
   }
 
-  printPlan(msg: ChatMessage) {
+  printPlan(msg: ChatMessage): void {
     msg.reply(this.db.get('plan').value() || 'План стрима отсутствует')
   }
 }

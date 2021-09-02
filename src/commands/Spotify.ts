@@ -24,7 +24,7 @@ export default class Spotify extends BaseCommand {
     })
   }
 
-  async run(msg: ChatMessage) {
+  async run(msg: ChatMessage): Promise<void> {
     try {
       const { body } = await got<SpotifyApiResponse>(
         'https://nowplaying-api.tinyrobot.co/playbackstate?key=' + process.env.SPOTIFY_NOW_PLAYING_KEY,

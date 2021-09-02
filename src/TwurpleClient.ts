@@ -49,7 +49,7 @@ export class TwurpleClient extends EventEmitter {
     this.commands = []
   }
 
-  private async loadConfig() {
+  private async loadConfig(): Promise<void> {
     try {
       this.config = JSON.parse(
         await fs.readFile(this.options.pathConfig, {
@@ -61,7 +61,7 @@ export class TwurpleClient extends EventEmitter {
     }
   }
 
-  private async refreshConfig(tokens: AccessToken) {
+  private async refreshConfig(tokens: AccessToken): Promise<void> {
     console.log('refreshConfig')
     console.log(tokens)
 
@@ -78,7 +78,7 @@ export class TwurpleClient extends EventEmitter {
     )
   }
 
-  async connect() {
+  async connect(): Promise<void> {
     await this.loadConfig()
 
     this.logger.info('Current default prefix is ' + this.options.prefix)
@@ -125,9 +125,9 @@ export class TwurpleClient extends EventEmitter {
   }
 
   registerCommandsIn(path: string): void {
-    const files = readdir(path)
+    const files: string[] = readdir(path)
 
-    files.forEach((file: string) => {
+    files.forEach(file => {
       if (!file.match('.*(?<!\.d\.ts)$')) {
         return
       }
@@ -139,7 +139,7 @@ export class TwurpleClient extends EventEmitter {
       }
 
       if (typeof commandFile === 'function') {
-        const command = new commandFile(this)
+        const command: BaseCommand = new commandFile(this)
         this.logger.info(`Register command ${command.options.name}`)
         this.commands.push(command)
       } else {

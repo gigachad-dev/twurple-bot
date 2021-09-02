@@ -56,7 +56,7 @@ export default class Sounds extends BaseCommand {
       ]
     })
 
-    const adapter = new FileSync(path.join(__dirname, '../config/sounds.json'))
+    const adapter = new FileSync<PlaySoundConfig>(path.join(__dirname, '../config/sounds.json'))
     this.db = Lowdb(adapter)
     this.sounds = this.db.get('sounds').value()
     this.isPlaying = false
@@ -64,7 +64,7 @@ export default class Sounds extends BaseCommand {
     this.usedBy = []
   }
 
-  async run(msg: ChatMessage, { command, value }: CommandArgs) {
+  async run(msg: ChatMessage, { command, value }: CommandArgs): Promise<void> {
     if (!command) {
       return this.soundsList(msg)
     }
@@ -86,12 +86,12 @@ export default class Sounds extends BaseCommand {
     }
   }
 
-  soundsList(msg: ChatMessage) {
+  soundsList(msg: ChatMessage): void {
     const sounds = this.sounds.map(sound => `!${sound.alias}`)
     msg.reply(sounds.join(', '))
   }
 
-  async execute(msg: ChatMessage) {
+  async execute(msg: ChatMessage): Promise<void> {
     const name = msg.author.displayName
     const command = msg.text.slice(1).toLowerCase()
 
@@ -123,7 +123,7 @@ export default class Sounds extends BaseCommand {
     }
   }
 
-  checkBlacklist(msg: ChatMessage, name: string, blacklist: string[]) {
+  checkBlacklist(msg: ChatMessage, name: string, blacklist: string[]): string {
     return blacklist.find(username => {
       if (name.toLowerCase() === username.toLowerCase()) {
         return msg.reply('Вам запрещено использовать звуки')
@@ -131,7 +131,7 @@ export default class Sounds extends BaseCommand {
     })
   }
 
-  checkCooldown(msg: ChatMessage, name: string, cooldown: number) {
+  checkCooldown(msg: ChatMessage, name: string, cooldown: number): UsedBy {
     return this.usedBy.find(data => {
       if (data.name === name) {
         const time = Math.floor(Date.now() / 1000) - data.timestamp
@@ -145,7 +145,7 @@ export default class Sounds extends BaseCommand {
     })
   }
 
-  playSound(sound: Sound, volume: number) {
+  playSound(sound: Sound, volume: number): number {
     const folder = path.join(__dirname, '../config/sounds')
     const file = path.join(folder, `${sound.file}`)
 

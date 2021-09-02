@@ -57,7 +57,7 @@ export default class RandomGachi extends BaseCommand {
     this.history = []
   }
 
-  async run(msg: ChatMessage) {
+  async run(msg: ChatMessage): Promise<void> {
     const term = this.words[randomInt(0, this.words.length - 1)]
     const opts = {
       maxResults: 50,

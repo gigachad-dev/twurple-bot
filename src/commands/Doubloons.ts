@@ -13,7 +13,7 @@ export default class Doubloons extends BaseCommand {
     })
   }
 
-  async run(msg: ChatMessage) {
+  async run(msg: ChatMessage): Promise<void> {
     const num = Math.round(Math.random() * 10000)
     msg.reply(`Получил ${num} ${declOfNum(num, ['дублон', 'дублона', 'дублонов'])} lexot1K`)
   }

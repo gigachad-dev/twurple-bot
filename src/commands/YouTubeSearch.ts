@@ -24,7 +24,7 @@ export default class YouTubeSearch extends BaseCommand {
     }
   }
 
-  async prepareRun(msg: ChatMessage, args: string[]) {
+  async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
     if (args.length > 0) {
       try {
         const query = args.join(' ')

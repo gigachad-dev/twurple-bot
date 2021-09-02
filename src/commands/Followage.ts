@@ -28,7 +28,7 @@ export default class Followage extends BaseCommand {
     })
   }
 
-  async run(msg: ChatMessage, { username }) {
+  async run(msg: ChatMessage, { username }): Promise<void> {
     if (msg.author.isBroadcaster && !username) {
       this.followByBroadcaster(msg)
     } else if (username) {
@@ -38,13 +38,13 @@ export default class Followage extends BaseCommand {
     }
   }
 
-  async followByBroadcaster(msg: ChatMessage) {
+  async followByBroadcaster(msg: ChatMessage): Promise<void> {
     const { creationDate } = await this.getUserInfo(msg.channel.name)
     const { date, days } = this.formatDate(creationDate)
     msg.reply(`Стример родился ${date} (${days})`)
   }
 
-  async followByUsername(msg: ChatMessage, username: string) {
+  async followByUsername(msg: ChatMessage, username: string): Promise<void> {
     try {
       const { id, displayName } = await this.getUserInfo(username)
       const { total, user } = await this.getFollows(id, msg.channel.id)
@@ -60,7 +60,7 @@ export default class Followage extends BaseCommand {
     }
   }
 
-  async followByChatter(msg: ChatMessage) {
+  async followByChatter(msg: ChatMessage): Promise<void> {
     const { total, user } = await this.getFollows(msg.author.id, msg.channel.id)
 
     if (total) {

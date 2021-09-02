@@ -34,7 +34,7 @@ export class CommandParser {
     return null
   }
 
-  private escapePrefix(prefix: string) {
+  private escapePrefix(prefix: string): string {
     if (
       prefix === '?' ||
       prefix === '^' ||

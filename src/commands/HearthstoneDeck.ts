@@ -105,11 +105,11 @@ export default class HearthstoneDeck extends BaseCommand {
     this.loadCards()
   }
 
-  async run(msg: ChatMessage) {
+  async run(msg: ChatMessage): Promise<void> {
     msg.reply(this.options.description)
   }
 
-  async loadCards() {
+  async loadCards(): Promise<void> {
     const { body } = await got<CardsInfo[]>(
       'https://api.hearthstonejson.com/v1/latest/enUS/cards.collectible.json',
       { responseType: 'json' }
@@ -124,7 +124,7 @@ export default class HearthstoneDeck extends BaseCommand {
     })
   }
 
-  async execute(msg: ChatMessage) {
+  async execute(msg: ChatMessage): Promise<void> {
     const text = msg.text
     const isDeck = (str: string) => str.indexOf('AAE') > -1
 

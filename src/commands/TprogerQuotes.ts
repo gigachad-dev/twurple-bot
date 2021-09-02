@@ -24,7 +24,7 @@ export default class TprogerQuotes extends BaseCommand {
     this.quotes = quotes
   }
 
-  async run(msg: ChatMessage, { number }) {
+  async run(msg: ChatMessage, { number }): Promise<void> {
     if (number && !isNaN(number)) {
       this.search(msg, --number)
     } else {
@@ -32,7 +32,7 @@ export default class TprogerQuotes extends BaseCommand {
     }
   }
 
-  search(msg: ChatMessage, number: number) {
+  search(msg: ChatMessage, number: number): void {
     const quote = this.getQuote(number)
 
     if (quote) {
@@ -43,12 +43,12 @@ export default class TprogerQuotes extends BaseCommand {
     }
   }
 
-  random(msg: ChatMessage) {
+  random(msg: ChatMessage): void {
     let number = randomInt(0, this.quotes.length - 1)
     msg.actionSay(`#${++number}: ${this.getQuote(number)}`)
   }
 
-  getQuote(i: number) {
+  getQuote(i: number): string {
     return this.quotes[i]
   }
 }

@@ -17,7 +17,7 @@ export default class Cat extends BaseCommand {
     })
   }
 
-  async run(msg: ChatMessage) {
+  async run(msg: ChatMessage): Promise<void> {
     try {
       const { body } = await got.get<CatApiResponse>(
         'https://aws.random.cat/meow',

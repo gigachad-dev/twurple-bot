@@ -13,7 +13,7 @@ export default class Title extends BaseCommand {
     })
   }
 
-  async prepareRun(msg: ChatMessage, args: string[]) {
+  async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
     const isMod = msg.author.isBroadcaster || msg.author.isModerator
 
     if (isMod && args.length) {
@@ -23,7 +23,7 @@ export default class Title extends BaseCommand {
     }
   }
 
-  async moderator(msg: ChatMessage, args: string[]) {
+  async moderator(msg: ChatMessage, args: string[]): Promise<void> {
     const title = args.join(' ')
 
     if (title.length > 106) {
@@ -33,12 +33,12 @@ export default class Title extends BaseCommand {
     }
   }
 
-  async everyone(msg: ChatMessage) {
+  async everyone(msg: ChatMessage): Promise<void> {
     const { title } = await this.client.api.channels.getChannelInfo(msg.channel.id)
     msg.reply(title)
   }
 
-  changeTitle(msg: ChatMessage, title: string) {
+  changeTitle(msg: ChatMessage, title: string): void {
     this.client.api.channels.updateChannelInfo(
       msg.channel.id,
       { title }

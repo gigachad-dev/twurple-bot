@@ -20,7 +20,7 @@ export default class Aphorism extends BaseCommand {
     })
   }
 
-  async run(msg: ChatMessage) {
+  async run(msg: ChatMessage): Promise<void> {
     try {
       const form = new FormData()
       form.append('method', 'getQuote')
