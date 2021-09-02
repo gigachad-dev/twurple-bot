@@ -30,19 +30,7 @@ export default class Game extends BaseCommand {
     const query = args.join(' ').toLowerCase()
     const games = await this.client.api.games.getGamesByNames([query])
 
-    console.dir(games)
-
     if (games.length) {
-      // const editors = await this.client.api.channels.getChannelEditors(msg.channel.id)
-      // console.dir(editors)
-
-      // const findEditor = editors.find(editor => msg.author.id === editor.userId)
-      // const findGame = games.find(game => query === game.name.toLowerCase())
-
-      // if (msg.author.isModerator) {
-      //   const isEditor = await this.client.api.channels.getChannelEditors(msg.channel.id)
-      // }
-
       this.changeGame(msg, { gameId: games[0].id, gameName: games[0].name })
     } else {
       msg.reply('Игра не найдена')
@@ -59,7 +47,7 @@ export default class Game extends BaseCommand {
       gameId
     }).then(() => {
       msg.reply(`Игра изменена: ${gameName}`)
-    }).catch((err) => {
+    }).catch(err => {
       this.client.logger.error(err)
     })
   }
