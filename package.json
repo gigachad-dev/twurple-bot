@@ -16,6 +16,7 @@
   "devDependencies": {
     "@types/lowdb": "^1.0.11",
     "@types/node": "^16.7.6",
+    "@types/sound-play": "^1.1.0",
     "dotenv": "^10.0.0",
     "nodemon": "^2.0.12",
     "ts-node": "^10.2.1",
@@ -31,6 +32,7 @@
     "html-entities": "^2.3.2",
     "lowdb": "^1.0.0",
     "recursive-readdir-sync": "^1.0.6",
+    "sound-play": "^1.1.0",
     "tmi.js": "^1.8.5",
     "winston": "^3.3.3",
     "youtube-search": "^1.1.6"

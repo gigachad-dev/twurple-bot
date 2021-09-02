@@ -11,6 +11,10 @@ const client = new TwurpleClient({
 })
 
 client.on('message', (msg: ChatMessage) => {
+  if (msg.text.startsWith(client.options.prefix)) {
+    return client.execCommand('sounds', msg)
+  }
+
   client.execCommand('hsdeck', msg)
 })
 
