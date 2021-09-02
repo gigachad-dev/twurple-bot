@@ -9,6 +9,8 @@
     "channel:read:editors",
     "chat:edit",
     "chat:read",
+    "user:edit:broadcast",
+    "user:read:broadcast",
     "whispers:edit",
     "whispers:read"
   ],
