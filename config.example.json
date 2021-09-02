@@ -4,9 +4,14 @@
   "accessToken": "",
   "refreshToken": "",
   "scope": [
+    "channel:manage:broadcast",
+    "channel:moderate",
+    "channel:read:editors",
     "chat:edit",
-    "chat:read"
+    "chat:read",
+    "whispers:edit",
+    "whispers:read"
   ],
-  "expiresIn": 15636,
-  "obtainmentTimestamp": 1630329705798
+  "expiresIn": 0,
+  "obtainmentTimestamp": 0
 }
