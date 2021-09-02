@@ -1,21 +1,15 @@
 import { declOfNum } from '../utils'
-import { HelixFollowData } from '@twurple/api/lib'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
-
-interface FollowsData {
-  total: number
-  data: HelixFollowData[]
-}
 
 export default class Followage extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'followage',
       userlevel: 'everyone',
+      description: 'Время отслеживания канала',
       aliases: [
         'олд'
       ],
-      description: 'Время отслеживания канала',
       examples: [
         `${client.options.prefix}followage`,
         `${client.options.prefix}followage <username>`
@@ -52,14 +46,14 @@ export default class Followage extends BaseCommand {
 
   async followByUsername(msg: ChatMessage, username: string) {
     try {
-      const userInfo = await this.getUserInfo(username)
-      const followInfo = await this.getFollows(userInfo.id, msg.channel.id)
+      const { id, displayName } = await this.getUserInfo(username)
+      const { total, user } = await this.getFollows(id, msg.channel.id)
 
-      if (followInfo.total) {
-        const { date, days } = this.formatDate(followInfo.data[0].followed_at)
-        msg.reply(`${userInfo.displayName} отслеживает канал с ${date} (${days})`)
+      if (total) {
+        const { date, days } = this.formatDate(user.followDate)
+        msg.reply(`${displayName} отслеживает канал с ${date} (${days})`)
       } else {
-        msg.reply(`Пользователь ${userInfo.displayName} не подписан`)
+        msg.reply(`Пользователь ${displayName} не подписан`)
       }
     } catch (err) {
       msg.reply(`Пользователь ${username} не найден`)
@@ -67,10 +61,10 @@ export default class Followage extends BaseCommand {
   }
 
   async followByChatter(msg: ChatMessage) {
-    const follows = await this.getFollows(msg.author.id, msg.channel.id)
+    const { total, user } = await this.getFollows(msg.author.id, msg.channel.id)
 
-    if (follows.total) {
-      const { date, days } = this.formatDate(follows.data[0].followed_at)
+    if (total) {
+      const { date, days } = this.formatDate(user.followDate)
       msg.reply(`отслеживает канал с ${date} (${days})`)
     } else {
       msg.reply(`Подпишись на канал SMOrc`)
@@ -81,15 +75,12 @@ export default class Followage extends BaseCommand {
     return await this.client.api.users.getUserByName(username)
   }
 
-  async getFollows(from_id: string, to_id: string) {
-    return await this.client.api.callApi<FollowsData>({
-      type: 'helix',
-      url: 'users/follows',
-      query: {
-        to_id,
-        from_id
-      }
-    })
+  async getFollows(user: string, followedUser: string) {
+    const { total, data } = await this.client.api.users.getFollows({ user, followedUser })
+    return {
+      total,
+      user: data[0]
+    }
   }
 
   formatDate(startDate: string | number | Date) {
