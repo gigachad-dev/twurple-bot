@@ -34,7 +34,7 @@ export default class Spotify extends BaseCommand {
       if (body.isPlaying) {
         msg.reply(`${body.artists[0].name} - ${body.songName}`)
       } else {
-        msg.reply('музыка не проигрывается')
+        msg.reply('Музыка не проигрывается')
       }
     } catch (err) {
       this.client.logger.error(err)

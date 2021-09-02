@@ -48,10 +48,10 @@ export default class Weather extends BaseCommand {
 
         msg.reply(`${body.name} ${Math.round(body.main.temp)}°C Подробнее: https://openweathermap.org/city/${body.id}`)
       } catch (err) {
-        msg.reply(`город не найден`)
+        msg.reply('Город не найден')
       }
     } else {
-      msg.reply('укажите город')
+      msg.reply('Укажите город')
     }
   }
 }

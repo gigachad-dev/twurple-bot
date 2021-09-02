@@ -39,7 +39,7 @@ export default class TprogerQuotes extends BaseCommand {
       msg.actionSay(`#${++number}: ${quote}`)
     } else {
       const dbInfo = `Всего в базе ${this.quotes.length} ${declOfNum(this.quotes.length, ['цитата', 'цитат', 'цитат'])}.`
-      msg.reply(`цитата не найдена! ${dbInfo}`)
+      msg.reply(`Цитата не найдена! ${dbInfo}`)
     }
   }
 

@@ -47,7 +47,7 @@ export default class Followage extends BaseCommand {
   async followByBroadcaster(msg: ChatMessage) {
     const { creationDate } = await this.getUserInfo(msg.channel.name)
     const { date, days } = this.formatDate(creationDate)
-    msg.reply(`стример родился ${date} (${days})`)
+    msg.reply(`Стример родился ${date} (${days})`)
   }
 
   async followByUsername(msg: ChatMessage, username: string) {
@@ -59,10 +59,10 @@ export default class Followage extends BaseCommand {
         const { date, days } = this.formatDate(followInfo.data[0].followed_at)
         msg.reply(`${userInfo.displayName} отслеживает канал с ${date} (${days})`)
       } else {
-        msg.reply(`пользователь ${userInfo.displayName} не подписан`)
+        msg.reply(`Пользователь ${userInfo.displayName} не подписан`)
       }
     } catch (err) {
-      msg.reply(`пользователь ${username} не найден`)
+      msg.reply(`Пользователь ${username} не найден`)
     }
   }
 
@@ -73,7 +73,7 @@ export default class Followage extends BaseCommand {
       const { date, days } = this.formatDate(follows.data[0].followed_at)
       msg.reply(`отслеживает канал с ${date} (${days})`)
     } else {
-      msg.reply(`подпишись на канал SMOrc`)
+      msg.reply(`Подпишись на канал SMOrc`)
     }
   }
 
