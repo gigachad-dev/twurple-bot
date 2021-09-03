@@ -7,6 +7,7 @@ export default class Commands extends BaseCommand {
       userlevel: 'everyone',
       description: `This command shows help for all commands. Send ${client.options.prefix}help <command> for detailed help on a command.`,
       aliases: [
+        'команды',
         'help'
       ],
       examples: [
