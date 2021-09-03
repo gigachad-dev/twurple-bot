@@ -216,4 +216,8 @@ export class TwurpleClient extends EventEmitter {
   getUsername(): string {
     return this.tmi.getUsername()
   }
+
+  getChannels(): string[] {
+    return this.tmi.getChannels()
+  }
 }
