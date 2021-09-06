@@ -6,7 +6,7 @@ dotenv.config()
 
 const client = new TwurpleClient({
   pathConfig: path.join(__dirname, 'config.json'),
-  channels: ['quakerlegend', 'le_xot', 'vs_code'],
+  channels: ['quakerlegend', 'vs_code'],
   botOwners: ['vs_code']
 })
 

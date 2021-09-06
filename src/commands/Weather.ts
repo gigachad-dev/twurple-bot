@@ -46,7 +46,7 @@ export default class Weather extends BaseCommand {
           { responseType: 'json' }
         )
 
-        msg.reply(`${body.name} ${Math.round(body.main.temp)}°C Подробнее: https://openweathermap.org/city/${body.id}`)
+        msg.reply(`${body.name} ${Math.round(body.main.temp)}°C Подробнее: openweathermap.org/city/${body.id}`)
       } catch (err) {
         msg.reply('Город не найден')
       }
