@@ -1,0 +1,3402 @@
+[
+  {
+    "id": "bulbasaur",
+    "name": "Бульбазавр"
+  },
+  {
+    "id": "ivysaur",
+    "name": "Айвизавр"
+  },
+  {
+    "id": "venusaur",
+    "name": "Венузавр"
+  },
+  {
+    "id": "charmander",
+    "name": "Чармандер"
+  },
+  {
+    "id": "charmeleon",
+    "name": "Чармелеон"
+  },
+  {
+    "id": "charizard",
+    "name": "Чаризард"
+  },
+  {
+    "id": "squirtle",
+    "name": "Сквиртл"
+  },
+  {
+    "id": "wartortle",
+    "name": "Вартотл"
+  },
+  {
+    "id": "blastoise",
+    "name": "Бластойз"
+  },
+  {
+    "id": "caterpie",
+    "name": "Катерпи"
+  },
+  {
+    "id": "metapod",
+    "name": "Метапод"
+  },
+  {
+    "id": "butterfree",
+    "name": "Баттерфри"
+  },
+  {
+    "id": "weedle",
+    "name": "Видл"
+  },
+  {
+    "id": "kakuna",
+    "name": "Какуна"
+  },
+  {
+    "id": "beedrill",
+    "name": "Бидрил"
+  },
+  {
+    "id": "pidgey",
+    "name": "Пиджи"
+  },
+  {
+    "id": "pidgeotto",
+    "name": "Пиджеотто"
+  },
+  {
+    "id": "pidgeot",
+    "name": "Пиджеот"
+  },
+  {
+    "id": "rattata",
+    "name": "Раттата"
+  },
+  {
+    "id": "raticate",
+    "name": "Ратикейт"
+  },
+  {
+    "id": "spearow",
+    "name": "Спироу"
+  },
+  {
+    "id": "fearow",
+    "name": "Фироу"
+  },
+  {
+    "id": "ekans",
+    "name": "Эканс"
+  },
+  {
+    "id": "arbok",
+    "name": "Эрбок"
+  },
+  {
+    "id": "pikachu",
+    "name": "Пикачу"
+  },
+  {
+    "id": "raichu",
+    "name": "Райчу"
+  },
+  {
+    "id": "sandshrew",
+    "name": "Сэндшрю"
+  },
+  {
+    "id": "sandslash",
+    "name": "Сэндслэш"
+  },
+  {
+    "id": "nidoranfemale",
+    "name": "Нидоран Д"
+  },
+  {
+    "id": "nidorina",
+    "name": "Нидорина"
+  },
+  {
+    "id": "nidoqueen",
+    "name": "Нидоквин"
+  },
+  {
+    "id": "nidoranmale",
+    "name": "Нидоран М"
+  },
+  {
+    "id": "nidorino",
+    "name": "Нидорино"
+  },
+  {
+    "id": "nidoking",
+    "name": "Нидокинг"
+  },
+  {
+    "id": "clefairy",
+    "name": "Клефэйри"
+  },
+  {
+    "id": "clefable",
+    "name": "Клефэйбл"
+  },
+  {
+    "id": "vulpix",
+    "name": "Валпикс"
+  },
+  {
+    "id": "ninetales",
+    "name": "Найнтейлс"
+  },
+  {
+    "id": "jigglypuff",
+    "name": "Джигглипафф"
+  },
+  {
+    "id": "wigglytuff",
+    "name": "Вигглитафф"
+  },
+  {
+    "id": "zubat",
+    "name": "Зубат"
+  },
+  {
+    "id": "golbat",
+    "name": "Голбат"
+  },
+  {
+    "id": "oddish",
+    "name": "Оддиш"
+  },
+  {
+    "id": "gloom",
+    "name": "Глум"
+  },
+  {
+    "id": "vileplume",
+    "name": "Вайлмплум"
+  },
+  {
+    "id": "paras",
+    "name": "Парас"
+  },
+  {
+    "id": "parasect",
+    "name": "Парасект"
+  },
+  {
+    "id": "venonat",
+    "name": "Венонат"
+  },
+  {
+    "id": "venomoth",
+    "name": "Веномот"
+  },
+  {
+    "id": "diglett",
+    "name": "Диглетт"
+  },
+  {
+    "id": "dugtrio",
+    "name": "Дагтрио"
+  },
+  {
+    "id": "meowth",
+    "name": "Мяут"
+  },
+  {
+    "id": "persian",
+    "name": "Персиан"
+  },
+  {
+    "id": "psyduck",
+    "name": "Псайдак"
+  },
+  {
+    "id": "golduck",
+    "name": "Голдак"
+  },
+  {
+    "id": "mankey",
+    "name": "Манки"
+  },
+  {
+    "id": "primeape",
+    "name": "Праймэйп"
+  },
+  {
+    "id": "growlithe",
+    "name": "Гроулит"
+  },
+  {
+    "id": "arcanine",
+    "name": "Арканайн"
+  },
+  {
+    "id": "poliwag",
+    "name": "Поливаг"
+  },
+  {
+    "id": "poliwhirl",
+    "name": "Поливирл"
+  },
+  {
+    "id": "poliwrath",
+    "name": "Полирот"
+  },
+  {
+    "id": "abra",
+    "name": "Абра"
+  },
+  {
+    "id": "kadabra",
+    "name": "Кадабра"
+  },
+  {
+    "id": "alakazam",
+    "name": "Алаказам"
+  },
+  {
+    "id": "machop",
+    "name": "Мачоп"
+  },
+  {
+    "id": "machoke",
+    "name": "Мачок"
+  },
+  {
+    "id": "machamp",
+    "name": "Мачамп"
+  },
+  {
+    "id": "bellsprout",
+    "name": "Белспрут"
+  },
+  {
+    "id": "weepinbell",
+    "name": "Випинбелл"
+  },
+  {
+    "id": "victreebel",
+    "name": "Виктрибел"
+  },
+  {
+    "id": "tentacool",
+    "name": "Тентакул"
+  },
+  {
+    "id": "tentacruel",
+    "name": "Тентакруэль"
+  },
+  {
+    "id": "geodude",
+    "name": "Геодуд"
+  },
+  {
+    "id": "graveler",
+    "name": "Гравелер"
+  },
+  {
+    "id": "golem",
+    "name": "Голем"
+  },
+  {
+    "id": "ponyta",
+    "name": "Понита"
+  },
+  {
+    "id": "rapidash",
+    "name": "Рапидэш"
+  },
+  {
+    "id": "slowpoke",
+    "name": "Слоупок"
+  },
+  {
+    "id": "slowbro",
+    "name": "Слоубро"
+  },
+  {
+    "id": "magnemite",
+    "name": "Магнемайт"
+  },
+  {
+    "id": "magneton",
+    "name": "Магнетон"
+  },
+  {
+    "id": "farfetchd",
+    "name": "Фарфечт Д"
+  },
+  {
+    "id": "doduo",
+    "name": "Додуо"
+  },
+  {
+    "id": "dodrio",
+    "name": "Додрио"
+  },
+  {
+    "id": "seel",
+    "name": "Сил"
+  },
+  {
+    "id": "dewgong",
+    "name": "Дьюгонг"
+  },
+  {
+    "id": "grimer",
+    "name": "Граймер"
+  },
+  {
+    "id": "muk",
+    "name": "Мак"
+  },
+  {
+    "id": "shellder",
+    "name": "Шелдер"
+  },
+  {
+    "id": "cloyster",
+    "name": "Клойстер"
+  },
+  {
+    "id": "gastly",
+    "name": "Гастли"
+  },
+  {
+    "id": "haunter",
+    "name": "Хаунтер"
+  },
+  {
+    "id": "gengar",
+    "name": "Генгар"
+  },
+  {
+    "id": "onix",
+    "name": "Оникс"
+  },
+  {
+    "id": "drowzee",
+    "name": "Дроузи"
+  },
+  {
+    "id": "hypno",
+    "name": "Гипно"
+  },
+  {
+    "id": "krabby",
+    "name": "Крабби"
+  },
+  {
+    "id": "kingler",
+    "name": "Кинглер"
+  },
+  {
+    "id": "voltorb",
+    "name": "Волторб"
+  },
+  {
+    "id": "electrode",
+    "name": "Электрод"
+  },
+  {
+    "id": "exeggcute",
+    "name": "Экзегкут"
+  },
+  {
+    "id": "exeggutor",
+    "name": "Экзегкутор"
+  },
+  {
+    "id": "cubone",
+    "name": "Кьюбон"
+  },
+  {
+    "id": "marowak",
+    "name": "Маровак"
+  },
+  {
+    "id": "hitmonlee",
+    "name": "Хитмонли"
+  },
+  {
+    "id": "hitmonchan",
+    "name": "Хитмончан"
+  },
+  {
+    "id": "lickitung",
+    "name": "Ликитанг"
+  },
+  {
+    "id": "koffing",
+    "name": "Коффинг"
+  },
+  {
+    "id": "weezing",
+    "name": "Визинг"
+  },
+  {
+    "id": "rhyhorn",
+    "name": "Райхорн"
+  },
+  {
+    "id": "rhydon",
+    "name": "Райдон"
+  },
+  {
+    "id": "chansey",
+    "name": "Ченси"
+  },
+  {
+    "id": "tangela",
+    "name": "Танжела"
+  },
+  {
+    "id": "kangaskhan",
+    "name": "Кангасхан"
+  },
+  {
+    "id": "horsea",
+    "name": "Хорси"
+  },
+  {
+    "id": "seadra",
+    "name": "Сидра"
+  },
+  {
+    "id": "goldeen",
+    "name": "Голдин"
+  },
+  {
+    "id": "seaking",
+    "name": "Сикинг"
+  },
+  {
+    "id": "staryu",
+    "name": "Старью"
+  },
+  {
+    "id": "starmie",
+    "name": "Старми"
+  },
+  {
+    "id": "mrmime",
+    "name": "МрМайм"
+  },
+  {
+    "id": "scyther",
+    "name": "Сайтер"
+  },
+  {
+    "id": "jynx",
+    "name": "Джинкс"
+  },
+  {
+    "id": "electabuzz",
+    "name": "Электабазз"
+  },
+  {
+    "id": "magmar",
+    "name": "Магмар"
+  },
+  {
+    "id": "pinsir",
+    "name": "Пинсир"
+  },
+  {
+    "id": "tauros",
+    "name": "Таурос"
+  },
+  {
+    "id": "magikarp",
+    "name": "Мэджикарп"
+  },
+  {
+    "id": "gyarados",
+    "name": "Гиарадос"
+  },
+  {
+    "id": "lapras",
+    "name": "Лапрас"
+  },
+  {
+    "id": "ditto",
+    "name": "Дитто"
+  },
+  {
+    "id": "eevee",
+    "name": "Иви"
+  },
+  {
+    "id": "vaporeon",
+    "name": "Вапореон"
+  },
+  {
+    "id": "jolteon",
+    "name": "Джолтеон"
+  },
+  {
+    "id": "flareon",
+    "name": "Флареон"
+  },
+  {
+    "id": "porygon",
+    "name": "Поригон"
+  },
+  {
+    "id": "omanyte",
+    "name": "Оманайт"
+  },
+  {
+    "id": "omastar",
+    "name": "Омастар"
+  },
+  {
+    "id": "kabuto",
+    "name": "Кабуто"
+  },
+  {
+    "id": "kabutops",
+    "name": "Кабутопс"
+  },
+  {
+    "id": "aerodactyl",
+    "name": "Аэродактиль"
+  },
+  {
+    "id": "snorlax",
+    "name": "Снорлакс"
+  },
+  {
+    "id": "articuno",
+    "name": "Артикуно"
+  },
+  {
+    "id": "zapdos",
+    "name": "Запдос"
+  },
+  {
+    "id": "moltres",
+    "name": "Молтрес"
+  },
+  {
+    "id": "dratini",
+    "name": "Дратини"
+  },
+  {
+    "id": "dragonair",
+    "name": "Драгонайр"
+  },
+  {
+    "id": "dragonite",
+    "name": "Драгонайт"
+  },
+  {
+    "id": "mewtwo",
+    "name": "Мьюту"
+  },
+  {
+    "id": "mew",
+    "name": "Мью"
+  },
+  {
+    "id": "chikorita",
+    "name": "Чикорита"
+  },
+  {
+    "id": "bayleef",
+    "name": "Бэйлиф"
+  },
+  {
+    "id": "meganium",
+    "name": "Меганиум"
+  },
+  {
+    "id": "cyndaquil",
+    "name": "Синдаквил"
+  },
+  {
+    "id": "quilava",
+    "name": "Квилава"
+  },
+  {
+    "id": "typhlosion",
+    "name": "Тайфложн"
+  },
+  {
+    "id": "totodile",
+    "name": "Тотодайл"
+  },
+  {
+    "id": "croconaw",
+    "name": "Кроконоу"
+  },
+  {
+    "id": "feraligatr",
+    "name": "Фералигатр"
+  },
+  {
+    "id": "sentret",
+    "name": "Сентрет"
+  },
+  {
+    "id": "furret",
+    "name": "Фуррет"
+  },
+  {
+    "id": "hoothoot",
+    "name": "Хутхут"
+  },
+  {
+    "id": "noctowl",
+    "name": "Ноктаул"
+  },
+  {
+    "id": "ledyba",
+    "name": "Ледиба"
+  },
+  {
+    "id": "ledian",
+    "name": "Ледиан"
+  },
+  {
+    "id": "spinarak",
+    "name": "Спинарак"
+  },
+  {
+    "id": "ariados",
+    "name": "Ариадос"
+  },
+  {
+    "id": "crobat",
+    "name": "Кробат"
+  },
+  {
+    "id": "chinchou",
+    "name": "Чинчоу"
+  },
+  {
+    "id": "lanturn",
+    "name": "Лантурн"
+  },
+  {
+    "id": "pichu",
+    "name": "Пичу"
+  },
+  {
+    "id": "cleffa",
+    "name": "Клефффа"
+  },
+  {
+    "id": "igglybuff",
+    "name": "Игглибафф"
+  },
+  {
+    "id": "togepi",
+    "name": "Тогепи"
+  },
+  {
+    "id": "togetic",
+    "name": "Тогетик"
+  },
+  {
+    "id": "natu",
+    "name": "Нату"
+  },
+  {
+    "id": "xatu",
+    "name": "Ксату"
+  },
+  {
+    "id": "mareep",
+    "name": "Марип"
+  },
+  {
+    "id": "flaaffy",
+    "name": "Флааффи"
+  },
+  {
+    "id": "ampharos",
+    "name": "Амфарос"
+  },
+  {
+    "id": "bellossom",
+    "name": "Беллоссом"
+  },
+  {
+    "id": "marill",
+    "name": "Марилл"
+  },
+  {
+    "id": "azumarill",
+    "name": "Азумарилл"
+  },
+  {
+    "id": "sudowoodo",
+    "name": "Судовудо"
+  },
+  {
+    "id": "politoed",
+    "name": "Политоед"
+  },
+  {
+    "id": "hoppip",
+    "name": "Хоппип"
+  },
+  {
+    "id": "skiploom",
+    "name": "Скиплум"
+  },
+  {
+    "id": "jumpluff",
+    "name": "Джамплафф"
+  },
+  {
+    "id": "aipom",
+    "name": "Айпом"
+  },
+  {
+    "id": "sunkern",
+    "name": "Санкерн"
+  },
+  {
+    "id": "sunflora",
+    "name": "Санфлора"
+  },
+  {
+    "id": "yanma",
+    "name": "Янма"
+  },
+  {
+    "id": "wooper",
+    "name": "Вупер"
+  },
+  {
+    "id": "quagsire",
+    "name": "Квагсайр"
+  },
+  {
+    "id": "espeon",
+    "name": "Эспеон"
+  },
+  {
+    "id": "umbreon",
+    "name": "Амбреон"
+  },
+  {
+    "id": "murkrow",
+    "name": "Маркроу"
+  },
+  {
+    "id": "slowking",
+    "name": "Слоукинг"
+  },
+  {
+    "id": "misdreavus",
+    "name": "Мисдривус"
+  },
+  {
+    "id": "unown",
+    "name": "Аноун"
+  },
+  {
+    "id": "wobbuffet",
+    "name": "Воббаффет"
+  },
+  {
+    "id": "girafarig",
+    "name": "Джирафариг"
+  },
+  {
+    "id": "pineco",
+    "name": "Пайнеко"
+  },
+  {
+    "id": "forretress",
+    "name": "Форретресс"
+  },
+  {
+    "id": "dunsparce",
+    "name": "Данспарс"
+  },
+  {
+    "id": "gligar",
+    "name": "Гайлгар"
+  },
+  {
+    "id": "steelix",
+    "name": "Стиликс"
+  },
+  {
+    "id": "snubbull",
+    "name": "Снаббулл"
+  },
+  {
+    "id": "granbull",
+    "name": "Гранбулл"
+  },
+  {
+    "id": "qwilfish",
+    "name": "Квилиш"
+  },
+  {
+    "id": "scizor",
+    "name": "Сизор"
+  },
+  {
+    "id": "shuckle",
+    "name": "Шакл"
+  },
+  {
+    "id": "heracross",
+    "name": "Геракрос"
+  },
+  {
+    "id": "sneasel",
+    "name": "Снизиз"
+  },
+  {
+    "id": "teddiursa",
+    "name": "Теддиурса"
+  },
+  {
+    "id": "ursaring",
+    "name": "Урсаринг"
+  },
+  {
+    "id": "slugma",
+    "name": "Слагма"
+  },
+  {
+    "id": "magcargo",
+    "name": "Магкарго"
+  },
+  {
+    "id": "swinub",
+    "name": "Свайнуб"
+  },
+  {
+    "id": "piloswine",
+    "name": "Пилосвайн"
+  },
+  {
+    "id": "corsola",
+    "name": "Корсола"
+  },
+  {
+    "id": "remoraid",
+    "name": "Реморейд"
+  },
+  {
+    "id": "octillery",
+    "name": "Октиллери"
+  },
+  {
+    "id": "delibird",
+    "name": "Делибёрд"
+  },
+  {
+    "id": "mantine",
+    "name": "Мантайн"
+  },
+  {
+    "id": "skarmory",
+    "name": "Скармори"
+  },
+  {
+    "id": "houndour",
+    "name": "Хаундур"
+  },
+  {
+    "id": "houndoom",
+    "name": "Хаундум"
+  },
+  {
+    "id": "kingdra",
+    "name": "Кингдра"
+  },
+  {
+    "id": "phanpy",
+    "name": "Фанфи"
+  },
+  {
+    "id": "donphan",
+    "name": "Донфан"
+  },
+  {
+    "id": "porygon2",
+    "name": "Поригон 2"
+  },
+  {
+    "id": "stantler",
+    "name": "Стантлер"
+  },
+  {
+    "id": "smeargle",
+    "name": "Смиргл"
+  },
+  {
+    "id": "tyrogue",
+    "name": "Тирог"
+  },
+  {
+    "id": "hitmontop",
+    "name": "Хитмонтоп"
+  },
+  {
+    "id": "smoochum",
+    "name": "Смучам"
+  },
+  {
+    "id": "elekid",
+    "name": "Элекид"
+  },
+  {
+    "id": "magby",
+    "name": "Магбай"
+  },
+  {
+    "id": "miltank",
+    "name": "Милтанк"
+  },
+  {
+    "id": "blissey",
+    "name": "Блисси"
+  },
+  {
+    "id": "raikou",
+    "name": "Райкоу"
+  },
+  {
+    "id": "entei",
+    "name": "Энтей"
+  },
+  {
+    "id": "suicune",
+    "name": "Суйкун"
+  },
+  {
+    "id": "larvitar",
+    "name": "Ларвитар"
+  },
+  {
+    "id": "pupitar",
+    "name": "Пьюпитар"
+  },
+  {
+    "id": "tyranitar",
+    "name": "Тиранитар"
+  },
+  {
+    "id": "lugia",
+    "name": "Лугиа"
+  },
+  {
+    "id": "ho-oh",
+    "name": "Хо-Ох"
+  },
+  {
+    "id": "celebi",
+    "name": "Селеби"
+  },
+  {
+    "id": "treecko",
+    "name": "Трико"
+  },
+  {
+    "id": "grovyle",
+    "name": "Гровайл"
+  },
+  {
+    "id": "sceptile",
+    "name": "Септайл"
+  },
+  {
+    "id": "torchic",
+    "name": "Торчик"
+  },
+  {
+    "id": "combusken",
+    "name": "Комбаскен"
+  },
+  {
+    "id": "blaziken",
+    "name": "Блэйзикен"
+  },
+  {
+    "id": "mudkip",
+    "name": "Мадкип"
+  },
+  {
+    "id": "marshtomp",
+    "name": "Марштомп"
+  },
+  {
+    "id": "swampert",
+    "name": "Свамперт"
+  },
+  {
+    "id": "poochyena",
+    "name": "Пучиена"
+  },
+  {
+    "id": "mightyena",
+    "name": "Майтиена"
+  },
+  {
+    "id": "zigzagoon",
+    "name": "Зигзагун"
+  },
+  {
+    "id": "linoone",
+    "name": "Лайнун"
+  },
+  {
+    "id": "wurmple",
+    "name": "Вурмпл"
+  },
+  {
+    "id": "silcoon",
+    "name": "Силкун"
+  },
+  {
+    "id": "beautifly",
+    "name": "Бьютифлай"
+  },
+  {
+    "id": "cascoon",
+    "name": "Каскун"
+  },
+  {
+    "id": "dustox",
+    "name": "Дастокс"
+  },
+  {
+    "id": "lotad",
+    "name": "Лотад"
+  },
+  {
+    "id": "lombre",
+    "name": "Ломбре"
+  },
+  {
+    "id": "ludicolo",
+    "name": "Лудиколо"
+  },
+  {
+    "id": "seedot",
+    "name": "Сидот"
+  },
+  {
+    "id": "nuzleaf",
+    "name": "Назлиф"
+  },
+  {
+    "id": "shiftry",
+    "name": "Шифтри"
+  },
+  {
+    "id": "taillow",
+    "name": "Тэйллоу"
+  },
+  {
+    "id": "swellow",
+    "name": "Свеллоу"
+  },
+  {
+    "id": "wingull",
+    "name": "Вингулл"
+  },
+  {
+    "id": "pelipper",
+    "name": "Пелиппер"
+  },
+  {
+    "id": "ralts",
+    "name": "Ралтс"
+  },
+  {
+    "id": "kirlia",
+    "name": "Кирлия"
+  },
+  {
+    "id": "gardevoir",
+    "name": "Гардевуар"
+  },
+  {
+    "id": "surskit",
+    "name": "Сёрскит"
+  },
+  {
+    "id": "masquerain",
+    "name": "Маскурэйн"
+  },
+  {
+    "id": "shroomish",
+    "name": "Шрумиш"
+  },
+  {
+    "id": "breloom",
+    "name": "Брилум"
+  },
+  {
+    "id": "slakoth",
+    "name": "Слакот"
+  },
+  {
+    "id": "vigoroth",
+    "name": "Вигорот"
+  },
+  {
+    "id": "slaking",
+    "name": "Слакинг"
+  },
+  {
+    "id": "nincada",
+    "name": "Нинкада"
+  },
+  {
+    "id": "ninjask",
+    "name": "Нинжэск"
+  },
+  {
+    "id": "shedinja",
+    "name": "Шединья"
+  },
+  {
+    "id": "whismur",
+    "name": "Висмур"
+  },
+  {
+    "id": "loudred",
+    "name": "Лоудред"
+  },
+  {
+    "id": "exploud",
+    "name": "Экплауд"
+  },
+  {
+    "id": "makuhita",
+    "name": "Макухита"
+  },
+  {
+    "id": "hariyama",
+    "name": "Харияма"
+  },
+  {
+    "id": "azurill",
+    "name": "Азурил"
+  },
+  {
+    "id": "nosepass",
+    "name": "Ноуспасс"
+  },
+  {
+    "id": "skitty",
+    "name": "Скитти"
+  },
+  {
+    "id": "delcatty",
+    "name": "Делкэтти"
+  },
+  {
+    "id": "sableye",
+    "name": "Саблай"
+  },
+  {
+    "id": "mawile",
+    "name": "Мавайл"
+  },
+  {
+    "id": "aron",
+    "name": "Арон"
+  },
+  {
+    "id": "lairon",
+    "name": "Лэйрон"
+  },
+  {
+    "id": "aggron",
+    "name": "Аггрон"
+  },
+  {
+    "id": "meditite",
+    "name": "Медитайт"
+  },
+  {
+    "id": "medicham",
+    "name": "Медичам"
+  },
+  {
+    "id": "electrike",
+    "name": "Электрайк"
+  },
+  {
+    "id": "manectric",
+    "name": "Манектрик"
+  },
+  {
+    "id": "plusle",
+    "name": "Пласл"
+  },
+  {
+    "id": "minun",
+    "name": "Майнун"
+  },
+  {
+    "id": "volbeat",
+    "name": "Волбит"
+  },
+  {
+    "id": "illumise",
+    "name": "Иллюмизе"
+  },
+  {
+    "id": "roselia",
+    "name": "Розелиа"
+  },
+  {
+    "id": "gulpin",
+    "name": "Галпин"
+  },
+  {
+    "id": "swalot",
+    "name": "Свалот"
+  },
+  {
+    "id": "carvanha",
+    "name": "Карванья"
+  },
+  {
+    "id": "sharpedo",
+    "name": "Шарпедо"
+  },
+  {
+    "id": "wailmer",
+    "name": "Вайомлер"
+  },
+  {
+    "id": "wailord",
+    "name": "Вайлорд"
+  },
+  {
+    "id": "numel",
+    "name": "Намел"
+  },
+  {
+    "id": "camerupt",
+    "name": "Камерапт"
+  },
+  {
+    "id": "torkoal",
+    "name": "Торкол"
+  },
+  {
+    "id": "spoink",
+    "name": "Споинк"
+  },
+  {
+    "id": "grumpig",
+    "name": "Грампиг"
+  },
+  {
+    "id": "spinda",
+    "name": "Спинда"
+  },
+  {
+    "id": "trapinch",
+    "name": "Трапинч"
+  },
+  {
+    "id": "vibrava",
+    "name": "Вайбрава"
+  },
+  {
+    "id": "flygon",
+    "name": "Флайгон"
+  },
+  {
+    "id": "cacnea",
+    "name": "Какнея"
+  },
+  {
+    "id": "cacturne",
+    "name": "Кактюрн"
+  },
+  {
+    "id": "swablu",
+    "name": "Сваблу"
+  },
+  {
+    "id": "altaria",
+    "name": "Алтария"
+  },
+  {
+    "id": "zangoose",
+    "name": "Зангус"
+  },
+  {
+    "id": "seviper",
+    "name": "Севайпер"
+  },
+  {
+    "id": "lunatone",
+    "name": "Лунатон"
+  },
+  {
+    "id": "solrock",
+    "name": "Солрок"
+  },
+  {
+    "id": "barboach",
+    "name": "Барбоч"
+  },
+  {
+    "id": "whiscash",
+    "name": "Вискаш"
+  },
+  {
+    "id": "corphish",
+    "name": "Корфиш"
+  },
+  {
+    "id": "crawdaunt",
+    "name": "Кродонт"
+  },
+  {
+    "id": "baltoy",
+    "name": "Балтой"
+  },
+  {
+    "id": "claydol",
+    "name": "Клайдол"
+  },
+  {
+    "id": "lileep",
+    "name": "Лилип"
+  },
+  {
+    "id": "cradily",
+    "name": "Крадили"
+  },
+  {
+    "id": "anorith",
+    "name": "Анорит"
+  },
+  {
+    "id": "armaldo",
+    "name": "Армалдо"
+  },
+  {
+    "id": "feebas",
+    "name": "Фибас"
+  },
+  {
+    "id": "milotic",
+    "name": "Майлотик"
+  },
+  {
+    "id": "castform",
+    "name": "Кастформ"
+  },
+  {
+    "id": "kecleon",
+    "name": "Кеклеон"
+  },
+  {
+    "id": "shuppet",
+    "name": "Шаппет"
+  },
+  {
+    "id": "banette",
+    "name": "Банетт"
+  },
+  {
+    "id": "duskull",
+    "name": "Даскулл"
+  },
+  {
+    "id": "dusclops",
+    "name": "Дасклопс"
+  },
+  {
+    "id": "tropius",
+    "name": "Тропиус"
+  },
+  {
+    "id": "chimecho",
+    "name": "Чаймеко"
+  },
+  {
+    "id": "absol",
+    "name": "Абсол"
+  },
+  {
+    "id": "wynaut",
+    "name": "Винаут"
+  },
+  {
+    "id": "snorunt",
+    "name": "Снорант"
+  },
+  {
+    "id": "glalie",
+    "name": "Глэйли"
+  },
+  {
+    "id": "spheal",
+    "name": "Сфил"
+  },
+  {
+    "id": "sealeo",
+    "name": "Силео"
+  },
+  {
+    "id": "walrein",
+    "name": "Валрейн"
+  },
+  {
+    "id": "clamperl",
+    "name": "Кламперл"
+  },
+  {
+    "id": "huntail",
+    "name": "Хантейл"
+  },
+  {
+    "id": "gorebyss",
+    "name": "Горбисс"
+  },
+  {
+    "id": "relicanth",
+    "name": "Реликант"
+  },
+  {
+    "id": "luvdisc",
+    "name": "Лавдиск"
+  },
+  {
+    "id": "bagon",
+    "name": "Бэйгон"
+  },
+  {
+    "id": "shelgon",
+    "name": "Шелгон"
+  },
+  {
+    "id": "salamence",
+    "name": "Саламенс"
+  },
+  {
+    "id": "beldum",
+    "name": "Белдум"
+  },
+  {
+    "id": "metang",
+    "name": "Метанг"
+  },
+  {
+    "id": "metagross",
+    "name": "Метагросс"
+  },
+  {
+    "id": "regirock",
+    "name": "Реджирок"
+  },
+  {
+    "id": "regice",
+    "name": "Реджайс"
+  },
+  {
+    "id": "registeel",
+    "name": "Реджистил"
+  },
+  {
+    "id": "latias",
+    "name": "Латиас"
+  },
+  {
+    "id": "latios",
+    "name": "Латиос"
+  },
+  {
+    "id": "kyogre",
+    "name": "Кайогр"
+  },
+  {
+    "id": "groudon",
+    "name": "Гроудон"
+  },
+  {
+    "id": "rayquaza",
+    "name": "Райкваза"
+  },
+  {
+    "id": "jirachi",
+    "name": "Джирачи"
+  },
+  {
+    "id": "deoxys",
+    "name": "Деоксис"
+  },
+  {
+    "id": "turtwig",
+    "name": "Тёртвиг"
+  },
+  {
+    "id": "grotle",
+    "name": "Гротл"
+  },
+  {
+    "id": "torterra",
+    "name": "Тортерра"
+  },
+  {
+    "id": "chimchar",
+    "name": "Чимчар"
+  },
+  {
+    "id": "monferno",
+    "name": "Монферно"
+  },
+  {
+    "id": "infernape",
+    "name": "Инфернейп"
+  },
+  {
+    "id": "piplup",
+    "name": "Пиплап"
+  },
+  {
+    "id": "prinplup",
+    "name": "Принплап"
+  },
+  {
+    "id": "empoleon",
+    "name": "Эмполеон"
+  },
+  {
+    "id": "starly",
+    "name": "Старли"
+  },
+  {
+    "id": "staravia",
+    "name": "Старавиа"
+  },
+  {
+    "id": "staraptor",
+    "name": "Стараптор"
+  },
+  {
+    "id": "bidoof",
+    "name": "Бидуф"
+  },
+  {
+    "id": "bibarel",
+    "name": "Бибарел"
+  },
+  {
+    "id": "kricketot",
+    "name": "Крикетот"
+  },
+  {
+    "id": "kricketune",
+    "name": "Крикетун"
+  },
+  {
+    "id": "shinx",
+    "name": "Шинкс"
+  },
+  {
+    "id": "luxio",
+    "name": "Люксио"
+  },
+  {
+    "id": "luxray",
+    "name": "Люксрэй"
+  },
+  {
+    "id": "budew",
+    "name": "Бадью"
+  },
+  {
+    "id": "roserade",
+    "name": "Роусрэйд"
+  },
+  {
+    "id": "cranidos",
+    "name": "Кранидос"
+  },
+  {
+    "id": "rampardos",
+    "name": "Рампардос"
+  },
+  {
+    "id": "shieldon",
+    "name": "Шелдон"
+  },
+  {
+    "id": "bastiodon",
+    "name": "Бастиодон"
+  },
+  {
+    "id": "burmy",
+    "name": "Бёрми"
+  },
+  {
+    "id": "wormadam",
+    "name": "Вормадам"
+  },
+  {
+    "id": "mothim",
+    "name": "Мофим"
+  },
+  {
+    "id": "combee",
+    "name": "Комби"
+  },
+  {
+    "id": "vespiquen",
+    "name": "Веспиквин"
+  },
+  {
+    "id": "pachirisu",
+    "name": "Пачирису"
+  },
+  {
+    "id": "buizel",
+    "name": "Буизел"
+  },
+  {
+    "id": "floatzel",
+    "name": "Флоатзел"
+  },
+  {
+    "id": "cherubi",
+    "name": "Черуби"
+  },
+  {
+    "id": "cherrim",
+    "name": "Черрим"
+  },
+  {
+    "id": "shellos",
+    "name": "Шеллос"
+  },
+  {
+    "id": "gastrodon",
+    "name": "Гастродон"
+  },
+  {
+    "id": "ambipom",
+    "name": "Амбипом"
+  },
+  {
+    "id": "drifloon",
+    "name": "Дрифлун"
+  },
+  {
+    "id": "drifblim",
+    "name": "Дрифблим"
+  },
+  {
+    "id": "buneary",
+    "name": "Банири"
+  },
+  {
+    "id": "lopunny",
+    "name": "Лопанни"
+  },
+  {
+    "id": "mismagius",
+    "name": "Мисмагиус"
+  },
+  {
+    "id": "honchkrow",
+    "name": "Хончкроу"
+  },
+  {
+    "id": "glameow",
+    "name": "Глэймяу"
+  },
+  {
+    "id": "purugly",
+    "name": "Пурагли"
+  },
+  {
+    "id": "chingling",
+    "name": "Чинглинг"
+  },
+  {
+    "id": "stunky",
+    "name": "Станки"
+  },
+  {
+    "id": "skuntank",
+    "name": "Скунтанк"
+  },
+  {
+    "id": "bronzor",
+    "name": "Бронзор"
+  },
+  {
+    "id": "bronzong",
+    "name": "Бронзонг"
+  },
+  {
+    "id": "bonsly",
+    "name": "Бонсли"
+  },
+  {
+    "id": "mimejr",
+    "name": "МаймДж"
+  },
+  {
+    "id": "happiny",
+    "name": "Хэппини"
+  },
+  {
+    "id": "chatot",
+    "name": "Чатот"
+  },
+  {
+    "id": "spiritomb",
+    "name": "Спиритомб"
+  },
+  {
+    "id": "gible",
+    "name": "Гибл"
+  },
+  {
+    "id": "gabite",
+    "name": "Гэбайт"
+  },
+  {
+    "id": "garchomp",
+    "name": "Гарчомп"
+  },
+  {
+    "id": "munchlax",
+    "name": "Манчлэкс"
+  },
+  {
+    "id": "riolu",
+    "name": "Риолу"
+  },
+  {
+    "id": "lucario",
+    "name": "Лукарио"
+  },
+  {
+    "id": "hippopotas",
+    "name": "Гиппопотас"
+  },
+  {
+    "id": "hippowdon",
+    "name": "Гипподон"
+  },
+  {
+    "id": "skorupi",
+    "name": "Скорапи"
+  },
+  {
+    "id": "drapion",
+    "name": "Драпион"
+  },
+  {
+    "id": "croagunk",
+    "name": "Кроаганк"
+  },
+  {
+    "id": "toxicroak",
+    "name": "Токсикроук"
+  },
+  {
+    "id": "carnivine",
+    "name": "Карнивайн"
+  },
+  {
+    "id": "finneon",
+    "name": "Финнеон"
+  },
+  {
+    "id": "lumineon",
+    "name": "Люминеон"
+  },
+  {
+    "id": "mantyke",
+    "name": "Мантайк"
+  },
+  {
+    "id": "snover",
+    "name": "Сновер"
+  },
+  {
+    "id": "abomasnow",
+    "name": "Абомасноу"
+  },
+  {
+    "id": "weavile",
+    "name": "Вивайл"
+  },
+  {
+    "id": "magnezone",
+    "name": "Магнезон"
+  },
+  {
+    "id": "lickilicky",
+    "name": "Ликилики"
+  },
+  {
+    "id": "rhyperior",
+    "name": "Райпериор"
+  },
+  {
+    "id": "tangrowth",
+    "name": "Тангроус"
+  },
+  {
+    "id": "electivire",
+    "name": "Эликтивайр"
+  },
+  {
+    "id": "magmortar",
+    "name": "Магмортар"
+  },
+  {
+    "id": "togekiss",
+    "name": "Тогекисс"
+  },
+  {
+    "id": "yanmega",
+    "name": "Янмега"
+  },
+  {
+    "id": "leafeon",
+    "name": "Лифеон"
+  },
+  {
+    "id": "glaceon",
+    "name": "Гласеон"
+  },
+  {
+    "id": "gliscor",
+    "name": "Глискор"
+  },
+  {
+    "id": "mamoswine",
+    "name": "Мамосвайн"
+  },
+  {
+    "id": "porygon-z",
+    "name": "Поригон-Z"
+  },
+  {
+    "id": "gallade",
+    "name": "Галлэйд"
+  },
+  {
+    "id": "probopass",
+    "name": "Пробопасс"
+  },
+  {
+    "id": "dusknoir",
+    "name": "Даскнуар"
+  },
+  {
+    "id": "froslass",
+    "name": "Фросласс"
+  },
+  {
+    "id": "rotom",
+    "name": "Ротом"
+  },
+  {
+    "id": "uxie",
+    "name": "Юкси"
+  },
+  {
+    "id": "mesprit",
+    "name": "Мёсприт"
+  },
+  {
+    "id": "azelf",
+    "name": "Азельф"
+  },
+  {
+    "id": "dialga",
+    "name": "Диалга"
+  },
+  {
+    "id": "palkia",
+    "name": "Палкиа"
+  },
+  {
+    "id": "heatran",
+    "name": "Хитран"
+  },
+  {
+    "id": "regigigas",
+    "name": "Реджигигас"
+  },
+  {
+    "id": "giratina",
+    "name": "Гиратина"
+  },
+  {
+    "id": "cresselia",
+    "name": "Кресселиа"
+  },
+  {
+    "id": "phione",
+    "name": "Фион"
+  },
+  {
+    "id": "manaphy",
+    "name": "Манафи"
+  },
+  {
+    "id": "darkrai",
+    "name": "Даркрай"
+  },
+  {
+    "id": "shaymin",
+    "name": "Шаймин"
+  },
+  {
+    "id": "arceus",
+    "name": "Аркеус"
+  },
+  {
+    "id": "victini",
+    "name": "Виктини"
+  },
+  {
+    "id": "snivy",
+    "name": "Снайви"
+  },
+  {
+    "id": "servine",
+    "name": "Сервайн"
+  },
+  {
+    "id": "serperior",
+    "name": "Серпериор"
+  },
+  {
+    "id": "tepig",
+    "name": "Тепиг"
+  },
+  {
+    "id": "pignite",
+    "name": "Пигнайт"
+  },
+  {
+    "id": "emboar",
+    "name": "Эмбор"
+  },
+  {
+    "id": "oshawott",
+    "name": "Ошавотт"
+  },
+  {
+    "id": "dewott",
+    "name": "Девотт"
+  },
+  {
+    "id": "samurott",
+    "name": "Самуротт"
+  },
+  {
+    "id": "patrat",
+    "name": "Пэтрэт"
+  },
+  {
+    "id": "watchog",
+    "name": "Ватчог"
+  },
+  {
+    "id": "lillipup",
+    "name": "Лиллипап"
+  },
+  {
+    "id": "herdier",
+    "name": "Хардьер"
+  },
+  {
+    "id": "stoutland",
+    "name": "Стаутлэнд"
+  },
+  {
+    "id": "purrloin",
+    "name": "Пуррлион"
+  },
+  {
+    "id": "liepard",
+    "name": "Липард"
+  },
+  {
+    "id": "pansage",
+    "name": "Пансэйдж"
+  },
+  {
+    "id": "simisage",
+    "name": "Симисэйдж"
+  },
+  {
+    "id": "pansear",
+    "name": "Пансир"
+  },
+  {
+    "id": "simisear",
+    "name": "Симисир"
+  },
+  {
+    "id": "panpour",
+    "name": "Панпур"
+  },
+  {
+    "id": "simipour",
+    "name": "Симипур"
+  },
+  {
+    "id": "munna",
+    "name": "Мунна"
+  },
+  {
+    "id": "musharna",
+    "name": "Мушарна"
+  },
+  {
+    "id": "pidove",
+    "name": "Пидав"
+  },
+  {
+    "id": "tranquill",
+    "name": "Транквил"
+  },
+  {
+    "id": "unfezant",
+    "name": "Анфизант"
+  },
+  {
+    "id": "blitzle",
+    "name": "Блитцл"
+  },
+  {
+    "id": "zebstrika",
+    "name": "Зебстрика"
+  },
+  {
+    "id": "roggenrola",
+    "name": "Роггенрола"
+  },
+  {
+    "id": "boldore",
+    "name": "Болдор"
+  },
+  {
+    "id": "gigalith",
+    "name": "Гигалит"
+  },
+  {
+    "id": "woobat",
+    "name": "Вубат"
+  },
+  {
+    "id": "swoobat",
+    "name": "Свубат"
+  },
+  {
+    "id": "drilbur",
+    "name": "Дрилбур"
+  },
+  {
+    "id": "excadrill",
+    "name": "Эскадрилл"
+  },
+  {
+    "id": "audino",
+    "name": "Аудино"
+  },
+  {
+    "id": "timburr",
+    "name": "Тимбурр"
+  },
+  {
+    "id": "gurdurr",
+    "name": "Гурдурр"
+  },
+  {
+    "id": "conkeldurr",
+    "name": "Конклдурр"
+  },
+  {
+    "id": "tympole",
+    "name": "Тимпол"
+  },
+  {
+    "id": "palpitoad",
+    "name": "Палпитод"
+  },
+  {
+    "id": "seismitoad",
+    "name": "Сейсмитод"
+  },
+  {
+    "id": "throh",
+    "name": "Троу"
+  },
+  {
+    "id": "sawk",
+    "name": "Соук"
+  },
+  {
+    "id": "sewaddle",
+    "name": "Сивадл"
+  },
+  {
+    "id": "swadloon",
+    "name": "Свадлуе"
+  },
+  {
+    "id": "leavanny",
+    "name": "Ливанни"
+  },
+  {
+    "id": "venipede",
+    "name": "Венипид"
+  },
+  {
+    "id": "whirlipede",
+    "name": "Вирлипид"
+  },
+  {
+    "id": "scolipede",
+    "name": "Сколипид"
+  },
+  {
+    "id": "cottonee",
+    "name": "Коттони"
+  },
+  {
+    "id": "whimsicott",
+    "name": "Вимсикот"
+  },
+  {
+    "id": "petilil",
+    "name": "Петилил"
+  },
+  {
+    "id": "lilligant",
+    "name": "Лиллигант"
+  },
+  {
+    "id": "basculin",
+    "name": "Баскулин"
+  },
+  {
+    "id": "sandile",
+    "name": "Сэндайл"
+  },
+  {
+    "id": "krokorok",
+    "name": "Крокорок"
+  },
+  {
+    "id": "krookodile",
+    "name": "Крукодайл"
+  },
+  {
+    "id": "darumaka",
+    "name": "Дарумака"
+  },
+  {
+    "id": "darmanitan",
+    "name": "Дарманитан"
+  },
+  {
+    "id": "maractus",
+    "name": "Марактус"
+  },
+  {
+    "id": "dwebble",
+    "name": "Двибл"
+  },
+  {
+    "id": "crustle",
+    "name": "Крастл"
+  },
+  {
+    "id": "scraggy",
+    "name": "Скрагги"
+  },
+  {
+    "id": "scrafty",
+    "name": "Скраффи"
+  },
+  {
+    "id": "sigilyph",
+    "name": "Сигилиф"
+  },
+  {
+    "id": "yamask",
+    "name": "Ямаск"
+  },
+  {
+    "id": "cofagrigus",
+    "name": "Кофагригус"
+  },
+  {
+    "id": "tirtouga",
+    "name": "Тиртуга"
+  },
+  {
+    "id": "carracosta",
+    "name": "Карракоста"
+  },
+  {
+    "id": "archen",
+    "name": "Арчен"
+  },
+  {
+    "id": "archeops",
+    "name": "Археопс"
+  },
+  {
+    "id": "trubbish",
+    "name": "Траббиш"
+  },
+  {
+    "id": "garbodor",
+    "name": "Гарбодор"
+  },
+  {
+    "id": "zorua",
+    "name": "Зоруа"
+  },
+  {
+    "id": "zoroark",
+    "name": "Зороарк"
+  },
+  {
+    "id": "minccino",
+    "name": "Миншино"
+  },
+  {
+    "id": "cinccino",
+    "name": "Шиншино"
+  },
+  {
+    "id": "gothita",
+    "name": "Готита"
+  },
+  {
+    "id": "gothorita",
+    "name": "Готорита"
+  },
+  {
+    "id": "gothitelle",
+    "name": "Готителла"
+  },
+  {
+    "id": "solosis",
+    "name": "Солосис"
+  },
+  {
+    "id": "duosion",
+    "name": "Дуожн"
+  },
+  {
+    "id": "reuniclus",
+    "name": "Рейниклус"
+  },
+  {
+    "id": "ducklett",
+    "name": "Даклет"
+  },
+  {
+    "id": "swanna",
+    "name": "Сванна"
+  },
+  {
+    "id": "vanillite",
+    "name": "Ванилит"
+  },
+  {
+    "id": "vanillish",
+    "name": "Ванилиш"
+  },
+  {
+    "id": "vanilluxe",
+    "name": "Ванилюкс"
+  },
+  {
+    "id": "deerling",
+    "name": "Дирлинг"
+  },
+  {
+    "id": "sawsbuck",
+    "name": "Сосбак"
+  },
+  {
+    "id": "emolga",
+    "name": "Эмолга"
+  },
+  {
+    "id": "karrablast",
+    "name": "Каррабласт"
+  },
+  {
+    "id": "escavalier",
+    "name": "Эскавалер"
+  },
+  {
+    "id": "foongus",
+    "name": "Фунгус"
+  },
+  {
+    "id": "amoonguss",
+    "name": "Амунгус"
+  },
+  {
+    "id": "frillish",
+    "name": "Фрилиш"
+  },
+  {
+    "id": "jellicent",
+    "name": "Джеллисент"
+  },
+  {
+    "id": "alomomola",
+    "name": "Аломомола"
+  },
+  {
+    "id": "joltik",
+    "name": "Джолтик"
+  },
+  {
+    "id": "galvantula",
+    "name": "Галвантула"
+  },
+  {
+    "id": "ferroseed",
+    "name": "Ферросид"
+  },
+  {
+    "id": "ferrothorn",
+    "name": "Ферроторн"
+  },
+  {
+    "id": "klink",
+    "name": "Клинк"
+  },
+  {
+    "id": "klang",
+    "name": "Кланг"
+  },
+  {
+    "id": "klinklang",
+    "name": "Кликланг"
+  },
+  {
+    "id": "tynamo",
+    "name": "Тинамо"
+  },
+  {
+    "id": "eelektrik",
+    "name": "Илектрик"
+  },
+  {
+    "id": "eelektross",
+    "name": "Илектрик"
+  },
+  {
+    "id": "elgyem",
+    "name": "Элджием"
+  },
+  {
+    "id": "beheeyem",
+    "name": "Бихием"
+  },
+  {
+    "id": "litwick",
+    "name": "Литвик"
+  },
+  {
+    "id": "lampent",
+    "name": "Лампент"
+  },
+  {
+    "id": "chandelure",
+    "name": "Шанделюр"
+  },
+  {
+    "id": "axew",
+    "name": "Аксью"
+  },
+  {
+    "id": "fraxure",
+    "name": "Фрэкшур"
+  },
+  {
+    "id": "haxorus",
+    "name": "Хаксорус"
+  },
+  {
+    "id": "cubchoo",
+    "name": "Кабчу"
+  },
+  {
+    "id": "beartic",
+    "name": "Биартик"
+  },
+  {
+    "id": "cryogonal",
+    "name": "Криогонал"
+  },
+  {
+    "id": "shelmet",
+    "name": "Шелмет"
+  },
+  {
+    "id": "accelgor",
+    "name": "Аксельгор"
+  },
+  {
+    "id": "stunfisk",
+    "name": "Станфиск"
+  },
+  {
+    "id": "mienfoo",
+    "name": "Меньфу"
+  },
+  {
+    "id": "mienshao",
+    "name": "Меньшао"
+  },
+  {
+    "id": "druddigon",
+    "name": "Драддигон"
+  },
+  {
+    "id": "golett",
+    "name": "Голетт"
+  },
+  {
+    "id": "golurk",
+    "name": "Голарк"
+  },
+  {
+    "id": "pawniard",
+    "name": "Павньярд"
+  },
+  {
+    "id": "bisharp",
+    "name": "Бишарп"
+  },
+  {
+    "id": "bouffalant",
+    "name": "Буффалант"
+  },
+  {
+    "id": "rufflet",
+    "name": "Раффлет"
+  },
+  {
+    "id": "braviary",
+    "name": "Брэвиэри"
+  },
+  {
+    "id": "vullaby",
+    "name": "Валлаби"
+  },
+  {
+    "id": "mandibuzz",
+    "name": "Мандибазз"
+  },
+  {
+    "id": "heatmor",
+    "name": "Хитмор"
+  },
+  {
+    "id": "durant",
+    "name": "Дюрант"
+  },
+  {
+    "id": "deino",
+    "name": "Дайно"
+  },
+  {
+    "id": "zweilous",
+    "name": "Цвайлос"
+  },
+  {
+    "id": "hydreigon",
+    "name": "Гидрайгон"
+  },
+  {
+    "id": "larvesta",
+    "name": "Ларвеста"
+  },
+  {
+    "id": "volcarona",
+    "name": "Вулкарона"
+  },
+  {
+    "id": "cobalion",
+    "name": "Кобалион"
+  },
+  {
+    "id": "terrakion",
+    "name": "Терракион"
+  },
+  {
+    "id": "virizion",
+    "name": "Виризион"
+  },
+  {
+    "id": "tornadus",
+    "name": "Торнадус"
+  },
+  {
+    "id": "thundurus",
+    "name": "Тандерус"
+  },
+  {
+    "id": "reshiram",
+    "name": "Реширам"
+  },
+  {
+    "id": "zekrom",
+    "name": "Зекром"
+  },
+  {
+    "id": "landorus",
+    "name": "Ландорус"
+  },
+  {
+    "id": "kyurem",
+    "name": "Кюрем"
+  },
+  {
+    "id": "keldeo",
+    "name": "Келдео"
+  },
+  {
+    "id": "meloetta",
+    "name": "Мелоетта"
+  },
+  {
+    "id": "genesect",
+    "name": "Генесект"
+  },
+  {
+    "id": "chespin",
+    "name": "Чеспин"
+  },
+  {
+    "id": "quilladin",
+    "name": "Квилладин"
+  },
+  {
+    "id": "chesnaught",
+    "name": "Чеснот"
+  },
+  {
+    "id": "fennekin",
+    "name": "Феннекин"
+  },
+  {
+    "id": "braixen",
+    "name": "Брайксен"
+  },
+  {
+    "id": "delphox",
+    "name": "Делфокс"
+  },
+  {
+    "id": "froakie",
+    "name": "Фроаки"
+  },
+  {
+    "id": "frogadier",
+    "name": "Фрогадир"
+  },
+  {
+    "id": "greninja",
+    "name": "Грениндзя"
+  },
+  {
+    "id": "bunnelby",
+    "name": "Баннелби"
+  },
+  {
+    "id": "diggersby",
+    "name": "Диггерсбай"
+  },
+  {
+    "id": "fletchling",
+    "name": "Флетчлинг"
+  },
+  {
+    "id": "fletchinder",
+    "name": "Флетчлинг"
+  },
+  {
+    "id": "talonflame",
+    "name": "Талонфлейм"
+  },
+  {
+    "id": "scatterbug",
+    "name": "Скаттербаг"
+  },
+  {
+    "id": "spewpa",
+    "name": "Спьюпа"
+  },
+  {
+    "id": "vivillon",
+    "name": "Вивиллон"
+  },
+  {
+    "id": "litleo",
+    "name": "Литлео"
+  },
+  {
+    "id": "pyroar",
+    "name": "Пайроар"
+  },
+  {
+    "id": "flabebe",
+    "name": "Флабэбэ"
+  },
+  {
+    "id": "floette",
+    "name": "Флоэтт"
+  },
+  {
+    "id": "florges",
+    "name": "Флоргес"
+  },
+  {
+    "id": "skiddo",
+    "name": "Скиддо"
+  },
+  {
+    "id": "gogoat",
+    "name": "Гогоат"
+  },
+  {
+    "id": "pancham",
+    "name": "Панчам"
+  },
+  {
+    "id": "pangoro",
+    "name": "Пангоро"
+  },
+  {
+    "id": "furfrou",
+    "name": "Фурфу"
+  },
+  {
+    "id": "espurr",
+    "name": "Эспурр"
+  },
+  {
+    "id": "meowstic",
+    "name": "Мяустик"
+  },
+  {
+    "id": "honedge",
+    "name": "Хонэдж"
+  },
+  {
+    "id": "doublade",
+    "name": "Даблэйд"
+  },
+  {
+    "id": "aegislash",
+    "name": "Эйджеслэш"
+  },
+  {
+    "id": "spritzee",
+    "name": "Спритзи"
+  },
+  {
+    "id": "aromatisse",
+    "name": "Ароматисс"
+  },
+  {
+    "id": "swirlix",
+    "name": "Свирликс"
+  },
+  {
+    "id": "slurpuff",
+    "name": "Сларпуфф"
+  },
+  {
+    "id": "inkay",
+    "name": "Инкай"
+  },
+  {
+    "id": "malamar",
+    "name": "Маламар"
+  },
+  {
+    "id": "binacle",
+    "name": "Бинакл"
+  },
+  {
+    "id": "barbaracle",
+    "name": "Барбаракл"
+  },
+  {
+    "id": "skrelp",
+    "name": "Скрельп"
+  },
+  {
+    "id": "dragalge",
+    "name": "Драгалг"
+  },
+  {
+    "id": "clauncher",
+    "name": "Клончер"
+  },
+  {
+    "id": "clawitzer",
+    "name": "Кловитцер"
+  },
+  {
+    "id": "helioptile",
+    "name": "Гелиоптайл"
+  },
+  {
+    "id": "heliolisk",
+    "name": "Гелиолиск"
+  },
+  {
+    "id": "tyrunt",
+    "name": "Тайрант"
+  },
+  {
+    "id": "tyrantrum",
+    "name": "Тайрантрум"
+  },
+  {
+    "id": "amaura",
+    "name": "Амаура"
+  },
+  {
+    "id": "aurorus",
+    "name": "Аврорус"
+  },
+  {
+    "id": "sylveon",
+    "name": "Сильвеон"
+  },
+  {
+    "id": "hawlucha",
+    "name": "Холуча"
+  },
+  {
+    "id": "dedenne",
+    "name": "Деденнэ"
+  },
+  {
+    "id": "carbink",
+    "name": "Карбинк"
+  },
+  {
+    "id": "goomy",
+    "name": "Гуми"
+  },
+  {
+    "id": "sliggoo",
+    "name": "Слиггу"
+  },
+  {
+    "id": "goodra",
+    "name": "Гудра"
+  },
+  {
+    "id": "klefki",
+    "name": "Клефки"
+  },
+  {
+    "id": "phantump",
+    "name": "Фантамп"
+  },
+  {
+    "id": "trevenant",
+    "name": "Тривенант"
+  },
+  {
+    "id": "pumpkaboo",
+    "name": "Памкабу"
+  },
+  {
+    "id": "gourgeist",
+    "name": "Гургейст"
+  },
+  {
+    "id": "bergmite",
+    "name": "Бергмит"
+  },
+  {
+    "id": "avalugg",
+    "name": "Авалагг"
+  },
+  {
+    "id": "noibat",
+    "name": "Ноибат"
+  },
+  {
+    "id": "noivern",
+    "name": "Ноиверн"
+  },
+  {
+    "id": "xerneas",
+    "name": "Зёрниас"
+  },
+  {
+    "id": "yveltal",
+    "name": "Ивельталл"
+  },
+  {
+    "id": "zygarde",
+    "name": "Зигард"
+  },
+  {
+    "id": "diancie",
+    "name": "Дианси"
+  },
+  {
+    "id": "hoopa",
+    "name": "Хупа"
+  },
+  {
+    "id": "volcanion",
+    "name": "Вулканьон"
+  },
+  {
+    "id": "rowlet",
+    "name": "Роулет"
+  },
+  {
+    "id": "dartrix",
+    "name": "Дартрикс"
+  },
+  {
+    "id": "decidueye",
+    "name": "Десидью"
+  },
+  {
+    "id": "litten",
+    "name": "Литтен"
+  },
+  {
+    "id": "torracat",
+    "name": "Торракэт"
+  },
+  {
+    "id": "incineroar",
+    "name": "Инсенероар"
+  },
+  {
+    "id": "popplio",
+    "name": "Попплио"
+  },
+  {
+    "id": "brionne",
+    "name": "Брионне"
+  },
+  {
+    "id": "primarina",
+    "name": "Примарина"
+  },
+  {
+    "id": "pikipek",
+    "name": "Пикипек"
+  },
+  {
+    "id": "trumbeak",
+    "name": "Трамбик"
+  },
+  {
+    "id": "toucannon",
+    "name": "Туканнон"
+  },
+  {
+    "id": "yungoos",
+    "name": "Янгус"
+  },
+  {
+    "id": "gumshoos",
+    "name": "Гумшус"
+  },
+  {
+    "id": "grubbin",
+    "name": "Граббин"
+  },
+  {
+    "id": "charjabug",
+    "name": "Чаржабаг"
+  },
+  {
+    "id": "vikavolt",
+    "name": "Викавольт"
+  },
+  {
+    "id": "crabrawler",
+    "name": "Краброулер"
+  },
+  {
+    "id": "crabominable",
+    "name": "Крабоминэйбл"
+  },
+  {
+    "id": "oricorio",
+    "name": "Орикорио"
+  },
+  {
+    "id": "cutiefly",
+    "name": "Кьютифлай"
+  },
+  {
+    "id": "ribombee",
+    "name": "Рибомби"
+  },
+  {
+    "id": "rockruff",
+    "name": "Рокрафф"
+  },
+  {
+    "id": "lycanroc",
+    "name": "Ликанрок"
+  },
+  {
+    "id": "wishiwashi",
+    "name": "Вишиваши"
+  },
+  {
+    "id": "mareanie",
+    "name": "Мариани"
+  },
+  {
+    "id": "toxapex",
+    "name": "Токсапекс"
+  },
+  {
+    "id": "mudbray",
+    "name": "Мадбрей"
+  },
+  {
+    "id": "mudsdale",
+    "name": "Мадсдэйл"
+  },
+  {
+    "id": "dewpider",
+    "name": "Дьюпайдер"
+  },
+  {
+    "id": "araquanid",
+    "name": "Аракванид"
+  },
+  {
+    "id": "fomantis",
+    "name": "Фомантис"
+  },
+  {
+    "id": "lurantis",
+    "name": "Люрантис"
+  },
+  {
+    "id": "morelull",
+    "name": "Морелулл"
+  },
+  {
+    "id": "shiinotic",
+    "name": "Шинотик"
+  },
+  {
+    "id": "salandit",
+    "name": "Саландит"
+  },
+  {
+    "id": "salazzle",
+    "name": "Салазл"
+  },
+  {
+    "id": "stufful",
+    "name": "Стаффул"
+  },
+  {
+    "id": "bewear",
+    "name": "Бьюэр"
+  },
+  {
+    "id": "bounsweet",
+    "name": "Боунсвит"
+  },
+  {
+    "id": "steenee",
+    "name": "Стини"
+  },
+  {
+    "id": "tsareena",
+    "name": "Тсарина"
+  },
+  {
+    "id": "comfey",
+    "name": "Комфи"
+  },
+  {
+    "id": "oranguru",
+    "name": "Орангуру"
+  },
+  {
+    "id": "passimian",
+    "name": "Пассиман"
+  },
+  {
+    "id": "wimpod",
+    "name": "Вимпод"
+  },
+  {
+    "id": "golisopod",
+    "name": "Голисопод"
+  },
+  {
+    "id": "sandygast",
+    "name": "Сэндигаст"
+  },
+  {
+    "id": "palossand",
+    "name": "Палоссанд"
+  },
+  {
+    "id": "pyukumuku",
+    "name": "Пьюкумуку"
+  },
+  {
+    "id": "type-null",
+    "name": "Тип: Ноль"
+  },
+  {
+    "id": "silvally",
+    "name": "Силвалли"
+  },
+  {
+    "id": "minior",
+    "name": "Миниор"
+  },
+  {
+    "id": "komala",
+    "name": "Комала"
+  },
+  {
+    "id": "turtonator",
+    "name": "Туртонатор"
+  },
+  {
+    "id": "togedemaru",
+    "name": "Тогедемару"
+  },
+  {
+    "id": "mimikyu",
+    "name": "Мимикью"
+  },
+  {
+    "id": "bruxish",
+    "name": "Браксиш"
+  },
+  {
+    "id": "drampa",
+    "name": "Дрампа"
+  },
+  {
+    "id": "dhelmise",
+    "name": "Делмайс"
+  },
+  {
+    "id": "jangmo-o",
+    "name": "Джангмо-О"
+  },
+  {
+    "id": "hakamo-o",
+    "name": "Хакамо-О"
+  },
+  {
+    "id": "kommo-o",
+    "name": "Коммо-О"
+  },
+  {
+    "id": "tapukoko",
+    "name": "Тапу Коко"
+  },
+  {
+    "id": "tapulele",
+    "name": "Тапу Леле"
+  },
+  {
+    "id": "tapubulu",
+    "name": "Тапу Булу"
+  },
+  {
+    "id": "tapufini",
+    "name": "Тапу Фини"
+  },
+  {
+    "id": "cosmog",
+    "name": "Космог"
+  },
+  {
+    "id": "cosmoem",
+    "name": "Космоем"
+  },
+  {
+    "id": "solgaleo",
+    "name": "Солгалео"
+  },
+  {
+    "id": "lunala",
+    "name": "Лунала"
+  },
+  {
+    "id": "nihilego",
+    "name": "Нихилего"
+  },
+  {
+    "id": "buzzwole",
+    "name": "Базвол"
+  },
+  {
+    "id": "pheromosa",
+    "name": "Феромоса"
+  },
+  {
+    "id": "xurkitree",
+    "name": "Ксюркитри"
+  },
+  {
+    "id": "celesteela",
+    "name": "Селестила"
+  },
+  {
+    "id": "kartana",
+    "name": "Картана"
+  },
+  {
+    "id": "guzzlord",
+    "name": "Газзлорд"
+  },
+  {
+    "id": "necrozma",
+    "name": "Некрозма"
+  },
+  {
+    "id": "magearna",
+    "name": "Магеарна"
+  },
+  {
+    "id": "marshadow",
+    "name": "Маршадоу"
+  },
+  {
+    "id": "poipole",
+    "name": "Пойпол"
+  },
+  {
+    "id": "naganadel",
+    "name": "Наганадел"
+  },
+  {
+    "id": "stakataka",
+    "name": "Стакатака"
+  },
+  {
+    "id": "blacephalon",
+    "name": "Блацефалон"
+  },
+  {
+    "id": "zeraora",
+    "name": "Зераора"
+  },
+  {
+    "id": "meltan",
+    "name": "Мелтан"
+  },
+  {
+    "id": "melmetal",
+    "name": "Мелметал"
+  },
+  {
+    "id": "grookey",
+    "name": "Груки"
+  },
+  {
+    "id": "thwackey",
+    "name": "Тваки"
+  },
+  {
+    "id": "rillaboom",
+    "name": "Риллабум"
+  },
+  {
+    "id": "scorbunny",
+    "name": "Скорбанни"
+  },
+  {
+    "id": "raboot",
+    "name": "Рабут"
+  },
+  {
+    "id": "cinderace",
+    "name": "Синдэрэйс"
+  },
+  {
+    "id": "sobble",
+    "name": "Соббл"
+  },
+  {
+    "id": "drizzile",
+    "name": "Дриззайл"
+  },
+  {
+    "id": "inteleon",
+    "name": "Интелеон"
+  },
+  {
+    "id": "skwovet",
+    "name": "Сквовет"
+  },
+  {
+    "id": "greedent",
+    "name": "Гридент"
+  },
+  {
+    "id": "rookidee",
+    "name": "Рукиди"
+  },
+  {
+    "id": "corvisquire",
+    "name": "Корвисквир"
+  },
+  {
+    "id": "corviknight",
+    "name": "Корвинайт"
+  },
+  {
+    "id": "blipbug",
+    "name": "Блипбаг"
+  },
+  {
+    "id": "dottler",
+    "name": "Доттлер"
+  },
+  {
+    "id": "orbeetle",
+    "name": "Орбитл"
+  },
+  {
+    "id": "nickit",
+    "name": "Никит"
+  },
+  {
+    "id": "thievul",
+    "name": "Фьевул"
+  },
+  {
+    "id": "gossifleur",
+    "name": "Госсифлёр"
+  },
+  {
+    "id": "eldegoss",
+    "name": "Эльдегосс"
+  },
+  {
+    "id": "wooloo",
+    "name": "Вулу"
+  },
+  {
+    "id": "dubwool",
+    "name": "Дабвул"
+  },
+  {
+    "id": "chewtle",
+    "name": "Чьюти"
+  },
+  {
+    "id": "drednaw",
+    "name": "Дрэдно"
+  },
+  {
+    "id": "yamper",
+    "name": "Ямпер"
+  },
+  {
+    "id": "boltund",
+    "name": "Болтанд"
+  },
+  {
+    "id": "rolycoly",
+    "name": "Роликоли"
+  },
+  {
+    "id": "carkol",
+    "name": "Каркол"
+  },
+  {
+    "id": "coalossal",
+    "name": "Коалоссал"
+  },
+  {
+    "id": "applin",
+    "name": "Апплин"
+  },
+  {
+    "id": "flapple",
+    "name": "Флаппл"
+  },
+  {
+    "id": "appletun",
+    "name": "Апплетун"
+  },
+  {
+    "id": "silicobra",
+    "name": "Силикобра"
+  },
+  {
+    "id": "sandaconda",
+    "name": "Санаконда"
+  },
+  {
+    "id": "sinistea",
+    "name": "Синистеа"
+  },
+  {
+    "id": "polteageist",
+    "name": "Полтигейст"
+  },
+  {
+    "id": "mrrime",
+    "name": "МрРайм"
+  },
+  {
+    "id": "runerigus",
+    "name": "Рунеригус"
+  },
+  {
+    "id": "stonjourner",
+    "name": "Стонжоурнер"
+  },
+  {
+    "id": "eiscue",
+    "name": "Эскью"
+  }
+]
