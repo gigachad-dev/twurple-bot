@@ -128,7 +128,7 @@ export class TwurpleClient extends EventEmitter {
     const files: string[] = readdir(path)
 
     files.forEach(file => {
-      if (!file.match('.*(?<!\.d\.ts)$')) {
+      if (file.includes('.d.ts')) {
         return
       }
 
