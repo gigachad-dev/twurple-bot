@@ -15,6 +15,10 @@ client.on('message', (msg: ChatMessage) => {
     return client.execCommand('sounds', msg)
   }
 
+  if (!msg.author.isTrusted) {
+    client.execCommand('automod', msg)
+  }
+
   client.execCommand('hsdeck', msg)
 })
 

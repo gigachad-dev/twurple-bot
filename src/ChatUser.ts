@@ -84,4 +84,11 @@ export class ChatUser {
   get isModerator(): boolean {
     return this.originalMessage.mod
   }
+
+  /**
+   * Check if the user can be trusted
+   */
+  get isTrusted(): boolean {
+    return this.isBroadcaster || this.isModerator || this.isVip || this.isSubscriber
+  }
 }
