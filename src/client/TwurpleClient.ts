@@ -1,3 +1,4 @@
+import ms from 'ms'
 import winston from 'winston'
 import EventEmitter from 'events'
 import { PathLike, promises as fs } from 'fs'
@@ -11,6 +12,7 @@ import { ClientLogger } from './ClientLogger'
 import { ChatMessage } from './ChatMessage'
 import { BaseCommand } from './BaseCommand'
 import { CommandArguments, CommandParser } from './CommandParser'
+import Timers, { TimerMessages } from '../commands/Timers'
 
 export type TwurpleTokens = AccessToken & Omit<RefreshConfig, 'onRefresh'>
 export type ChatterState = ChatUserstate & { message: string }
@@ -30,6 +32,7 @@ export class TwurpleClient extends EventEmitter {
   public auth: RefreshingAuthProvider
   public api: ApiClient
   public commands: BaseCommand[]
+  public timers: Map<string, TimerMessages>
   public logger: winston.Logger
 
   private parser: CommandParser
@@ -46,6 +49,7 @@ export class TwurpleClient extends EventEmitter {
     this.logger = new ClientLogger().getLogger('main')
     this.parser = new CommandParser()
     this.commands = []
+    this.timers = new Map<string, TimerMessages>()
   }
 
   private async loadConfig(): Promise<void> {
@@ -138,6 +142,30 @@ export class TwurpleClient extends EventEmitter {
         this.logger.warn('You are not export default class correctly!')
       }
     }, this)
+
+    this.registerTimers()
+  }
+
+  private registerTimers(): void {
+    const timers = this.findCommand({ command: 'timers' }) as Timers
+
+    this.logger.info(`Register timers..`)
+
+    for (const [channel, messages] of Object.entries(timers.messages.getState())) {
+      for (const { message, time } of Object.values(messages)) {
+        if (!Number(ms(time))) {
+          this.logger.error(`Invalid time format [#${channel}:${message}]`)
+        } else {
+          this.timers.set(channel, {
+            time,
+            message,
+            interval: setInterval(() => {
+              this.say(channel, message)
+            }, ms(time))
+          })
+        }
+      }
+    }
   }
 
   private async onMessage(channel: string, userstate: ChatUserstate, messageText: string, self: boolean): Promise<void> {
