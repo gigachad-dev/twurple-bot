@@ -1,5 +1,5 @@
-import { TwurpleClient } from './TwurpleClient'
 import { ChatMessage } from './ChatMessage'
+import { TwurpleClient } from './TwurpleClient'
 
 export interface CommandOptions {
   /**

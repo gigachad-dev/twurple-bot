@@ -1,7 +1,7 @@
-import { ChatUserstate, CommonUserstate } from 'tmi.js'
 import { ChatUser } from './ChatUser'
 import { ChatChannel } from './ChatChannel'
 import { TwurpleClient, ChatterState } from './TwurpleClient'
+import { ChatUserstate, CommonUserstate } from '@twurple/auth-tmi'
 
 export class ChatMessage {
   private client: TwurpleClient

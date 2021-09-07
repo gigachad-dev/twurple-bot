@@ -13,7 +13,7 @@ import { ChatMessage } from './ChatMessage'
 import { BaseCommand } from './BaseCommand'
 import { CommandArguments, CommandParser } from './CommandParser'
 
-export type TwurpleConfig = AccessToken & Omit<RefreshConfig, 'onRefresh'>
+export type TwurpleTokens = AccessToken & Omit<RefreshConfig, 'onRefresh'>
 export type ChatterState = ChatUserstate & { message: string }
 
 export interface TwurpleOptions {
@@ -24,7 +24,7 @@ export interface TwurpleOptions {
 }
 
 export class TwurpleClient extends EventEmitter {
-  public config: TwurpleConfig
+  public tokens: TwurpleTokens
   public options: TwurpleOptions
 
   public tmi: Client
@@ -51,7 +51,7 @@ export class TwurpleClient extends EventEmitter {
 
   private async loadConfig(): Promise<void> {
     try {
-      this.config = JSON.parse(
+      this.tokens = JSON.parse(
         await fs.readFile(this.options.pathConfig, {
           encoding: 'utf-8'
         })
@@ -63,8 +63,8 @@ export class TwurpleClient extends EventEmitter {
 
   private async refreshConfig(tokens: AccessToken): Promise<void> {
     const newTokens = {
-      clientId: this.config.clientId,
-      clientSecret: this.config.clientSecret,
+      clientId: this.tokens.clientId,
+      clientSecret: this.tokens.clientSecret,
       ...tokens
     }
 
@@ -82,11 +82,11 @@ export class TwurpleClient extends EventEmitter {
 
     this.auth = new RefreshingAuthProvider(
       {
-        clientId: this.config.clientId,
-        clientSecret: this.config.clientSecret,
+        clientId: this.tokens.clientId,
+        clientSecret: this.tokens.clientSecret,
         onRefresh: async (tokens) => await this.refreshConfig(tokens)
       },
-      this.config
+      this.tokens
     )
 
     this.api = new ApiClient({
@@ -115,10 +115,6 @@ export class TwurpleClient extends EventEmitter {
     this.tmi.on('message', this.onMessage.bind(this))
 
     await this.tmi.connect()
-  }
-
-  registerDefaultCommands(): void {
-    this.registerCommandsIn(path.join(__dirname, './commands'))
   }
 
   registerCommandsIn(path: string): void {
@@ -176,7 +172,7 @@ export class TwurpleClient extends EventEmitter {
     }
   }
 
-  findCommand(parserResult: CommandArguments): BaseCommand {
+  findCommand(parserResult: Partial<CommandArguments>): BaseCommand {
     return this.commands.find(command => {
       if (command.options.aliases?.includes(parserResult.command)) {
         return command

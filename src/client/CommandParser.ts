@@ -1,20 +1,18 @@
 export interface CommandArguments {
   command: string
-  prefix?: string
-  args?: string[]
+  prefix: string
+  args: string[]
 }
 
-export type CommandParsed = Required<CommandArguments>
-
 export class CommandParser {
-  parse(message: string, prefix: string): CommandParsed | null {
+  parse(message: string, prefix: string): CommandArguments | null {
     const regex = new RegExp('^(' + this.escapePrefix(prefix) + ')([^\\s]+) ?(.*)', 'gims')
     const matches = regex.exec(message)
 
     if (matches) {
       const prefix = matches[1]
       const command = matches[2]
-      const result: CommandParsed = {
+      const result = {
         command: command,
         prefix: prefix,
         args: []

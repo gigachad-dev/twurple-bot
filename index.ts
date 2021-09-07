@@ -1,11 +1,11 @@
-import path from 'path'
+import { join } from 'path'
 import { TwurpleClient, ChatMessage } from './src'
 
 import dotenv from 'dotenv'
 dotenv.config()
 
 const client = new TwurpleClient({
-  pathConfig: path.join(__dirname, 'config.json'),
+  pathConfig: join(__dirname, 'config.json'),
   channels: ['quakerlegend', 'vs_code'],
   botOwners: ['vs_code']
 })
@@ -22,6 +22,6 @@ client.on('message', (msg: ChatMessage) => {
   client.execCommand('hsdeck', msg)
 })
 
-client.registerDefaultCommands()
+client.registerCommandsIn(join(__dirname, './src/commands'))
 
 client.connect()
