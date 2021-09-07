@@ -34,7 +34,7 @@ export class TwurpleClient extends EventEmitter {
   public timers: Map<string, TimerMessages>
   public logger: typeof Logger
 
-  private parser: CommandParser
+  private parser: typeof CommandParser
 
   constructor(options: TwurpleOptions) {
     super()
@@ -46,7 +46,7 @@ export class TwurpleClient extends EventEmitter {
 
     this.options = Object.assign(defaultOptions, options)
     this.logger = Logger
-    this.parser = new CommandParser()
+    this.parser = CommandParser
     this.commands = []
     this.timers = new Map<string, TimerMessages>()
   }

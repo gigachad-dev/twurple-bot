@@ -5,7 +5,7 @@ export interface CommandArguments {
 }
 
 export class CommandParser {
-  parse(message: string, prefix: string): CommandArguments | null {
+  public static parse(message: string, prefix: string): CommandArguments | null {
     const regex = new RegExp('^(' + this.escapePrefix(prefix) + ')([^\\s]+) ?(.*)', 'gims')
     const matches = regex.exec(message)
 
@@ -32,7 +32,7 @@ export class CommandParser {
     return null
   }
 
-  private escapePrefix(prefix: string): string {
+  private static escapePrefix(prefix: string): string {
     if (
       prefix === '?' ||
       prefix === '^' ||
