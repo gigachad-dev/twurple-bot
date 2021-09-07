@@ -17,9 +17,7 @@ export default class Game extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
-    const isMod = msg.author.isBroadcaster || msg.author.isModerator
-
-    if (isMod && args.length) {
+    if (msg.author.isMods && args.length) {
       this.moderator(msg, args)
     } else {
       this.everyone(msg)

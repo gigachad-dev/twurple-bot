@@ -24,9 +24,7 @@ export default class Plan extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
-    const isMod = msg.author.isBroadcaster || msg.author.isModerator
-
-    if (isMod && args.length) {
+    if (msg.author.isMods && args.length) {
       this.changePlan(msg, args)
     } else {
       this.printPlan(msg)

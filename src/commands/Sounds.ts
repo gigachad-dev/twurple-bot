@@ -69,10 +69,8 @@ export default class Sounds extends BaseCommand {
       return this.soundsList(msg)
     }
 
-    const isMod = msg.author.isBroadcaster || msg.author.isModerator
-
     // TODO: Управление командой
-    if (isMod) {
+    if (msg.author.isMods) {
       switch (command) {
         case 'cooldown':
           break
