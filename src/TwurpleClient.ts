@@ -62,9 +62,6 @@ export class TwurpleClient extends EventEmitter {
   }
 
   private async refreshConfig(tokens: AccessToken): Promise<void> {
-    console.log('refreshConfig')
-    console.log(tokens)
-
     const newTokens = {
       clientId: this.config.clientId,
       clientSecret: this.config.clientSecret,
