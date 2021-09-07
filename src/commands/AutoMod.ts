@@ -73,7 +73,7 @@ export default class AutoMod extends BaseCommand {
   toggleAutoMod(msg: ChatMessage): void {
     const isEnabled = !this.db.get('enabled').value()
     this.db.assign({ enabled: isEnabled }).write()
-    msg.reply(`AutoMod is ${isEnabled ? 'is turned on' : 'is turned off'}`)
+    msg.reply(`AutoMod is turned ${isEnabled ? 'on' : 'off'}`)
   }
 
   async execute(msg: ChatMessage): Promise<void> {
