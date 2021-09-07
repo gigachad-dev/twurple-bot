@@ -43,7 +43,7 @@ export default class Title extends BaseCommand {
     ).then(() => {
       msg.reply(`Название стрима изменено: ${title}`)
     }).catch(err => {
-      this.client.logger.error(err)
+      this.client.logger.error(err, this.constructor.name)
     })
   }
 }

@@ -1,5 +1,4 @@
 import ms from 'ms'
-import winston from 'winston'
 import EventEmitter from 'events'
 import { PathLike, promises as fs } from 'fs'
 import readdir from 'recursive-readdir-sync'
@@ -8,7 +7,7 @@ import { ApiClient } from '@twurple/api'
 import { ChatUserstate, Client } from '@twurple/auth-tmi'
 import { AccessToken, RefreshConfig, RefreshingAuthProvider } from '@twurple/auth'
 
-import { ClientLogger } from './ClientLogger'
+import { Logger } from './Logger'
 import { ChatMessage } from './ChatMessage'
 import { BaseCommand } from './BaseCommand'
 import { CommandArguments, CommandParser } from './CommandParser'
@@ -33,7 +32,7 @@ export class TwurpleClient extends EventEmitter {
   public api: ApiClient
   public commands: BaseCommand[]
   public timers: Map<string, TimerMessages>
-  public logger: winston.Logger
+  public logger: typeof Logger
 
   private parser: CommandParser
 
@@ -46,7 +45,7 @@ export class TwurpleClient extends EventEmitter {
     }
 
     this.options = Object.assign(defaultOptions, options)
-    this.logger = new ClientLogger().getLogger('main')
+    this.logger = Logger
     this.parser = new CommandParser()
     this.commands = []
     this.timers = new Map<string, TimerMessages>()

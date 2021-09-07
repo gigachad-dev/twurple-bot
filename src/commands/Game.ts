@@ -46,7 +46,7 @@ export default class Game extends BaseCommand {
     }).then(() => {
       msg.reply(`Игра изменена: ${gameName}`)
     }).catch(err => {
-      this.client.logger.error(err)
+      this.client.logger.error(err, this.constructor.name)
     })
   }
 }

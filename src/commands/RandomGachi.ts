@@ -80,7 +80,7 @@ export default class RandomGachi extends BaseCommand {
         this.history.push(this.result.link)
         msg.reply(`${decode(this.result.title)} ${this.result.link}`)
       } catch (err) {
-        this.client.logger.error(err)
+        this.client.logger.error(err, this.constructor.name)
       }
     })
   }

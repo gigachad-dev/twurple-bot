@@ -38,7 +38,7 @@ export default class Aphorism extends BaseCommand {
 
       msg.actionSay(`${body.quoteText} ${body.quoteAuthor}`)
     } catch (err) {
-      this.client.logger.error(err)
+      this.client.logger.error(err, this.constructor.name)
     }
   }
 }

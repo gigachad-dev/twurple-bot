@@ -32,7 +32,7 @@ export default class Cat extends BaseCommand {
 
       msg.reply(`${emote} cataas.com${body.url}`)
     } catch (err) {
-      console.log(err)
+      this.client.logger.error(err, this.constructor.name)
     }
   }
 }

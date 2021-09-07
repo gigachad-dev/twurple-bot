@@ -34,7 +34,7 @@ export default class YouTubeSearch extends BaseCommand {
           msg.reply(`${results[0].title} ${results[0].link}`)
         })
       } catch (err) {
-        this.client.logger.error(err)
+        this.client.logger.error(err, this.constructor.name)
       }
     } else {
       msg.reply('Отсутствует аргумент команды')

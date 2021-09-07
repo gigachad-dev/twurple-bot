@@ -161,10 +161,10 @@ export default class Sounds extends BaseCommand {
           this.playSound(this.soundQueue.shift(), volume)
         }
 
-        this.client.logger.info(`PlaySound: ${sound.file}`)
+        this.client.logger.info(sound.file, this.constructor.name)
       })
     } catch (err) {
-      this.client.logger.error(err)
+      this.client.logger.error(err, this.constructor.name)
     }
   }
 }

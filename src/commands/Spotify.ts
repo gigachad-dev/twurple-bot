@@ -37,7 +37,7 @@ export default class Spotify extends BaseCommand {
         msg.reply('Музыка не проигрывается')
       }
     } catch (err) {
-      this.client.logger.error(err)
+      this.client.logger.error(err, this.constructor.name)
     }
   }
 }
