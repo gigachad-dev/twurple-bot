@@ -22,14 +22,58 @@ export default class AutoMod extends BaseCommand {
     this.db = Lowdb(adapter)
   }
 
-  async run(msg: ChatMessage): Promise<void> {
+  async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
+    if (args.length > 1) {
+      const action = args[0]
+      args.shift()
+      const word = args.join(' ')
+
+      switch (action) {
+        case 'add':
+          this.addWord(word)
+          break
+
+        case 'remove':
+          this.removeWord(word)
+          break
+
+        default:
+          msg.reply(`Action argument "${action}" not found`)
+      }
+    } else {
+      this.toggleAutoMod(msg)
+    }
+  }
+
+  findWord(word: string): string | undefined {
+    return this.db
+      .get('ban_words')
+      .value()
+      .find(v => v === word)
+  }
+
+  addWord(word: string): void {
+    if (!this.findWord(word)) {
+      this.db
+        .get('ban_words')
+        .push(word)
+        .write()
+    }
+  }
+
+  removeWord(word: string): void {
+    if (this.findWord(word)) {
+      this.db
+        .get('ban_words')
+        .remove(v => v === word)
+        .write()
+    }
+  }
+
+  toggleAutoMod(msg: ChatMessage): void {
     const isEnabled = !this.db.get('enabled').value()
-
-    this.db
-      .assign({ enabled: isEnabled })
-      .write()
-
-    msg.reply(`AutoMod is ${isEnabled ? 'enabled' : 'disabled'}`)
+    this.db.assign({ enabled: isEnabled }).write()
+    msg.reply(`AutoMod is ${isEnabled ? 'is turned on' : 'is turned off'}`)
   }
 
   async execute(msg: ChatMessage): Promise<void> {
@@ -39,7 +83,7 @@ export default class AutoMod extends BaseCommand {
         .value()
         .find(word => {
           if (msg.text.indexOf(word) > -1) {
-            this.client.tmi.ban(msg.channel.name, msg.author.username, 'AutoMod by @VS_Code')
+            this.client.tmi.ban(msg.channel.name, msg.author.username, `Banned for "${word}" AutoMod by @VS_Code`)
           }
         })
     }
