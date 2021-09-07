@@ -1,4 +1,4 @@
-import { Badges, CommonUserstate } from 'tmi.js'
+import { Badges, CommonUserstate } from '@twurple/auth-tmi'
 import { TwurpleClient, ChatterState } from './TwurpleClient'
 
 export class ChatUser {

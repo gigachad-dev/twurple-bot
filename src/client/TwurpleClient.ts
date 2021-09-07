@@ -1,4 +1,3 @@
-import path from 'path'
 import winston from 'winston'
 import EventEmitter from 'events'
 import { PathLike, promises as fs } from 'fs'
