@@ -3,7 +3,10 @@ import { randomInt } from '../utils'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
 export interface CatApiResponse {
-  file: string
+  id: string
+  created_at: string
+  tags: string[]
+  url: string
 }
 
 export default class Cat extends BaseCommand {
@@ -20,18 +23,14 @@ export default class Cat extends BaseCommand {
   async run(msg: ChatMessage): Promise<void> {
     try {
       const { body } = await got.get<CatApiResponse>(
-        'https://aws.random.cat/meow',
-        {
-          responseType: 'json',
-          decompress: false,
-          methodRewriting: false
-        }
+        'https://cataas.com/cat?json=true',
+        { responseType: 'json' }
       )
 
       const cats = ['CoolCat', 'DxCat', 'GlitchCat']
       const emote = cats[randomInt(0, cats.length - 1)]
 
-      msg.reply(`${emote} ${body.file.replace(/ /g, '%20')}`)
+      msg.reply(`${emote} cataas.com${body.url}`)
     } catch (err) {
       console.log(err)
     }
