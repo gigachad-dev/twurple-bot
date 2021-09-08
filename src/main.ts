@@ -1,12 +1,12 @@
 import { join } from 'path'
-import { TwurpleClient, ChatMessage } from './src'
+import { TwurpleClient, ChatMessage } from './index'
 
 import dotenv from 'dotenv'
 dotenv.config()
 
 const client = new TwurpleClient({
   config: join(__dirname, 'config.json'),
-  commands: join(__dirname, 'src/commands')
+  commands: join(__dirname, 'commands')
 })
 
 client.on('message', (msg: ChatMessage) => {

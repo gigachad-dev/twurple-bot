@@ -2,10 +2,10 @@
   "name": "twurple-bot",
   "version": "1.0.0",
   "description": "Twitch chat bot built with Twurple",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
-    "start": "nodemon tsc"
+    "start": "node dist/main.js",
+    "dev": "nodemon tsc",
+    "build": "rimraf dist/ && tsc && copyfiles --up 1 src/config/** dist/ && copyfiles config.json dist/"
   },
   "author": {
     "name": "Vitalij Ryndin",
@@ -18,8 +18,10 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^16.7.6",
     "@types/sound-play": "^1.1.0",
+    "copyfiles": "^2.4.1",
     "dotenv": "^10.0.0",
     "nodemon": "^2.0.12",
+    "rimraf": "^3.0.2",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.2"
   },
