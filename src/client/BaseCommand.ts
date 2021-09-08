@@ -92,12 +92,12 @@ export class BaseCommand {
   ) { }
 
   /**
-   * Method called when executeCommand
+   * Method called when execCommand()
    *
    * @param msg
    * @param chatter
    */
-  async execute(msg?: ChatMessage): Promise<any> { }
+  async execute(msg: ChatMessage): Promise<any> { }
 
   /**
    * Method called when command is executed

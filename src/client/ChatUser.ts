@@ -87,13 +87,6 @@ export class ChatUser {
   }
 
   /**
-   * Check if user can be trusted
-   */
-  get isTrusted(): boolean {
-    return this.isBroadcaster || this.isModerator || this.isVip || this.isSubscriber
-  }
-
-  /**
    * Check if user is the channel moderator or broadcaster
    */
   get isMods(): boolean {

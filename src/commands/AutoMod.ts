@@ -83,7 +83,11 @@ export default class AutoMod extends BaseCommand {
         .value()
         .find(word => {
           if (msg.text.indexOf(word) > -1) {
-            this.client.tmi.ban(msg.channel.name, msg.author.username, `Banned for "${word}" AutoMod by @VS_Code`)
+            if (msg.author.isVip || msg.author.isSubscriber) {
+              this.client.tmi.deletemessage(msg.channel.name, msg.id)
+            } else {
+              this.client.tmi.ban(msg.channel.name, msg.author.username, `Banned: ${word}, AutoMod by @VS_Code`)
+            }
           }
         })
     }

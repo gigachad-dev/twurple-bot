@@ -14,7 +14,7 @@ client.on('message', (msg: ChatMessage) => {
     return client.execCommand('sounds', msg)
   }
 
-  if (!msg.author.isTrusted) {
+  if (!msg.author.isMods) {
     client.execCommand('automod', msg)
   }
 
