@@ -18,12 +18,6 @@ export interface CommandOptions {
   description?: string
 
   /**
-   * Message send type (used on text commands!)
-   * default: (reply)
-   */
-  messageType?: keyof typeof MessageType
-
-  /**
    * Command examples (requited for output to !help <command>)
    */
   examples?: string[]
@@ -37,12 +31,6 @@ export interface CommandOptions {
    * More aliases
    */
   aliases?: string[]
-
-  /**
-   * The command is available only on the bot channel
-   * Make sure the client enable `autoJoinBotChannel` parametr
-   */
-  botChannelOnly?: boolean
 
   /**
    * Hide command help output to `!commands`
@@ -165,12 +153,6 @@ export class BaseCommand {
   preValidate(msg: ChatMessage): string | boolean {
     if (msg.messageType !== 'whisper' && this.options.privmsgOnly) {
       return 'This command is available only via private message'
-    }
-
-    if (this.options.botChannelOnly) {
-      if (msg.channel.name !== this.client.getUsername()) {
-        return 'This command can be executed only in the bot channel. Please head to https://twitch.tv/' + this.client.getUsername()
-      }
     }
 
     if (this.options.userlevel === UserLevel.everyone) {
