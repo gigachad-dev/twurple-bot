@@ -5,14 +5,14 @@ export default class Commands extends BaseCommand {
     super(client, {
       name: 'commands',
       userlevel: 'everyone',
-      description: `This command shows help for all commands. Send ${client.options.prefix}help <command> for detailed help on a command.`,
+      description: `This command shows help for all commands. Send ${client.config.prefix}help <command> for detailed help on a command.`,
       aliases: [
         'команды',
         'help'
       ],
       examples: [
-        `${client.options.prefix} commands`,
-        `${client.options.prefix} help <command>`
+        `${client.config.prefix} commands`,
+        `${client.config.prefix} help <command>`
       ],
       args: [
         {
@@ -23,7 +23,7 @@ export default class Commands extends BaseCommand {
     })
   }
 
-  async run(msg: ChatMessage, { command }): Promise<void> {
+  async run(msg: ChatMessage, { command }: { command: string }): Promise<void> {
     if (command?.length) {
       this.commandHelp(msg, command)
     } else {
@@ -33,11 +33,10 @@ export default class Commands extends BaseCommand {
 
   async commandList(msg: ChatMessage): Promise<void> {
     const commands: string[] = []
-    const prefix = this.client.options.prefix
 
     for (const cmd of this.client.commands) {
       if (!cmd.options.hideFromHelp) {
-        commands.push(prefix + cmd.options.name)
+        commands.push(this.client.config.prefix + cmd.options.name)
       }
     }
 

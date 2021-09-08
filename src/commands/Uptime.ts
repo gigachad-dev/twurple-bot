@@ -19,7 +19,7 @@ export default class Uptime extends BaseCommand {
     })
   }
 
-  async run(msg: ChatMessage, { username }): Promise<void> {
+  async run(msg: ChatMessage, { username }: { username: string }): Promise<void> {
     const channel = msg.channel.name
     const stream = await (
       await this.client.api.users.getUserByName(username || channel)

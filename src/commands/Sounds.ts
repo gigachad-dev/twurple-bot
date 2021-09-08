@@ -93,7 +93,7 @@ export default class Sounds extends BaseCommand {
     const name = msg.author.displayName
     const command = msg.text.slice(1).toLowerCase()
 
-    if (msg.text.startsWith(this.client.options.prefix) && command.length) {
+    if (msg.text.startsWith(this.client.config.prefix) && command.length) {
       const findSound = this.sounds.find(sound => {
         if (sound.alias === command) {
           return sound

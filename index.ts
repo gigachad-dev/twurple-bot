@@ -5,13 +5,12 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const client = new TwurpleClient({
-  pathConfig: join(__dirname, 'config.json'),
-  channels: ['quakerlegend', 'vs_code'],
-  botOwners: ['vs_code']
+  config: join(__dirname, 'config.json'),
+  commands: join(__dirname, 'src/commands')
 })
 
 client.on('message', (msg: ChatMessage) => {
-  if (msg.text.startsWith(client.options.prefix)) {
+  if (msg.text.startsWith(client.config.prefix)) {
     return client.execCommand('sounds', msg)
   }
 
@@ -21,7 +20,5 @@ client.on('message', (msg: ChatMessage) => {
 
   client.execCommand('hsdeck', msg)
 })
-
-client.registerCommandsIn(join(__dirname, './src/commands'))
 
 client.connect()

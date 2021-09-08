@@ -1,32 +1,34 @@
 import ms from 'ms'
-import EventEmitter from 'events'
-import { PathLike, promises as fs } from 'fs'
+import Lowdb from 'lowdb'
+import FileSync from 'lowdb/adapters/FileSync'
 import readdir from 'recursive-readdir-sync'
+import EventEmitter from 'events'
 
 import { ApiClient } from '@twurple/api'
 import { ChatUserstate, Client } from '@twurple/auth-tmi'
 import { AccessToken, RefreshConfig, RefreshingAuthProvider } from '@twurple/auth'
 
 import { Logger } from './Logger'
-import { ChatMessage } from './ChatMessage'
 import { BaseCommand } from './BaseCommand'
+import { ChatMessage, ChatterState } from './ChatMessage'
 import { CommandArguments, CommandParser } from './CommandParser'
 import Timers, { TimerMessages } from '../commands/Timers'
 
 export type TwurpleTokens = AccessToken & Omit<RefreshConfig, 'onRefresh'>
-export type ChatterState = ChatUserstate & { message: string }
+
+export interface TwurpleConfig extends TwurpleTokens {
+  channels: string[]
+  botOwners: string[]
+  prefix: string
+}
 
 export interface TwurpleOptions {
-  prefix?: string,
-  botOwners?: string[],
-  pathConfig: PathLike | fs.FileHandle
-  channels: string[]
+  config: string
+  commands: string
 }
 
 export class TwurpleClient extends EventEmitter {
-  public tokens: TwurpleTokens
-  public options: TwurpleOptions
-
+  public config: TwurpleConfig
   public tmi: Client
   public auth: RefreshingAuthProvider
   public api: ApiClient
@@ -34,61 +36,36 @@ export class TwurpleClient extends EventEmitter {
   public timers: Map<string, TimerMessages>
   public logger: typeof Logger
 
+  private options: TwurpleOptions
   private parser: typeof CommandParser
+  private db: Lowdb.LowdbSync<TwurpleConfig>
 
   constructor(options: TwurpleOptions) {
     super()
 
-    const defaultOptions = {
-      prefix: '!',
-      botOwners: []
-    }
-
-    this.options = Object.assign(defaultOptions, options)
+    this.options = options
+    this.commands = []
     this.logger = Logger
     this.parser = CommandParser
-    this.commands = []
     this.timers = new Map<string, TimerMessages>()
-  }
 
-  private async loadConfig(): Promise<void> {
-    try {
-      this.tokens = JSON.parse(
-        await fs.readFile(this.options.pathConfig, {
-          encoding: 'utf-8'
-        })
-      )
-    } catch (err) {
-      this.logger.error(err)
-    }
-  }
-
-  private async refreshConfig(tokens: AccessToken): Promise<void> {
-    const newTokens = {
-      clientId: this.tokens.clientId,
-      clientSecret: this.tokens.clientSecret,
-      ...tokens
-    }
-
-    await fs.writeFile(
-      this.options.pathConfig,
-      JSON.stringify(newTokens, null, 2),
-      { encoding: 'utf-8' }
-    )
+    this.db = Lowdb(new FileSync<TwurpleConfig>(options.config))
+    this.logger.info('Loading config file..')
+    this.config = this.db.getState()
   }
 
   async connect(): Promise<void> {
-    await this.loadConfig()
-
-    this.logger.info('Current default prefix is ' + this.options.prefix)
+    this.registerCommandsIn()
+    this.registerTimers()
+    this.logger.info('Current default prefix is ' + this.config.prefix)
 
     this.auth = new RefreshingAuthProvider(
       {
-        clientId: this.tokens.clientId,
-        clientSecret: this.tokens.clientSecret,
-        onRefresh: async (tokens) => await this.refreshConfig(tokens)
+        clientId: this.config.clientId,
+        clientSecret: this.config.clientSecret,
+        onRefresh: (tokens) => this.db.assign(tokens).write()
       },
-      this.tokens
+      this.config
     )
 
     this.api = new ApiClient({
@@ -110,17 +87,16 @@ export class TwurpleClient extends EventEmitter {
         reconnect: true
       },
       authProvider: this.auth,
-      channels: this.options.channels,
+      channels: this.config.channels,
       logger: this.logger
     })
 
     this.tmi.on('message', this.onMessage.bind(this))
-
     await this.tmi.connect()
   }
 
-  registerCommandsIn(path: string): void {
-    const files: string[] = readdir(path)
+  private registerCommandsIn(): void {
+    const files = readdir(this.options.commands)
 
     files.forEach(file => {
       if (file.includes('.d.ts')) {
@@ -141,8 +117,6 @@ export class TwurpleClient extends EventEmitter {
         this.logger.warn('You are not export default class correctly!')
       }
     }, this)
-
-    this.registerTimers()
   }
 
   private registerTimers(): void {
@@ -168,7 +142,9 @@ export class TwurpleClient extends EventEmitter {
   }
 
   private async onMessage(channel: string, userstate: ChatUserstate, messageText: string, self: boolean): Promise<void> {
-    if (self) return
+    if (self) {
+      return
+    }
 
     const chatter = { ...userstate, message: messageText } as ChatterState
     const msg = new ChatMessage(this, chatter, channel)
@@ -181,7 +157,7 @@ export class TwurpleClient extends EventEmitter {
 
     this.emit('message', msg)
 
-    const parserResult = this.parser.parse(messageText, this.options.prefix)
+    const parserResult = this.parser.parse(messageText, this.config.prefix)
 
     if (parserResult) {
       const command = this.findCommand(parserResult)

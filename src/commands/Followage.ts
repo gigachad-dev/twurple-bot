@@ -11,8 +11,8 @@ export default class Followage extends BaseCommand {
         'олд'
       ],
       examples: [
-        `${client.options.prefix}followage`,
-        `${client.options.prefix}followage <username>`
+        `${client.config.prefix}followage`,
+        `${client.config.prefix}followage <username>`
       ],
       args: [
         {
@@ -28,7 +28,7 @@ export default class Followage extends BaseCommand {
     })
   }
 
-  async run(msg: ChatMessage, { username }): Promise<void> {
+  async run(msg: ChatMessage, { username }: { username: string }): Promise<void> {
     if (msg.author.isBroadcaster && !username) {
       this.followByBroadcaster(msg)
     } else if (username) {

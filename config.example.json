@@ -1,4 +1,11 @@
 {
+  "channels": [
+    "le_xot"
+  ],
+  "botOwners": [
+    "vs_code"
+  ],
+  "prefix": "!",
   "clientId": "",
   "clientSecret": "",
   "accessToken": "",

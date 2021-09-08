@@ -24,7 +24,7 @@ export default class TprogerQuotes extends BaseCommand {
     this.quotes = quotes
   }
 
-  async run(msg: ChatMessage, { number }): Promise<void> {
+  async run(msg: ChatMessage, { number }: { number: number }): Promise<void> {
     if (number && !isNaN(number)) {
       this.search(msg, --number)
     } else {

@@ -11,9 +11,9 @@ export const dateDiff = (startDate: string | number | Date) => {
     seconds: 1
   }
 
-  let date = {} as typeof timespans
+  const date: Record<string, number> = {}
 
-  Object.keys(timespans).forEach(i => {
+  Object.keys(timespans).forEach((i: keyof typeof timespans) => {
     date[i] = Math.floor(difference / timespans[i])
     difference -= date[i] * timespans[i]
   })

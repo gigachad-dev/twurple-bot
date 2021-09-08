@@ -1,5 +1,6 @@
+import { ChatterState } from './ChatMessage'
+import { TwurpleClient } from './TwurpleClient'
 import { Badges, CommonUserstate } from '@twurple/auth-tmi'
-import { TwurpleClient, ChatterState } from './TwurpleClient'
 
 export class ChatUser {
   constructor(

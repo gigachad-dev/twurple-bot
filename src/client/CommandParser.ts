@@ -15,7 +15,7 @@ export class CommandParser {
       const result = {
         command: command,
         prefix: prefix,
-        args: []
+        args: [] as string[]
       }
 
       if (matches.length > 3) {
