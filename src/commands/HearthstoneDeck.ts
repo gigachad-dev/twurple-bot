@@ -117,7 +117,7 @@ export default class HearthstoneDeck extends BaseCommand {
     )
 
     this.heroes.forEach((hero, index) => {
-      body.forEach((v: CardsInfo) => {
+      body.forEach(v => {
         if (hero.class === v.cardClass && v.set === 'HERO_SKINS') {
           this.heroes[index].id.push(v.dbfId)
         }
@@ -133,8 +133,8 @@ export default class HearthstoneDeck extends BaseCommand {
       try {
         const deckString = text.split(' ').find(v => isDeck(v))
         const deck = decode(deckString)
-        const hero = this.heroes.find((v: { id: number[] }) => v.id.includes(deck.heroes[0]))
-        const format = this.formats.find((v: { id: number }) => deck.format === v.id)
+        const hero = this.heroes.find(v => v.id.includes(deck.heroes[0]))
+        const format = this.formats.find(v => deck.format === v.id)
 
         const { body } = await got.post<ShortURLResponse>(
           'https://hsdeckviewer.com/.netlify/functions/shorturl',
