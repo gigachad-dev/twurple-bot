@@ -63,7 +63,10 @@ export class TwurpleClient extends EventEmitter {
       {
         clientId: this.config.clientId,
         clientSecret: this.config.clientSecret,
-        onRefresh: (tokens) => this.db.assign(tokens).write()
+        onRefresh: (tokens) => {
+          this.logger.info('Refreshing auth tokens..')
+          this.db.assign(tokens).write()
+        }
       },
       this.config
     )
