@@ -31,7 +31,8 @@ export default class HearthstoneDeck extends BaseCommand {
     super(client, {
       name: 'hsdeck',
       userlevel: 'everyone',
-      description: 'Decode Hearthstone deckstrings'
+      description: 'Decode Hearthstone deckstrings',
+      hideFromHelp: true
     })
 
     this.heroes = [
