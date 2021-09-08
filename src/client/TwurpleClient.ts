@@ -55,7 +55,7 @@ export class TwurpleClient extends EventEmitter {
   }
 
   async connect(): Promise<void> {
-    this.registerCommandsIn()
+    this.registerCommands()
     this.registerTimers()
     this.logger.info('Current default prefix is ' + this.config.prefix)
 
@@ -95,7 +95,7 @@ export class TwurpleClient extends EventEmitter {
     await this.tmi.connect()
   }
 
-  private registerCommandsIn(): void {
+  private registerCommands(): void {
     const files = readdir(this.options.commands)
 
     files.forEach(file => {
