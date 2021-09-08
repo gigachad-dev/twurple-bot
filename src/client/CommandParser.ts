@@ -38,7 +38,6 @@ export class CommandParser {
       prefix === '^' ||
       prefix === '[' ||
       prefix === ']' ||
-      prefix === ']' ||
       prefix === '(' ||
       prefix === ')' ||
       prefix === '*' ||
