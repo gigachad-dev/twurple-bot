@@ -1,10 +1,17 @@
 {
-  "watch": [
-    "src/*"
-  ],
-  "ext": "ts",
+  "restartable": "rs",
   "ignore": [
-    "dist/*"
+    ".git",
+    "dist",
+    ".vscode",
+    "node_modules/**/node_modules"
   ],
-  "exec": "ts-node src/main.ts"
+  "verbose": true,
+  "execMap": {
+    "ts": "node --require ts-node/register"
+  },
+  "watch": [
+    "src"
+  ],
+  "ext": "ts"
 }

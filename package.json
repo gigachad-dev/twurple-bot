@@ -4,7 +4,8 @@
   "description": "Twitch chat bot built with Twurple",
   "scripts": {
     "start": "node dist/main.js",
-    "dev": "nodemon tsc",
+    "dev": "nodemon src/main.ts",
+    "dev:debug": "nodemon --inspect src/main.ts",
     "build": "rimraf dist/ && tsc && copyfiles --up 1 src/config/** dist/"
   },
   "author": {
