@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node dist/main.js",
     "dev": "nodemon tsc",
-    "build": "rimraf dist/ && tsc && copyfiles --up 1 src/config/** dist/ && copyfiles config.json dist/"
+    "build": "rimraf dist/ && tsc && copyfiles --up 1 src/config/** dist/"
   },
   "author": {
     "name": "Vitalij Ryndin",
