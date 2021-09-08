@@ -17,7 +17,8 @@ export default class Timers extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'timers',
-      userlevel: 'regular'
+      userlevel: 'regular',
+      hideFromHelp: true
     })
 
     const adapter = new FileSync<ITimers[]>(path.join(__dirname, '../config/timers.json'))
