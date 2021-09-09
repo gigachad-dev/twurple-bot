@@ -111,18 +111,22 @@ export default class HearthstoneDeck extends BaseCommand {
   }
 
   async loadCards(): Promise<void> {
-    const { body } = await got<CardsInfo[]>(
-      'https://api.hearthstonejson.com/v1/latest/enUS/cards.collectible.json',
-      { responseType: 'json' }
-    )
+    try {
+      const { body } = await got<CardsInfo[]>(
+        'https://api.hearthstonejson.com/v1/latest/enUS/cards.collectible.json',
+        { responseType: 'json' }
+      )
 
-    this.heroes.forEach((hero, index) => {
-      body.forEach(v => {
-        if (hero.class === v.cardClass && v.set === 'HERO_SKINS') {
-          this.heroes[index].id.push(v.dbfId)
-        }
+      this.heroes.forEach((hero, index) => {
+        body.forEach(v => {
+          if (hero.class === v.cardClass && v.set === 'HERO_SKINS') {
+            this.heroes[index].id.push(v.dbfId)
+          }
+        })
       })
-    })
+    } catch (err) {
+      this.client.logger.error(err, this.constructor.name)
+    }
   }
 
   async execute(msg: ChatMessage): Promise<void> {
