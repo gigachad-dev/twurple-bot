@@ -27,10 +27,10 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@twurple/api": "^5.0.0",
-    "@twurple/auth": "^5.0.0",
-    "@twurple/auth-tmi": "^5.0.0",
-    "@twurple/chat": "^5.0.0",
+    "@twurple/api": "^5.0.1",
+    "@twurple/auth": "^5.0.1",
+    "@twurple/auth-tmi": "^5.0.1",
+    "@twurple/chat": "^5.0.1",
     "deckstrings": "^2.2.1",
     "got": "^11.8.2",
     "html-entities": "^2.3.2",
