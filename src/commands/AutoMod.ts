@@ -15,7 +15,8 @@ export default class AutoMod extends BaseCommand {
     super(client, {
       name: 'automod',
       userlevel: 'regular',
-      hideFromHelp: true
+      hideFromHelp: true,
+      privmsgOnly: true
     })
 
     const adapter = new FileSync<IAutoMod>(path.join(__dirname, '../config/automod.json'))
@@ -29,19 +30,23 @@ export default class AutoMod extends BaseCommand {
       const word = args.join(' ')
 
       switch (action) {
+        case 'toggle':
+          this.toggleAutoMod(msg)
+          break
+
         case 'add':
-          this.addWord(word)
+          this.addWord(msg, word)
           break
 
         case 'remove':
-          this.removeWord(word)
+          this.removeWord(msg, word)
           break
 
         default:
           msg.reply(`Action argument "${action}" not found`)
       }
     } else {
-      this.toggleAutoMod(msg)
+      msg.reply('Usage: !automod toggle, !automod add <text>, !automod remove <text>')
     }
   }
 
@@ -52,28 +57,36 @@ export default class AutoMod extends BaseCommand {
       .find(v => v === word)
   }
 
-  addWord(word: string): void {
+  addWord(msg: ChatMessage, word: string): void {
     if (!this.findWord(word)) {
       this.db
         .get('ban_words')
         .push(word)
         .write()
+
+      msg.reply('Rule successfully added VoteYea')
+    } else {
+      msg.reply('Rule already exists VoteNay')
     }
   }
 
-  removeWord(word: string): void {
+  removeWord(msg: ChatMessage, word: string): void {
     if (this.findWord(word)) {
       this.db
         .get('ban_words')
         .remove(v => v === word)
         .write()
+
+      msg.reply('Rule successfully deleted VoteYea')
+    } else {
+      msg.reply('Rule not found VoteNay')
     }
   }
 
   toggleAutoMod(msg: ChatMessage): void {
     const isEnabled = !this.db.get('enabled').value()
     this.db.assign({ enabled: isEnabled }).write()
-    msg.reply(`AutoMod is turned ${isEnabled ? 'on' : 'off'}`)
+    msg.reply(`AutoMod is turned ${isEnabled ? 'on VoteYea' : 'off VoteNay'}`)
   }
 
   async execute(msg: ChatMessage): Promise<void> {
