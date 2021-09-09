@@ -78,11 +78,13 @@ export default class AutoMod extends BaseCommand {
 
   async execute(msg: ChatMessage): Promise<void> {
     if (this.db.get('enabled').value()) {
+      const message = msg.text.toLowerCase()
+
       this.db
         .get('ban_words')
         .value()
         .find(word => {
-          if (msg.text.indexOf(word) > -1) {
+          if (message.indexOf(word) > -1) {
             if (msg.author.isVip || msg.author.isSubscriber) {
               this.client.tmi.deletemessage(msg.channel.name, msg.id)
             } else {
