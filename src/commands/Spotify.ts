@@ -16,11 +16,8 @@ export interface SpotifyApiResponse {
 export default class Spotify extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
-      name: 'spotify',
-      userlevel: 'everyone',
-      aliases: [
-        'музыка'
-      ]
+      name: 'song',
+      userlevel: 'everyone'
     })
   }
 
