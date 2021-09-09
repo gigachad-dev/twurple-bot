@@ -83,12 +83,21 @@ export default class AutoMod extends BaseCommand {
       this.db
         .get('ban_words')
         .value()
-        .find(word => {
+        .find(async (word) => {
           if (message.indexOf(word) > -1) {
-            if (msg.author.isVip || msg.author.isSubscriber) {
-              this.client.tmi.deletemessage(msg.channel.name, msg.id)
+            const { total } = await this.client.api.users.getFollows({
+              user: msg.author.id,
+              followedUser: msg.channel.id
+            })
+
+            if (total) {
+              if ((msg.author.isVip || msg.author.isSubscriber) && !msg.author.isMods) {
+                return this.client.tmi.deletemessage(msg.channel.name, msg.id)
+              }
+
+              return this.client.tmi.timeout(msg.channel.name, msg.author.username, 600, `Reason: ${word}`)
             } else {
-              this.client.tmi.ban(msg.channel.name, msg.author.username, `Banned: ${word}, AutoMod by @VS_Code`)
+              return this.client.tmi.ban(msg.channel.name, msg.author.username, `Banned: ${word}`)
             }
           }
         })
