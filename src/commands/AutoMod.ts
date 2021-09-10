@@ -16,7 +16,7 @@ export default class AutoMod extends BaseCommand {
       name: 'automod',
       userlevel: 'regular',
       hideFromHelp: true,
-      privmsgOnly: true
+      botChannelOnly: true
     })
 
     const adapter = new FileSync<IAutoMod>(path.join(__dirname, '../config/automod.json'))
