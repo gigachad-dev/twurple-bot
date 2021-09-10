@@ -1,8 +1,9 @@
 import ms from 'ms'
 import Lowdb from 'lowdb'
 import FileSync from 'lowdb/adapters/FileSync'
-import readdir from 'recursive-readdir-sync'
 import EventEmitter from 'events'
+import { readdirSync } from 'fs'
+import { join } from 'path'
 
 import { ApiClient } from '@twurple/api'
 import { ChatUserstate, Client } from '@twurple/auth-tmi'
@@ -99,27 +100,23 @@ export class TwurpleClient extends EventEmitter {
   }
 
   private registerCommands(): void {
-    const files = readdir(this.options.commands)
+    readdirSync(this.options.commands)
+      .filter(file => !file.includes('.d.ts'))
+      .forEach(file => {
+        let commandFile = require(join(this.options.commands, file))
 
-    files.forEach(file => {
-      if (file.includes('.d.ts')) {
-        return
-      }
+        if (typeof commandFile.default === 'function') {
+          commandFile = commandFile.default
+        }
 
-      let commandFile = require(file)
-
-      if (typeof commandFile.default === 'function') {
-        commandFile = commandFile.default
-      }
-
-      if (typeof commandFile === 'function') {
-        const command: BaseCommand = new commandFile(this)
-        this.logger.info(`Register command ${command.options.name}`)
-        this.commands.push(command)
-      } else {
-        this.logger.warn('You are not export default class correctly!')
-      }
-    }, this)
+        if (commandFile.prototype instanceof BaseCommand) {
+          const command: BaseCommand = new commandFile(this)
+          this.logger.info(`Register command ${command.options.name}`)
+          this.commands.push(command)
+        } else {
+          this.logger.warn(`${file} is not an instance of BaseCommand`)
+        }
+      }, this)
   }
 
   private registerTimers(): void {
