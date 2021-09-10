@@ -41,6 +41,11 @@ export interface CommandOptions {
    * The command is available only in the private message of the bot
    */
   privmsgOnly?: boolean
+
+  /**
+  * The command is available only on the bot channel
+  */
+  botChannelOnly?: boolean
 }
 
 export interface CommandArgument {
@@ -153,6 +158,12 @@ export class BaseCommand {
   preValidate(msg: ChatMessage): string | boolean {
     if (msg.messageType !== 'whisper' && this.options.privmsgOnly) {
       return 'This command is available only via private message'
+    }
+
+    if (this.options.botChannelOnly) {
+      if (msg.channel.name !== this.client.getUsername()) {
+        return 'This command can be executed only in the bot channel'
+      }
     }
 
     if (this.options.userlevel === UserLevel.everyone) {
