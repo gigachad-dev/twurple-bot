@@ -30,10 +30,6 @@ export default class AutoMod extends BaseCommand {
       const word = args.join(' ')
 
       switch (action) {
-        case 'toggle':
-          this.toggleAutoMod(msg)
-          break
-
         case 'add':
           this.addWord(msg, word)
           break
@@ -43,10 +39,10 @@ export default class AutoMod extends BaseCommand {
           break
 
         default:
-          msg.reply(`Action argument "${action}" not found`)
+          msg.reply(`Action argument ${action} not found`)
       }
     } else {
-      msg.reply('Usage: !automod toggle, !automod add <text>, !automod remove <text>')
+      this.toggleAutoMod(msg)
     }
   }
 
