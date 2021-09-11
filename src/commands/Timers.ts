@@ -21,11 +21,22 @@ export default class Timers extends BaseCommand {
       hideFromHelp: true
     })
 
-    const adapter = new FileSync<ITimers[]>(path.join(__dirname, '../config/timers.json'))
-    this.messages = Lowdb(adapter)
+    this.messages = Lowdb(
+      new FileSync<ITimers[]>(
+        path.join(__dirname, '../../config/timers.json')
+      )
+    )
+
+    const channels = this.client.config.channels.map(channel => {
+      return {
+        [channel.replace('#', '')]: []
+      }
+    })
+
+    this.messages.defaults(...channels).write()
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> { }
 
-  async execute(msg: ChatMessage) { }
+  async execute(msg: ChatMessage): Promise<void> { }
 }

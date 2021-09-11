@@ -19,8 +19,11 @@ export default class Plan extends BaseCommand {
       ]
     })
 
-    const adapter = new FileSync<PlanConfig>(path.join(__dirname, '../config/plan.json'))
-    this.db = Lowdb(adapter)
+    this.db = Lowdb(
+      new FileSync<PlanConfig>(
+        path.join(__dirname, '../../config/plan.json')
+      )
+    )
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {

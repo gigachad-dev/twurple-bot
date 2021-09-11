@@ -27,15 +27,16 @@ export default class Uptime extends BaseCommand {
 
     if (stream) {
       const dates = dateDiff(stream.startDate)
-      const formatDate = Object.entries(dates)
+      const time = Object.entries(dates)
         .map(date => {
           if (date[1] > 0) {
             return date[1] + date[0].charAt(0)
           }
         })
         .filter(v => v !== undefined)
+        .join(' ')
 
-      msg.reply(`${stream.userDisplayName} вещает ${formatDate.join(' ')}`)
+      msg.reply(`${stream.userDisplayName} вещает ${time}`)
     } else {
       msg.reply(`${channel} не в сети`)
     }

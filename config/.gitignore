@@ -1,0 +1,4 @@
+*.json
+!config.example.json
+!pokemons.json
+!quotes.json

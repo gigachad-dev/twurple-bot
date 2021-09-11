@@ -1,14 +1,16 @@
+import path from 'path'
+import Lowdb from 'lowdb'
+import FileSync from 'lowdb/adapters/FileSync'
 import { randomInt } from '../utils'
-import pokemons from '../config/pokemons.json'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
-export interface IPokemons {
+interface IPokemons {
   id: string
   name: string
 }
 
 export default class Pokemons extends BaseCommand {
-  private pokemons: IPokemons[]
+  private pokemons: Lowdb.LowdbSync<IPokemons[]>
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -24,7 +26,11 @@ export default class Pokemons extends BaseCommand {
       ]
     })
 
-    this.pokemons = pokemons
+    this.pokemons = Lowdb(
+      new FileSync<IPokemons[]>(
+        path.join(__dirname, '../../config/pokemons.json')
+      )
+    )
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
@@ -47,12 +53,12 @@ export default class Pokemons extends BaseCommand {
   }
 
   randomPokemon(msg: ChatMessage): void {
-    const pokemon = this.pokemons[randomInt(0, this.pokemons.length - 1)]
+    const pokemon = this.pokemons.get([randomInt(0, this.pokemons.getState().length - 1)]).value()
     msg.reply(`А ты что за покемон? Ты ${pokemon.name} KomodoHype modpixelmon.ru/${pokemon.id}`)
   }
 
   findPokemon(query: string): IPokemons {
-    return this.pokemons.find(pokemon => {
+    return this.pokemons.getState().find(pokemon => {
       // на английском
       if (pokemon.id.indexOf(query) > -1) {
         return pokemon

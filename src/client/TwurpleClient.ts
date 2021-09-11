@@ -186,13 +186,11 @@ export class TwurpleClient extends EventEmitter {
     })
   }
 
-  execCommand(command: string, msg?: ChatMessage): void {
+  execCommand(command: string, msg: ChatMessage): void {
     const cmd = this.findCommand({ command })
 
-    if (cmd?.execute) {
+    if (cmd.constructor.prototype.hasOwnProperty('execute')) {
       cmd.execute(msg)
-    } else {
-      this.logger.warn(`Command ${command} doesn't use execute() method!`)
     }
   }
 

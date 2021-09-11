@@ -45,7 +45,7 @@ The response body should look similar to the following:
 }
 ```
 
-Create a `config.json` file similar to [`config.example.json`](config.example.json). Write the `accessToken`, `refreshToken`, `clientId` and `clientSecret` in `config.json`
+Create a `config.json` file similar to [`config.example.json`](config/config.example.json). Write the `accessToken`, `refreshToken`, `clientId` and `clientSecret` in `config.json`
 
 ## 4. Environment
 

@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const client = new TwurpleClient({
-  config: join(__dirname, '../config.json'),
+  config: join(__dirname, '../config/config.json'),
   commands: join(__dirname, './commands')
 })
 

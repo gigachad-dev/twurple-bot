@@ -4,6 +4,7 @@ import { play } from 'sound-play'
 import { declOfNum } from '../utils'
 import FileSync from 'lowdb/adapters/FileSync'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
+import migration from '../migrations/sounds.json'
 
 interface PlaySoundConfig {
   options: {
@@ -56,8 +57,13 @@ export default class Sounds extends BaseCommand {
       ]
     })
 
-    const adapter = new FileSync<PlaySoundConfig>(path.join(__dirname, '../config/sounds.json'))
-    this.db = Lowdb(adapter)
+    this.db = Lowdb(
+      new FileSync<PlaySoundConfig>(
+        path.join(__dirname, '../../config/sounds.json')
+      )
+    )
+
+    this.db.defaults(migration).write()
     this.sounds = this.db.get('sounds').value()
     this.isPlaying = false
     this.soundQueue = []

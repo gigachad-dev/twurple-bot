@@ -1,9 +1,11 @@
+import path from 'path'
+import Lowdb from 'lowdb'
+import FileSync from 'lowdb/adapters/FileSync'
 import { randomInt, declOfNum } from '../utils'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
-import quotes from '../config/quotes.json'
 
 export default class TprogerQuotes extends BaseCommand {
-  private quotes: string[]
+  private quotes: Lowdb.LowdbSync<string[]>
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -21,7 +23,11 @@ export default class TprogerQuotes extends BaseCommand {
       ]
     })
 
-    this.quotes = quotes
+    this.quotes = Lowdb(
+      new FileSync<string[]>(
+        path.join(__dirname, '../../config/quotes.json')
+      )
+    )
   }
 
   async run(msg: ChatMessage, { number }: { number: number }): Promise<void> {
@@ -38,17 +44,17 @@ export default class TprogerQuotes extends BaseCommand {
     if (quote) {
       msg.actionSay(`#${++number}: ${quote}`)
     } else {
-      const dbInfo = `Всего в базе ${this.quotes.length} ${declOfNum(this.quotes.length, ['цитата', 'цитат', 'цитат'])}.`
-      msg.reply(`Цитата не найдена! ${dbInfo}`)
+      const count = this.quotes.getState().length
+      msg.reply(`Цитата не найдена! Всего в базе ${count} ${declOfNum(count, ['цитата', 'цитат', 'цитат'])}.`)
     }
   }
 
   random(msg: ChatMessage): void {
-    let number = randomInt(0, this.quotes.length - 1)
+    let number = randomInt(0, this.quotes.getState().length - 1)
     msg.actionSay(`#${++number}: ${this.getQuote(number)}`)
   }
 
   getQuote(i: number): string {
-    return this.quotes[i]
+    return this.quotes.get(i).value()
   }
 }
