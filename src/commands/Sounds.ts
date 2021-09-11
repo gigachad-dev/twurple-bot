@@ -150,7 +150,7 @@ export default class Sounds extends BaseCommand {
   }
 
   playSound(sound: Sound, volume: number): number {
-    const folder = path.join(__dirname, '../config/sounds')
+    const folder = path.join(__dirname, '../../config/sounds')
     const file = path.join(folder, `${sound.file}`)
 
     if (this.isPlaying) {
