@@ -10,7 +10,7 @@ Visit this site, with the CLIENT_ID and REDIRECT_URI placeholders replaced with 
 https://id.twitch.tv/oauth2/authorize?client_id=CLIENT_ID
   &redirect_uri=REDIRECT_URI
   &response_type=code
-  &scope=chat:read+chat:edit+whispers:read+whispers:edit+channel:moderate+channel:read:editors+channel:manage:broadcast+user:read:broadcast+user:edit:broadcast
+  &scope=channel_editor+chat:read+chat:edit+whispers:read+whispers:edit+channel:moderate+channel:read:editors+channel:manage:broadcast+user:read:broadcast+user:edit:broadcast
 ```
 
 Log in with the account you want to use for your bot and confirm the access to Twitch. You should get redirected to your redirect URI with a query parameter named `code`.
