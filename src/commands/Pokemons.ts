@@ -1,6 +1,5 @@
 import path from 'path'
 import Lowdb from 'lowdb'
-import FileSync from 'lowdb/adapters/FileSync'
 import { randomInt } from '../utils'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
@@ -26,11 +25,9 @@ export default class Pokemons extends BaseCommand {
       ]
     })
 
-    this.pokemons = Lowdb(
-      new FileSync<IPokemons[]>(
-        path.join(__dirname, '../../config/pokemons.json')
-      )
-    )
+    this.pokemons = this.client.lowdbAdapter<IPokemons[]>({
+      path: path.join(__dirname, '../../config/pokemons.json')
+    })
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {

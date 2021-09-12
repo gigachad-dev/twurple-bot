@@ -1,6 +1,5 @@
 import path from 'path'
 import Lowdb from 'lowdb'
-import FileSync from 'lowdb/adapters/FileSync'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
 export interface TimerMessages {
@@ -21,11 +20,9 @@ export default class Timers extends BaseCommand {
       hideFromHelp: true
     })
 
-    this.messages = Lowdb(
-      new FileSync<ITimers[]>(
-        path.join(__dirname, '../../config/timers.json')
-      )
-    )
+    this.messages = this.client.lowdbAdapter<ITimers[]>({
+      path: path.join(__dirname, '../../config/timers.json')
+    })
 
     const channels = this.client.config.channels.map(channel => {
       return {

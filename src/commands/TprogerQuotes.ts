@@ -1,6 +1,5 @@
 import path from 'path'
 import Lowdb from 'lowdb'
-import FileSync from 'lowdb/adapters/FileSync'
 import { randomInt, declOfNum } from '../utils'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
@@ -23,11 +22,9 @@ export default class TprogerQuotes extends BaseCommand {
       ]
     })
 
-    this.quotes = Lowdb(
-      new FileSync<string[]>(
-        path.join(__dirname, '../../config/quotes.json')
-      )
-    )
+    this.quotes = this.client.lowdbAdapter<string[]>({
+      path: path.join(__dirname, '../../config/quotes.json')
+    })
   }
 
   async run(msg: ChatMessage, { number }: { number: number }): Promise<void> {

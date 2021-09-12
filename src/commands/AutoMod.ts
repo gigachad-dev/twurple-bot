@@ -1,6 +1,5 @@
 import path from 'path'
 import Lowdb from 'lowdb'
-import FileSync from 'lowdb/adapters/FileSync'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 import migration from '../migrations/automod.json'
 
@@ -20,13 +19,10 @@ export default class AutoMod extends BaseCommand {
       botChannelOnly: true
     })
 
-    this.db = Lowdb(
-      new FileSync<IAutoMod>(
-        path.join(__dirname, '../../config/automod.json')
-      )
-    )
-
-    this.db.defaults(migration).write()
+    this.db = this.client.lowdbAdapter<IAutoMod>({
+      path: path.join(__dirname, '../../config/automod.json'),
+      initialData: migration
+    })
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {

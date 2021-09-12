@@ -2,11 +2,10 @@ import path from 'path'
 import Lowdb from 'lowdb'
 import { play } from 'sound-play'
 import { declOfNum } from '../utils'
-import FileSync from 'lowdb/adapters/FileSync'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 import migration from '../migrations/sounds.json'
 
-interface PlaySoundConfig {
+interface IPlaySound {
   options: {
     volume: number
     cooldown: number
@@ -31,7 +30,7 @@ interface CommandArgs {
 }
 
 export default class Sounds extends BaseCommand {
-  private db: Lowdb.LowdbSync<PlaySoundConfig>
+  private db: Lowdb.LowdbSync<IPlaySound>
   private isPlaying: boolean
   private soundQueue: Sound[]
   private sounds: Sound[]
@@ -57,13 +56,11 @@ export default class Sounds extends BaseCommand {
       ]
     })
 
-    this.db = Lowdb(
-      new FileSync<PlaySoundConfig>(
-        path.join(__dirname, '../../config/sounds.json')
-      )
-    )
+    this.db = this.client.lowdbAdapter<IPlaySound>({
+      path: path.join(__dirname, '../../config/sounds.json'),
+      initialData: migration
+    })
 
-    this.db.defaults(migration).write()
     this.sounds = this.db.get('sounds').value()
     this.isPlaying = false
     this.soundQueue = []

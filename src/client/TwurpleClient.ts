@@ -213,4 +213,14 @@ export class TwurpleClient extends EventEmitter {
   getChannels(): string[] {
     return this.tmi.getChannels()
   }
+
+  lowdbAdapter<T>(opts: { path: string, initialData?: T }): Lowdb.LowdbSync<T> {
+    const db = Lowdb(new FileSync<T>(opts.path))
+
+    if (opts.initialData) {
+      db.defaults(opts.initialData).write()
+    }
+
+    return db
+  }
 }

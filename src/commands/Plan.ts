@@ -1,14 +1,13 @@
 import path from 'path'
 import Lowdb from 'lowdb'
-import FileSync from 'lowdb/adapters/FileSync'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
-interface PlanConfig {
+interface IPlan {
   plan: string
 }
 
 export default class Plan extends BaseCommand {
-  private db: Lowdb.LowdbSync<PlanConfig>
+  private db: Lowdb.LowdbSync<IPlan>
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -19,11 +18,9 @@ export default class Plan extends BaseCommand {
       ]
     })
 
-    this.db = Lowdb(
-      new FileSync<PlanConfig>(
-        path.join(__dirname, '../../config/plan.json')
-      )
-    )
+    this.db = this.client.lowdbAdapter<IPlan>({
+      path: path.join(__dirname, '../../config/plan.json')
+    })
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
