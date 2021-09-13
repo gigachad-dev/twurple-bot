@@ -1,4 +1,4 @@
-import winston, { createLogger } from 'winston'
+import winston from 'winston'
 
 export class Logger {
   private static formatter = winston.format.combine(
@@ -10,7 +10,7 @@ export class Logger {
     )
   )
 
-  private static logger: winston.Logger = createLogger({
+  private static logger: winston.Logger = winston.createLogger({
     level: 'silly',
     format: winston.format.json(),
     transports: [

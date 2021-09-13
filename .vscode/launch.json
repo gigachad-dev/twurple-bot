@@ -7,7 +7,10 @@
       "request": "attach",
       "processId": "${command:PickProcess}",
       "restart": true,
-      "protocol": "inspector"
+      "protocol": "inspector",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     }
   ]
 }

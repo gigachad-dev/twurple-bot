@@ -1,8 +1,8 @@
 import ms from 'ms'
-import { chain } from 'lodash'
-import { join } from 'path'
+import path from 'path'
+import lodash from 'lodash'
 import { readdirSync } from 'fs'
-import EventEmitter from 'events'
+import { EventEmitter } from 'events'
 import { LowSync, JSONFileSync } from 'lowdb'
 
 import { ApiClient } from '@twurple/api'
@@ -28,7 +28,7 @@ export interface TwurpleOptions {
   commands: string
 }
 
-export class TwurpleClient extends EventEmitter {
+export class TwurpleClient /*extends EventEmitter*/ {
   public config: LowSync<TwurpleConfig>
   public tmi: Client
   public auth: RefreshingAuthProvider
@@ -41,7 +41,7 @@ export class TwurpleClient extends EventEmitter {
   private parser: typeof CommandParser
 
   constructor(options: TwurpleOptions) {
-    super()
+    // super()
 
     this.options = options
     this.commands = []
@@ -105,7 +105,7 @@ export class TwurpleClient extends EventEmitter {
     readdirSync(this.options.commands)
       .filter(file => !file.includes('.d.ts'))
       .forEach(file => {
-        let commandFile = require(join(this.options.commands, file))
+        let commandFile = require(path.join(this.options.commands, file))
 
         if (typeof commandFile.default === 'function') {
           commandFile = commandFile.default
@@ -157,7 +157,7 @@ export class TwurpleClient extends EventEmitter {
       }
     }
 
-    this.emit('message', msg)
+    // this.emit('message', msg)
 
     const parserResult = this.parser.parse(messageText, this.config.data.prefix)
 
@@ -222,7 +222,7 @@ export class TwurpleClient extends EventEmitter {
     )
 
     db.read()
-    db.chain = chain(db.data)
+    db.chain = lodash.chain(db.data)
 
     if (!db.data && opts.initialData) {
       db.data ||= opts.initialData
