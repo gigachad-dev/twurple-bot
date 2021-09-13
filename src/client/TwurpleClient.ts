@@ -1,9 +1,9 @@
 import ms from 'ms'
-import Lowdb from 'lowdb'
-import FileSync from 'lowdb/adapters/FileSync'
-import EventEmitter from 'events'
-import { readdirSync } from 'fs'
+import { chain } from 'lodash'
 import { join } from 'path'
+import { readdirSync } from 'fs'
+import EventEmitter from 'events'
+import { LowSync, JSONFileSync } from 'lowdb'
 
 import { ApiClient } from '@twurple/api'
 import { ChatUserstate, Client } from '@twurple/auth-tmi'
@@ -13,7 +13,7 @@ import { Logger } from './Logger'
 import { BaseCommand } from './BaseCommand'
 import { ChatMessage, ChatterState } from './ChatMessage'
 import { CommandArguments, CommandParser } from './CommandParser'
-import Timers, { TimerMessages } from '../commands/Timers'
+// import Timers, { TimerMessages } from '../commands/Timers'
 
 export type TwurpleTokens = AccessToken & Omit<RefreshConfig, 'onRefresh'>
 
@@ -29,17 +29,16 @@ export interface TwurpleOptions {
 }
 
 export class TwurpleClient extends EventEmitter {
-  public config: TwurpleConfig
+  public config: LowSync<TwurpleConfig>
   public tmi: Client
   public auth: RefreshingAuthProvider
   public api: ApiClient
   public commands: BaseCommand[]
-  public timers: Map<string, TimerMessages>
+  // public timers: Map<string, TimerMessages>
   public logger: typeof Logger
 
   private options: TwurpleOptions
   private parser: typeof CommandParser
-  private db: Lowdb.LowdbSync<TwurpleConfig>
 
   constructor(options: TwurpleOptions) {
     super()
@@ -48,28 +47,31 @@ export class TwurpleClient extends EventEmitter {
     this.commands = []
     this.logger = Logger
     this.parser = CommandParser
-    this.timers = new Map<string, TimerMessages>()
+    // this.timers = new Map<string, TimerMessages>()
 
-    this.db = Lowdb(new FileSync<TwurpleConfig>(options.config))
+    this.config = this.lowdbAdapter<TwurpleConfig>({
+      path: options.config
+    })
+
     this.logger.info('Loading config file..')
-    this.config = this.db.getState()
   }
 
   async connect(): Promise<void> {
     this.registerCommands()
-    this.registerTimers()
-    this.logger.info('Current default prefix is ' + this.config.prefix)
+    // this.registerTimers()
+    this.logger.info('Current default prefix is ' + this.config.data.prefix)
 
     this.auth = new RefreshingAuthProvider(
       {
-        clientId: this.config.clientId,
-        clientSecret: this.config.clientSecret,
+        clientId: this.config.data.clientId,
+        clientSecret: this.config.data.clientSecret,
         onRefresh: (tokens) => {
           this.logger.info('Refreshing auth tokens..')
-          this.db.assign(tokens).write()
+          this.config.chain.assign(tokens)
+          this.config.write()
         }
       },
-      this.config
+      this.config.data
     )
 
     this.api = new ApiClient({
@@ -91,7 +93,7 @@ export class TwurpleClient extends EventEmitter {
         reconnect: true
       },
       authProvider: this.auth,
-      channels: this.config.channels,
+      channels: this.config.data.channels,
       logger: this.logger
     })
 
@@ -119,27 +121,27 @@ export class TwurpleClient extends EventEmitter {
       }, this)
   }
 
-  private registerTimers(): void {
-    const timers = this.findCommand({ command: 'timers' }) as Timers
+  // private registerTimers(): void {
+  //   const timers = this.findCommand({ command: 'timers' }) as Timers
 
-    this.logger.info(`Register timers..`)
+  //   this.logger.info(`Register timers..`)
 
-    for (const [channel, messages] of Object.entries(timers.messages.getState())) {
-      for (const { message, time } of Object.values(messages)) {
-        if (!Number(ms(time))) {
-          this.logger.error(`Invalid time format [#${channel}:${message}]`)
-        } else {
-          this.timers.set(channel, {
-            time,
-            message,
-            interval: setInterval(() => {
-              this.say(channel, message)
-            }, ms(time))
-          })
-        }
-      }
-    }
-  }
+  //   for (const [channel, messages] of Object.entries(timers.messages.getState())) {
+  //     for (const { message, time } of Object.values(messages)) {
+  //       if (!Number(ms(time))) {
+  //         this.logger.error(`Invalid time format [#${channel}:${message}]`)
+  //       } else {
+  //         this.timers.set(channel, {
+  //           time,
+  //           message,
+  //           interval: setInterval(() => {
+  //             this.say(channel, message)
+  //           }, ms(time))
+  //         })
+  //       }
+  //     }
+  //   }
+  // }
 
   private async onMessage(channel: string, userstate: ChatUserstate, messageText: string, self: boolean): Promise<void> {
     if (self) {
@@ -157,7 +159,7 @@ export class TwurpleClient extends EventEmitter {
 
     this.emit('message', msg)
 
-    const parserResult = this.parser.parse(messageText, this.config.prefix)
+    const parserResult = this.parser.parse(messageText, this.config.data.prefix)
 
     if (parserResult) {
       const command = this.findCommand(parserResult)
@@ -214,11 +216,17 @@ export class TwurpleClient extends EventEmitter {
     return this.tmi.getChannels()
   }
 
-  lowdbAdapter<T>(opts: { path: string, initialData?: T }): Lowdb.LowdbSync<T> {
-    const db = Lowdb(new FileSync<T>(opts.path))
+  lowdbAdapter<T extends object>(opts: { path: string, initialData?: T }): LowSync<T> {
+    const db = new LowSync<T>(
+      new JSONFileSync(opts.path)
+    )
 
-    if (opts.initialData) {
-      db.defaults(opts.initialData).write()
+    db.read()
+    db.chain = chain(db.data)
+
+    if (!db.data && opts.initialData) {
+      db.data ||= opts.initialData
+      db.write()
     }
 
     return db

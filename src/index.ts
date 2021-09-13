@@ -1,10 +1,25 @@
-/**
- * TODO: Сreate external library
- */
-export * from './client/TwurpleClient'
-export * from './client/CommandParser'
-export * from './client/BaseCommand'
-export * from './client/ChatChannel'
-export * from './client/ChatMessage'
-export * from './client/ChatUser'
-export * from './client/Logger'
+import { join } from 'path'
+import { ChatMessage } from './client/ChatMessage'
+import { TwurpleClient } from './client/TwurpleClient'
+
+import dotenv from 'dotenv'
+dotenv.config()
+
+const client = new TwurpleClient({
+  config: join(__dirname, '../config/config.json'),
+  commands: join(__dirname, './commands')
+})
+
+client.on('message', (msg: ChatMessage) => {
+  if (msg.text.startsWith(client.config.data.prefix)) {
+    return client.execCommand('sounds', msg)
+  }
+
+  if (!msg.author.isMods) {
+    client.execCommand('automod', msg)
+  }
+
+  client.execCommand('hsdeck', msg)
+})
+
+client.connect()
