@@ -11,10 +11,12 @@
   "accessToken": "",
   "refreshToken": "",
   "scope": [
-    "channel_editor",
     "channel:manage:broadcast",
+    "channel:manage:redemptions",
     "channel:moderate",
     "channel:read:editors",
+    "channel:read:redemptions",
+    "channel_editor",
     "chat:edit",
     "chat:read",
     "user:edit:broadcast",
