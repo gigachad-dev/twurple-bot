@@ -1,10 +1,10 @@
 import path from 'path'
-import Lowdb from 'lowdb'
+import { LowSync } from 'lowdb'
 import { randomInt, declOfNum } from '../utils'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
 export default class TprogerQuotes extends BaseCommand {
-  private quotes: Lowdb.LowdbSync<string[]>
+  private quotes: LowSync<string[]>
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -41,17 +41,17 @@ export default class TprogerQuotes extends BaseCommand {
     if (quote) {
       msg.actionSay(`#${++number}: ${quote}`)
     } else {
-      const count = this.quotes.getState().length
+      const count = this.quotes.data.length
       msg.reply(`Цитата не найдена! Всего в базе ${count} ${declOfNum(count, ['цитата', 'цитат', 'цитат'])}.`)
     }
   }
 
   random(msg: ChatMessage): void {
-    let number = randomInt(0, this.quotes.getState().length - 1)
+    let number = randomInt(0, this.quotes.data.length - 1)
     msg.actionSay(`#${++number}: ${this.getQuote(number)}`)
   }
 
-  getQuote(i: number): string {
-    return this.quotes.get(i).value()
+  getQuote(index: number): string {
+    return this.quotes.data[index]
   }
 }

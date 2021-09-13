@@ -1,5 +1,5 @@
 import path from 'path'
-import Lowdb from 'lowdb'
+import { LowSync } from 'lowdb'
 import { randomInt } from '../utils'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
@@ -9,7 +9,7 @@ interface IPokemons {
 }
 
 export default class Pokemons extends BaseCommand {
-  private pokemons: Lowdb.LowdbSync<IPokemons[]>
+  private pokemons: LowSync<IPokemons[]>
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -50,12 +50,12 @@ export default class Pokemons extends BaseCommand {
   }
 
   randomPokemon(msg: ChatMessage): void {
-    const pokemon = this.pokemons.get([randomInt(0, this.pokemons.getState().length - 1)]).value()
+    const pokemon = this.pokemons.data[randomInt(0, this.pokemons.data.length - 1)]
     msg.reply(`А ты что за покемон? Ты ${pokemon.name} KomodoHype modpixelmon.ru/${pokemon.id}`)
   }
 
   findPokemon(query: string): IPokemons {
-    return this.pokemons.getState().find(pokemon => {
+    return this.pokemons.data.find(pokemon => {
       // на английском
       if (pokemon.id.indexOf(query) > -1) {
         return pokemon

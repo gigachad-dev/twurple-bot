@@ -1,5 +1,5 @@
 import path from 'path'
-import Lowdb from 'lowdb'
+import { LowSync } from 'lowdb'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
 export interface TimerMessages {
@@ -11,7 +11,7 @@ export interface TimerMessages {
 export type ITimers = Record<string, TimerMessages>
 
 export default class Timers extends BaseCommand {
-  messages: Lowdb.LowdbSync<ITimers[]>
+  messages: LowSync<ITimers[]>
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -23,14 +23,6 @@ export default class Timers extends BaseCommand {
     this.messages = this.client.lowdbAdapter<ITimers[]>({
       path: path.join(__dirname, '../../config/timers.json')
     })
-
-    const channels = this.client.config.channels.map(channel => {
-      return {
-        [channel.replace('#', '')]: []
-      }
-    })
-
-    this.messages.defaults(...channels).write()
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> { }

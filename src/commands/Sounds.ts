@@ -1,9 +1,9 @@
 import path from 'path'
-import Lowdb from 'lowdb'
+import { LowSync } from 'lowdb'
 import { play } from 'sound-play'
 import { declOfNum } from '../utils'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 import migration from '../migrations/sounds.json'
+import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
 interface IPlaySound {
   options: {
@@ -30,7 +30,7 @@ interface CommandArgs {
 }
 
 export default class Sounds extends BaseCommand {
-  private db: Lowdb.LowdbSync<IPlaySound>
+  private db: LowSync<IPlaySound>
   private isPlaying: boolean
   private soundQueue: Sound[]
   private sounds: Sound[]
@@ -61,7 +61,7 @@ export default class Sounds extends BaseCommand {
       initialData: migration
     })
 
-    this.sounds = this.db.get('sounds').value()
+    this.sounds = this.db.data.sounds
     this.isPlaying = false
     this.soundQueue = []
     this.usedBy = []
@@ -104,7 +104,7 @@ export default class Sounds extends BaseCommand {
       })
 
       if (findSound) {
-        const { blacklist, cooldown, volume } = this.db.get('options').value()
+        const { blacklist, cooldown, volume } = this.db.data.options
 
         if (this.checkBlacklist(msg, name, blacklist)) {
           return

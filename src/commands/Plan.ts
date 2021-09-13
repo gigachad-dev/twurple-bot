@@ -1,5 +1,5 @@
 import path from 'path'
-import Lowdb from 'lowdb'
+import { LowSync } from 'lowdb'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
 interface IPlan {
@@ -7,7 +7,7 @@ interface IPlan {
 }
 
 export default class Plan extends BaseCommand {
-  private db: Lowdb.LowdbSync<IPlan>
+  private db: LowSync<IPlan>
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -33,11 +33,13 @@ export default class Plan extends BaseCommand {
 
   changePlan(msg: ChatMessage, args: string[]): void {
     const plan = args.join(' ')
-    this.db.assign({ plan }).write()
+    this.db.data.plan = plan
+    this.db.write()
     msg.reply(`План стрима изменен: ${plan}`)
   }
 
   printPlan(msg: ChatMessage): void {
-    msg.reply(this.db.get('plan').value() || 'План стрима отсутствует')
+    const plan = this.db.data.plan || 'План стрима отсутствует'
+    msg.reply(plan)
   }
 }

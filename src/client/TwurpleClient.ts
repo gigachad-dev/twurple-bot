@@ -1,9 +1,9 @@
 import ms from 'ms'
-import Lowdb from 'lowdb'
-import FileSync from 'lowdb/adapters/FileSync'
-import EventEmitter from 'events'
+import path from 'path'
+import lodash from 'lodash'
 import { readdirSync } from 'fs'
-import { join } from 'path'
+import { EventEmitter } from 'events'
+import { LowSync, JSONFileSync } from 'lowdb'
 
 import { ApiClient } from '@twurple/api'
 import { ChatUserstate, Client } from '@twurple/auth-tmi'
@@ -39,7 +39,7 @@ export class TwurpleClient extends EventEmitter {
 
   private options: TwurpleOptions
   private parser: typeof CommandParser
-  private db: Lowdb.LowdbSync<TwurpleConfig>
+  private db: LowSync<TwurpleConfig>
 
   constructor(options: TwurpleOptions) {
     super()
@@ -50,9 +50,13 @@ export class TwurpleClient extends EventEmitter {
     this.parser = CommandParser
     this.timers = new Map<string, TimerMessages>()
 
-    this.db = Lowdb(new FileSync<TwurpleConfig>(options.config))
+    this.db = this.lowdbAdapter<TwurpleConfig>({
+      path: options.config
+    })
+
     this.logger.info('Loading config file..')
-    this.config = this.db.getState()
+
+    this.config = this.db.data
   }
 
   async connect(): Promise<void> {
@@ -66,10 +70,11 @@ export class TwurpleClient extends EventEmitter {
         clientSecret: this.config.clientSecret,
         onRefresh: (tokens) => {
           this.logger.info('Refreshing auth tokens..')
-          this.db.assign(tokens).write()
+          Object.assign(this.db.data, tokens)
+          this.db.write()
         }
       },
-      this.config
+      this.db.data
     )
 
     this.api = new ApiClient({
@@ -103,7 +108,7 @@ export class TwurpleClient extends EventEmitter {
     readdirSync(this.options.commands)
       .filter(file => !file.includes('.d.ts'))
       .forEach(file => {
-        let commandFile = require(join(this.options.commands, file))
+        let commandFile = require(path.join(this.options.commands, file))
 
         if (typeof commandFile.default === 'function') {
           commandFile = commandFile.default
@@ -124,7 +129,7 @@ export class TwurpleClient extends EventEmitter {
 
     this.logger.info(`Register timers..`)
 
-    for (const [channel, messages] of Object.entries(timers.messages.getState())) {
+    for (const [channel, messages] of Object.entries(timers.messages.data)) {
       for (const { message, time } of Object.values(messages)) {
         if (!Number(ms(time))) {
           this.logger.error(`Invalid time format [#${channel}:${message}]`)
@@ -214,12 +219,22 @@ export class TwurpleClient extends EventEmitter {
     return this.tmi.getChannels()
   }
 
-  lowdbAdapter<T>(opts: { path: string, initialData?: T }): Lowdb.LowdbSync<T> {
-    const db = Lowdb(new FileSync<T>(opts.path))
+  lowdbAdapter<T extends object>(opts: { path: string, initialData?: T }): LowSync<T> {
+    const db = new LowSync<T>(
+      new JSONFileSync(opts.path)
+    )
 
-    if (opts.initialData) {
-      db.defaults(opts.initialData).write()
+    db.read()
+
+    if (!db.data && opts.initialData) {
+      this.logger.info(`Writing initial data to file: ${opts.path}`)
+      Object.assign(db, { data: opts.initialData })
+    } else if (!db.data) {
+      Object.assign(db, { data: {} })
     }
+
+    db.chain = lodash.chain(db.data)
+    db.write()
 
     return db
   }
