@@ -23,6 +23,7 @@ export default class Raid extends BaseCommand {
 
     if (streams.length) {
       const { userName } = streams[randomInt(0, streams.length - 1)]
+      msg.say(`Проводим рейд в количестве ${streams[0].viewers} зрителей на канал twitch.tv/${streams[0].userName}`)
       msg.say(`/raid ${userName}`)
     } else {
       msg.reply(`Стримов в разделе ${gameName} не найдено`)
