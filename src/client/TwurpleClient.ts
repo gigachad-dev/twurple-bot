@@ -13,7 +13,7 @@ import { Logger } from './Logger'
 import { BaseCommand } from './BaseCommand'
 import { ChatMessage, ChatterState } from './ChatMessage'
 import { CommandArguments, CommandParser } from './CommandParser'
-import Timers, { TimerMessages } from '../commands/Timers'
+import Timers, { ITimerMessages } from '../commands/Timers'
 
 export type TwurpleTokens = AccessToken & Omit<RefreshConfig, 'onRefresh'>
 
@@ -34,7 +34,7 @@ export class TwurpleClient extends EventEmitter {
   public auth: RefreshingAuthProvider
   public api: ApiClient
   public commands: BaseCommand[]
-  public timers: Map<string, TimerMessages>
+  public timers: Map<string, ITimerMessages>
   public logger: typeof Logger
 
   private options: TwurpleOptions
@@ -48,7 +48,7 @@ export class TwurpleClient extends EventEmitter {
     this.commands = []
     this.logger = Logger
     this.parser = CommandParser
-    this.timers = new Map<string, TimerMessages>()
+    this.timers = new Map<string, ITimerMessages>()
 
     this.db = this.lowdbAdapter<TwurpleConfig>({
       path: options.config
@@ -179,7 +179,7 @@ export class TwurpleClient extends EventEmitter {
     }
   }
 
-  findCommand(parserResult: Partial<CommandArguments>): BaseCommand {
+  findCommand(parserResult: Partial<CommandArguments>): BaseCommand | undefined {
     return this.commands.find(command => {
       if (command.options.aliases?.includes(parserResult.command)) {
         return command

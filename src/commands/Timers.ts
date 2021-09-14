@@ -2,13 +2,13 @@ import path from 'path'
 import { LowSync } from 'lowdb'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
-export interface TimerMessages {
+export interface ITimerMessages {
   time: string
   message: string
   interval: NodeJS.Timeout
 }
 
-export type ITimers = Record<string, TimerMessages>
+export type ITimers = Record<string, ITimerMessages>
 
 export default class Timers extends BaseCommand {
   messages: LowSync<ITimers[]>
