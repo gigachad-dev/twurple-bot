@@ -46,6 +46,12 @@ export interface CommandOptions {
   * The command is available only on the bot channel
   */
   botChannelOnly?: boolean
+
+  /**
+   * TextCommand
+   */
+  message?: string
+  sendType?: keyof typeof MessageType
 }
 
 export interface CommandArgument {
