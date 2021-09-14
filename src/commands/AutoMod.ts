@@ -64,7 +64,7 @@ export default class AutoMod extends BaseCommand {
 
   removeWord(msg: ChatMessage, word: string): void {
     if (this.findWord(word)) {
-      this.db.data.ban_words.filter(v => word !== v)
+      this.db.data.ban_words = this.db.data.ban_words.filter(v => word !== v)
       this.db.write()
       msg.reply('Rule successfully removed VoteYea')
     } else {
