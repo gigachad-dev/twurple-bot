@@ -3,6 +3,7 @@ import lodash from 'lodash'
 import { readdirSync } from 'fs'
 import { EventEmitter } from 'events'
 import { LowSync, JSONFileSync } from 'lowdb'
+import StrictEventEmitter from 'strict-event-emitter-types'
 
 import { ApiClient } from '@twurple/api'
 import { ChatUserstate, Client } from '@twurple/auth-tmi'
@@ -26,7 +27,13 @@ export interface TwurpleOptions {
   commands: string
 }
 
-export class TwurpleClient extends EventEmitter {
+export interface TwurpleEvents {
+  message: (msg: ChatMessage) => void
+}
+
+type TwurpleEmitter = StrictEventEmitter<EventEmitter, TwurpleEvents>
+
+export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
   public config: TwurpleConfig
   public tmi: Client
   public auth: RefreshingAuthProvider

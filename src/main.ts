@@ -1,5 +1,5 @@
 import { join } from 'path'
-import { TwurpleClient, ChatMessage } from './index'
+import { TwurpleClient } from './index'
 
 import dotenv from 'dotenv'
 dotenv.config()
@@ -9,7 +9,7 @@ const client = new TwurpleClient({
   commands: join(__dirname, './commands')
 })
 
-client.on('message', (msg: ChatMessage) => {
+client.on('message', (msg) => {
   if (msg.text.startsWith(client.config.prefix)) {
     return client.execCommand('sounds', msg)
   }
