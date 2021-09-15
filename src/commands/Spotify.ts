@@ -17,7 +17,8 @@ export default class Spotify extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'song',
-      userlevel: 'everyone'
+      userlevel: 'everyone',
+      description: 'Spotify now playing.'
     })
   }
 

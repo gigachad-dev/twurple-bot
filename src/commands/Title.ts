@@ -5,10 +5,10 @@ export default class Title extends BaseCommand {
     super(client, {
       name: 'title',
       userlevel: 'everyone',
-      description: 'Изменение название стрима',
+      description: 'Получение/изменение название стрима',
       examples: [
-        '!title',
-        '!title <text>'
+        'title',
+        'title <text>'
       ]
     })
   }

@@ -13,8 +13,7 @@ export default class YouTubeSearch extends BaseCommand {
         'видео'
       ],
       examples: [
-        '!youtube <query>',
-        '!видео <query>'
+        'youtube <query>'
       ]
     })
 

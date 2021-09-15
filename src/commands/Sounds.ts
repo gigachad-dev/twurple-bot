@@ -40,7 +40,7 @@ export default class Sounds extends BaseCommand {
     super(client, {
       name: 'sounds',
       userlevel: 'everyone',
-      description: 'Воспроизведение звуков',
+      description: 'Воспроизведение звуков на стриме',
       aliases: [
         'звуки'
       ],

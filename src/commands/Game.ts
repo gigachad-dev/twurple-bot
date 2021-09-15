@@ -10,8 +10,8 @@ export default class Game extends BaseCommand {
         'игра'
       ],
       examples: [
-        '!game',
-        '!game <game>'
+        'game',
+        'game <game>'
       ]
     })
   }

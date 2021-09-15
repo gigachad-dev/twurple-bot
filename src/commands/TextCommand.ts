@@ -1,17 +1,34 @@
 import path from 'path'
 import { LowSync } from 'lowdb'
-import { ChatMessage, BaseCommand, CommandOptions, MessageType, TwurpleClient, UserLevel, TextCommand } from '../index'
+import { ChatMessage, BaseCommand, CommandOptions, MessageType, TwurpleClient, UserLevel } from '../index'
 
 type ITextCommand = Pick<CommandOptions, 'name' | 'message' | 'sendType' | 'hideFromHelp' | 'userlevel'>
 
-export default class TextCommandsManager extends BaseCommand {
+class TextCommand extends BaseCommand {
+  constructor(client: TwurpleClient, options: CommandOptions) {
+    super(client, options)
+  }
+
+  async run(msg: ChatMessage) {
+    msg[this.options.sendType](this.options.message)
+  }
+}
+
+export default class TextCommandManager extends BaseCommand {
   private commands: LowSync<ITextCommand[]>
 
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'command',
       userlevel: 'regular',
-      hideFromHelp: true
+      description: 'Эта команда позволяет управлять текстовыми командами.',
+      examples: [
+        'command add <name> <message>',
+        'command remove <name>',
+        'command get <name>',
+        'command userlevel <userlevel>',
+        'command sendtype <sendtype>'
+      ]
     })
 
     this.commands = this.client.lowdbAdapter<ITextCommand[]>({

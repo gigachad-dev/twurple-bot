@@ -14,6 +14,7 @@ export default class RandomGachi extends BaseCommand {
     super(client, {
       name: 'gachi',
       userlevel: 'regular',
+      description: 'Рандомная ссылка на gachi видео',
       aliases: [
         'гачи'
       ]

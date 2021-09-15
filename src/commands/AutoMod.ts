@@ -41,7 +41,7 @@ export default class AutoMod extends BaseCommand {
           break
 
         default:
-          msg.reply(`Action argument ${action} not found`)
+          msg.reply(`Аргумент '${action}' не найден`)
       }
     } else {
       this.toggleAutoMod(msg)
@@ -56,9 +56,9 @@ export default class AutoMod extends BaseCommand {
     if (!this.findWord(word)) {
       this.db.data.ban_words.push(word)
       this.db.write()
-      msg.reply('Rule successfully added VoteYea')
+      msg.reply('Правило добавлено VoteYea')
     } else {
-      msg.reply('Rule already exists VoteNay')
+      msg.reply('Правило уже существует VoteNay')
     }
   }
 
@@ -66,9 +66,9 @@ export default class AutoMod extends BaseCommand {
     if (this.findWord(word)) {
       this.db.data.ban_words = this.db.data.ban_words.filter(v => word !== v)
       this.db.write()
-      msg.reply('Rule successfully removed VoteYea')
+      msg.reply('Правило удалено VoteYea')
     } else {
-      msg.reply('Rule not found VoteNay')
+      msg.reply('Правило не найдено VoteNay')
     }
   }
 
@@ -76,7 +76,7 @@ export default class AutoMod extends BaseCommand {
     const isEnabled = !this.db.data.enabled
     this.db.data.enabled = isEnabled
     this.db.write()
-    msg.reply(`AutoMod is turned ${isEnabled ? 'on VoteYea' : 'off VoteNay'}`)
+    msg.reply(`AutoMod ${isEnabled ? 'включен VoteYea' : 'выключен VoteNay'}`)
   }
 
   async execute(msg: ChatMessage): Promise<void> {

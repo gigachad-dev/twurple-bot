@@ -11,8 +11,8 @@ export default class Followage extends BaseCommand {
         'олд'
       ],
       examples: [
-        `${client.config.prefix}followage`,
-        `${client.config.prefix}followage <username>`
+        'followage',
+        'followage <username>'
       ],
       args: [
         {

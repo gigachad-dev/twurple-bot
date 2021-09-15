@@ -13,6 +13,7 @@ export default class Plan extends BaseCommand {
     super(client, {
       name: 'plan',
       userlevel: 'everyone',
+      description: 'План на стрим',
       aliases: [
         'план'
       ]

@@ -26,7 +26,7 @@ export default class Weather extends BaseCommand {
         'погода'
       ],
       examples: [
-        '!weather <location>'
+        'weather <location>'
       ]
     })
   }

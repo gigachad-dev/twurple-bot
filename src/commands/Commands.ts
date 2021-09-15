@@ -5,14 +5,10 @@ export default class Commands extends BaseCommand {
     super(client, {
       name: 'commands',
       userlevel: 'everyone',
-      description: `This command shows help for all commands. Send ${client.config.prefix}help <command> for detailed help on a command.`,
+      hideFromHelp: true,
       aliases: [
         'команды',
         'help'
-      ],
-      examples: [
-        `${client.config.prefix} commands`,
-        `${client.config.prefix} help <command>`
       ],
       args: [
         {
@@ -52,7 +48,7 @@ export default class Commands extends BaseCommand {
       let messageText = selectedCommand.options.description
 
       if (selectedCommand.options.examples?.length) {
-        messageText += ', Использование: ' + selectedCommand.options.examples.join(', ')
+        messageText += ', Использование: !' + selectedCommand.options.examples.join(', !')
       }
 
       if (messageText) {

@@ -13,7 +13,7 @@ export default class Aphorism extends BaseCommand {
     super(client, {
       name: 'aphorism',
       userlevel: 'everyone',
-      description: 'Рандомная афоризма в чат',
+      description: 'Случайный афоризм, цитата или фраза',
       aliases: [
         'афоризм'
       ]

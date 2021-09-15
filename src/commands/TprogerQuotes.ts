@@ -10,10 +10,10 @@ export default class TprogerQuotes extends BaseCommand {
     super(client, {
       name: 'quote',
       userlevel: 'everyone',
+      description: 'Цитаты с TProger',
       aliases: [
         'цитата'
       ],
-      description: 'Цитаты с TProger',
       args: [
         {
           type: Number,

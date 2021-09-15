@@ -20,8 +20,8 @@ export default class Pokemons extends BaseCommand {
         'покемон'
       ],
       examples: [
-        '!pokemon',
-        '!pokemon <name>'
+        'pokemon',
+        'pokemon <name>'
       ]
     })
 
