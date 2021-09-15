@@ -24,7 +24,7 @@ export default class Raid extends BaseCommand {
     if (streams.length) {
       if (msg.author.isMods) {
         const { userName } = streams[randomInt(0, streams.length - 1)]
-        msg.say(`Проводим рейд в количестве ${viewers} зрителей на канал ${streams[0].userName}`)
+        msg.say(`Проводим рейд в количестве ${viewers} зрителей на канал ${userName}`)
         msg.say(`/raid ${userName}`)
       } else {
         msg.reply('У вас недостаточно прав')
