@@ -104,6 +104,8 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     })
 
     this.tmi.on('message', this.onMessage.bind(this))
+    this.tmi.on('raided', this.onRaid.bind(this))
+
     await this.tmi.connect()
   }
 
@@ -158,6 +160,10 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
         }
       }
     }
+  }
+
+  private onRaid(channel: string, username: string, viewers: number): void {
+    this.say(channel, `${username} проводит рейд в количестве ${viewers} ${viewers ? 'зрителя' : 'зрителей'} KonCha`)
   }
 
   findCommand(parserResult: Partial<CommandArguments>): BaseCommand | undefined {
