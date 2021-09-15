@@ -1,4 +1,3 @@
-import ms from 'ms'
 import path from 'path'
 import lodash from 'lodash'
 import { readdirSync } from 'fs'
@@ -13,7 +12,6 @@ import { Logger } from './Logger'
 import { BaseCommand } from './BaseCommand'
 import { ChatMessage, ChatterState } from './ChatMessage'
 import { CommandArguments, CommandParser } from './CommandParser'
-import Timers, { ITimerMessages } from '../commands/Timers'
 
 export type TwurpleTokens = AccessToken & Omit<RefreshConfig, 'onRefresh'>
 
@@ -34,7 +32,6 @@ export class TwurpleClient extends EventEmitter {
   public auth: RefreshingAuthProvider
   public api: ApiClient
   public commands: BaseCommand[]
-  public timers: Map<string, ITimerMessages>
   public logger: typeof Logger
 
   private options: TwurpleOptions
@@ -48,7 +45,6 @@ export class TwurpleClient extends EventEmitter {
     this.commands = []
     this.logger = Logger
     this.parser = CommandParser
-    this.timers = new Map<string, ITimerMessages>()
 
     this.db = this.lowdbAdapter<TwurpleConfig>({
       path: options.config
@@ -61,7 +57,7 @@ export class TwurpleClient extends EventEmitter {
 
   async connect(): Promise<void> {
     this.registerCommands()
-    this.registerTimers()
+
     this.logger.info('Current default prefix is ' + this.config.prefix)
 
     this.auth = new RefreshingAuthProvider(
@@ -122,28 +118,6 @@ export class TwurpleClient extends EventEmitter {
           this.logger.warn(`${file} is not an instance of BaseCommand`)
         }
       }, this)
-  }
-
-  private registerTimers(): void {
-    const timers = this.findCommand({ command: 'timers' }) as Timers
-
-    this.logger.info(`Register timers..`)
-
-    for (const [channel, messages] of Object.entries(timers.messages.data)) {
-      for (const { message, time } of Object.values(messages)) {
-        if (!Number(ms(time))) {
-          this.logger.error(`Invalid time format [#${channel}:${message}]`)
-        } else {
-          this.timers.set(channel, {
-            time,
-            message,
-            interval: setInterval(() => {
-              this.say(channel, message)
-            }, ms(time))
-          })
-        }
-      }
-    }
   }
 
   private async onMessage(channel: string, userstate: ChatUserstate, messageText: string, self: boolean): Promise<void> {
