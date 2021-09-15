@@ -16,7 +16,6 @@
   "license": "MIT",
   "devDependencies": {
     "@types/lodash": "^4.14.172",
-    "@types/ms": "^0.7.31",
     "@types/node": "^16.7.6",
     "@types/sound-play": "^1.1.0",
     "dotenv": "^10.0.0",
@@ -36,7 +35,7 @@
     "html-entities": "^2.3.2",
     "lodash": "^4.17.21",
     "lowdb": "github:dankreiger/lowdb#chore/esm-cjs-hybrid-WITH-LIB",
-    "ms": "^2.1.3",
+    "ms": "^3.0.0-canary.1",
     "sound-play": "^1.1.0",
     "tmi.js": "^1.8.5",
     "winston": "^3.3.3",

@@ -1,10 +1,10 @@
-import ms from 'ms'
+import ms, { StringValue } from 'ms'
 import path from 'path'
 import { LowSync } from 'lowdb'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
 interface ITimerMessages {
-  time?: string
+  time?: StringValue
   message?: string
   interval: NodeJS.Timeout
 }
