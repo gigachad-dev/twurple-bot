@@ -40,7 +40,7 @@ export class Logger {
   }
 
   public static warn(message: string, module?: string): void {
-    this.logger.info(message, { module })
+    this.logger.warn(message, { module })
   }
 
   public static error(message: string, module?: string): void {
