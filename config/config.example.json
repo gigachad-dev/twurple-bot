@@ -5,6 +5,13 @@
   "botOwners": [
     "vs_code"
   ],
+  "ignoreList": [
+    "moobot",
+    "mirrobot",
+    "nightbot",
+    "streamlabs",
+    "streamelements"
+  ],
   "prefix": "!",
   "clientId": "",
   "clientSecret": "",

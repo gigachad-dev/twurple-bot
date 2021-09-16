@@ -19,6 +19,7 @@ export type TwurpleTokens = AccessToken & Omit<RefreshConfig, 'onRefresh'>
 export interface TwurpleConfig extends TwurpleTokens {
   channels: string[]
   botOwners: string[]
+  ignoreList: string[]
   prefix: string
 }
 
@@ -59,7 +60,13 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
 
     this.logger.info('Loading config file..')
 
-    this.config = this.db.data
+    const defaultConfig = {
+      prefix: '!',
+      botOwners: [],
+      ignoreList: []
+    } as const
+
+    this.config = Object.assign(defaultConfig, this.db.data)
   }
 
   async connect(): Promise<void> {
@@ -131,6 +138,10 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
 
   private async onMessage(channel: string, userstate: ChatUserstate, messageText: string, self: boolean): Promise<void> {
     if (self) {
+      return
+    }
+
+    if (this.config.ignoreList.includes(userstate.username)) {
       return
     }
 
