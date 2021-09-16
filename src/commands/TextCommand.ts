@@ -1,5 +1,6 @@
 import path from 'path'
 import { LowSync } from 'lowdb'
+import Commands from './Commands'
 import { ChatMessage, BaseCommand, CommandOptions, MessageType, TwurpleClient, UserLevel } from '../index'
 
 type ITextCommand = Pick<CommandOptions, 'name' | 'message' | 'sendType' | 'hideFromHelp' | 'userlevel'>
@@ -25,6 +26,7 @@ export default class TextCommandManager extends BaseCommand {
       examples: [
         'command add <name> <message>',
         'command remove <name>',
+        'command list',
         'command get <name>',
         'command userlevel <userlevel>',
         'command sendtype <sendtype>'
@@ -33,15 +35,7 @@ export default class TextCommandManager extends BaseCommand {
 
     this.commands = this.client.lowdbAdapter<ITextCommand[]>({
       path: path.join(__dirname, '../../config/commands.json'),
-      initialData: [
-        {
-          name: 'ping',
-          message: 'pong!',
-          sendType: 'reply',
-          userlevel: 'regular',
-          hideFromHelp: true
-        }
-      ]
+      initialData: []
     })
 
     this.commands.data.forEach(command => {
@@ -51,7 +45,7 @@ export default class TextCommandManager extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]) {
-    if (args.length > 1) {
+    if (args.length) {
       const action = args[0]
       args.shift()
       const command = args[0]
@@ -67,8 +61,8 @@ export default class TextCommandManager extends BaseCommand {
           this.removeCommand(msg, command)
           break
 
-        case 'name':
-          this.updateName(msg, command, options)
+        case 'list':
+          this.commandList(msg)
           break
 
         case 'get':
@@ -84,17 +78,19 @@ export default class TextCommandManager extends BaseCommand {
           break
 
         default:
-          msg.reply(`Action argument ${action} not found`)
+          msg.reply(`Аргумент '${action}' не найден`)
       }
+    } else {
+      Commands.commandHelp(msg, this.client.commands, this.options.name)
     }
   }
 
   addCommand(msg: ChatMessage, name: string, message: string): Promise<[string, string] | [string]> {
     if (!message.length) {
-      return msg.reply('Message argument required')
+      return msg.reply('Укажите сообщение команды')
     }
 
-    const command = this.findCommand(name)
+    const command = this.client.findCommand({ command: name })
 
     if (!command) {
       const newCommand: ITextCommand = {
@@ -109,9 +105,9 @@ export default class TextCommandManager extends BaseCommand {
       this.commands.data.push(newCommand)
       this.commands.write()
 
-      msg.reply(`Command successfully created: ${this.client.config.prefix}${name} — ${message}`)
+      msg.reply(`Команда создана: ${this.client.config.prefix}${name} - ${message}`)
     } else {
-      msg.reply('Command already exists')
+      msg.reply('Команда уже существует')
     }
   }
 
@@ -123,19 +119,34 @@ export default class TextCommandManager extends BaseCommand {
       this.commands.data = this.commands.data.filter(cmd => name !== cmd.name)
       this.commands.write()
 
-      msg.reply(`Command ${command.name} successfully removed`)
+      msg.reply(`Команда ${this.client.config.prefix}${command.name} удалена`)
     } else {
-      msg.reply(`Command ${name} is not found`)
+      msg.reply(`Команда ${this.client.config.prefix}${name} не найдена`)
+    }
+  }
+
+  commandList(msg: ChatMessage): void {
+    const commands = this.commands.data
+      .map(command => {
+        return this.client.config.prefix + command.name
+      })
+      .join(', ')
+
+    if (commands.length) {
+      msg.reply(`Текстовые команды: ${commands}`)
+    } else {
+      msg.reply(`Создайте свою первую команду, используя ${this.client.config.prefix}${this.options.examples[0]}`)
     }
   }
 
   getCommand(msg: ChatMessage, name: string): void {
-    const command = this.findCommand(name)
+    const command = this.client.findCommand({ command: name })
 
     if (command) {
-      msg.reply(`message: ${command.options.message}, userlevel: ${command.options.userlevel}, sendType: ${command.options.sendType}`)
+      const { message, userlevel, sendType } = command.options
+      msg.reply(`Параметры: message - ${message}, userlevel - ${userlevel}, sendType - ${sendType}`)
     } else {
-      msg.reply(`Command ${name} is not found`)
+      msg.reply(`Команда ${this.client.config.prefix}${name} не найдена`)
     }
   }
 
@@ -143,9 +154,10 @@ export default class TextCommandManager extends BaseCommand {
     const UserLevels = Object.values(UserLevel)
 
     if (UserLevels.includes(userlevel)) {
-      this.updateCommandOptions(msg, name, { userlevel })
+      this.updateCommandOptions(name, { userlevel })
+      msg.reply(`Уровень доступа обновлен: ${userlevel}`)
     } else {
-      msg.reply(`Available userlevels: ${UserLevels.join(', ')}`)
+      msg.reply(`Доступные аргументы: ${UserLevels.join(', ')}`)
     }
   }
 
@@ -153,13 +165,14 @@ export default class TextCommandManager extends BaseCommand {
     const SendTypes = Object.values(MessageType)
 
     if (SendTypes.includes(sendType)) {
-      this.updateCommandOptions(msg, name, { sendType })
+      this.updateCommandOptions(name, { sendType })
+      msg.reply(`Метод отправки сообщения обновлен: ${sendType}`)
     } else {
-      msg.reply(`Available send types: ${SendTypes.join(', ')}`)
+      msg.reply(`Доступные аргументы: ${SendTypes.join(', ')}`)
     }
   }
 
-  updateCommandOptions(msg: ChatMessage, name: string, { ...options }: Partial<ITextCommand>): void {
+  updateCommandOptions(name: string, { ...options }: Partial<ITextCommand>): void {
     const command = this.commands.data.find(command => command.name === name)
     Object.assign(command, options)
     this.commands.write()
@@ -172,27 +185,5 @@ export default class TextCommandManager extends BaseCommand {
         }
       }
     })
-
-    msg.reply('VoteYea')
-  }
-
-  updateName(msg: ChatMessage, command: string, name: string): void {
-    if (name.length) {
-      this.updateCommandOptions(msg, command, { name })
-    } else {
-      msg.reply('Message text required')
-    }
-  }
-
-  updateMessage(msg: ChatMessage, command: string, message: string): void {
-    if (message.length) {
-      this.updateCommandOptions(msg, command, { message })
-    } else {
-      msg.reply('Message text required')
-    }
-  }
-
-  findCommand(command: string): BaseCommand | undefined {
-    return this.client.findCommand({ command })
   }
 }

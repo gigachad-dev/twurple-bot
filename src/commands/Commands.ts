@@ -21,7 +21,7 @@ export default class Commands extends BaseCommand {
 
   async run(msg: ChatMessage, { command }: { command: string }): Promise<void> {
     if (command?.length) {
-      this.commandHelp(msg, command)
+      Commands.commandHelp(msg, this.client.commands, command)
     } else {
       this.commandList(msg)
     }
@@ -40,9 +40,9 @@ export default class Commands extends BaseCommand {
     msg.reply(`Команды: ${commands}`)
   }
 
-  commandHelp(msg: ChatMessage, command: string): void {
-    const selectedCommand = this.client.commands.find(({ options }) => {
-      return options.name === command && !options.hideFromHelp
+  static commandHelp(msg: ChatMessage, commands: BaseCommand[], name: string): void {
+    const selectedCommand = commands.find(({ options }) => {
+      return options.name === name && !options.hideFromHelp
     })
 
     if (selectedCommand) {
