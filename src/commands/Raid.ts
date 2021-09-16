@@ -11,26 +11,27 @@ export default class Raid extends BaseCommand {
   }
 
   async run(msg: ChatMessage): Promise<void> {
-    const { gameId, gameName, viewers } = await this.client.api.streams.getStreamByUserId(msg.channel.id)
-    const { data } = await this.client.api.streams.getStreams({
-      game: gameId,
-      language: 'ru',
-      type: 'live',
-      limit: 100
-    })
+    const stream = await this.client.api.streams.getStreamByUserId(msg.channel.id)
 
-    const streams = data.filter(stream => stream.userId !== msg.channel.id)
+    if (stream) {
+      const { data } = await this.client.api.streams.getStreams({
+        game: stream.gameId,
+        language: 'ru',
+        type: 'live',
+        limit: 100
+      })
 
-    if (streams.length) {
-      if (msg.author.isMods) {
+      const streams = data.filter(stream => stream.userId !== msg.channel.id)
+
+      if (streams.length) {
         const { userName } = streams[randomInt(0, streams.length - 1)]
-        msg.say(`Проводим рейд в количестве ${viewers} зрителей на канал ${userName}`)
         msg.say(`/raid ${userName}`)
+        msg.say(`Проводим рейд в количестве ${stream.viewers} зрителей на канал ${userName}`)
       } else {
-        msg.reply('У вас недостаточно прав')
+        msg.reply(`Стримов в разделе ${stream.gameName} не найдено`)
       }
     } else {
-      msg.reply(`Стримов в разделе ${gameName} не найдено`)
+      msg.reply('Канал не в сети')
     }
   }
 }
