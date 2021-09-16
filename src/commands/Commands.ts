@@ -28,15 +28,16 @@ export default class Commands extends BaseCommand {
   }
 
   async commandList(msg: ChatMessage): Promise<void> {
-    const commands: string[] = []
+    const commands = this.client.commands
+      .map(command => {
+        if (!command.options.hideFromHelp) {
+          return this.client.config.prefix + command.options.name
+        }
+      })
+      .filter(command => command !== undefined)
+      .join(', ')
 
-    for (const cmd of this.client.commands) {
-      if (!cmd.options.hideFromHelp) {
-        commands.push(this.client.config.prefix + cmd.options.name)
-      }
-    }
-
-    msg.reply(`Команды: ${commands.join(', ')}`)
+    msg.reply(`Команды: ${commands}`)
   }
 
   commandHelp(msg: ChatMessage, command: string): void {
