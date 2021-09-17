@@ -20,5 +20,3 @@ client.on('message', (msg) => {
 
   client.execCommand('hsdeck', msg)
 })
-
-client.connect()

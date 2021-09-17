@@ -13,6 +13,7 @@ import { Logger } from './Logger'
 import { BaseCommand } from './BaseCommand'
 import { ChatMessage, ChatterState } from './ChatMessage'
 import { CommandArguments, CommandParser } from './CommandParser'
+import { Server } from '../server'
 
 export type TwurpleTokens = AccessToken & Omit<RefreshConfig, 'onRefresh'>
 
@@ -20,7 +21,12 @@ export interface TwurpleConfig extends TwurpleTokens {
   channels: string[]
   botOwners: string[]
   ignoreList: string[]
+  scopes: string[],
   prefix: string
+  server: {
+    hostname: string
+    port: number
+  }
 }
 
 export interface TwurpleOptions {
@@ -45,6 +51,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
   private options: TwurpleOptions
   private parser: typeof CommandParser
   private db: LowSync<TwurpleConfig>
+  private server: Server
 
   constructor(options: TwurpleOptions) {
     super()
@@ -63,29 +70,61 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     const defaultConfig = {
       prefix: '!',
       botOwners: [],
-      ignoreList: []
+      ignoreList: [],
+      scope: [
+        'channel:manage:broadcast',
+        'channel:manage:redemptions',
+        'channel:moderate',
+        'channel:read:editors',
+        'channel:read:redemptions',
+        'channel_editor',
+        'chat:edit',
+        'chat:read',
+        'user:edit:broadcast',
+        'user:read:broadcast',
+        'whispers:edit',
+        'whispers:read'
+      ],
+      server: {
+        hostname: 'localhost',
+        port: 3000
+      }
     } as const
 
     this.config = Object.assign(defaultConfig, this.db.data)
+
+    this.auth = new RefreshingAuthProvider(
+      {
+        clientId: this.config.clientId,
+        clientSecret: this.config.clientSecret,
+        onRefresh: (tokens) => this.updateTokens(tokens)
+      },
+      this.db.data
+    )
+
+    this.server = new Server(this)
+
+    this.server.app.listen(this.config.server.port, this.config.server.hostname, () => {
+      this.logger.warn(`Server now listening on http://${this.config.server.hostname}:${this.config.server.port}`)
+
+      this.auth.refresh().then(() => {
+        this.connect()
+      }).catch(() => {
+        this.logger.info(`Login with twitch http://${this.config.server.hostname}:${this.config.server.port}/twitch/auth`)
+      })
+    })
+  }
+
+  updateTokens(tokens: AccessToken) {
+    this.logger.info('Refreshing auth tokens..')
+    Object.assign(this.db.data, tokens)
+    this.db.write()
   }
 
   async connect(): Promise<void> {
     this.registerCommands()
 
     this.logger.info('Current default prefix is ' + this.config.prefix)
-
-    this.auth = new RefreshingAuthProvider(
-      {
-        clientId: this.config.clientId,
-        clientSecret: this.config.clientSecret,
-        onRefresh: (tokens) => {
-          this.logger.info('Refreshing auth tokens..')
-          Object.assign(this.db.data, tokens)
-          this.db.write()
-        }
-      },
-      this.db.data
-    )
 
     this.api = new ApiClient({
       authProvider: this.auth,
