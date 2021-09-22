@@ -1,7 +1,13 @@
 import got from 'got'
-import { AccessToken } from '@twurple/auth'
 import { TwurpleClient } from '../../client/TwurpleClient'
 import { Request, Response, NextFunction } from 'express'
+
+interface TwitchTokens {
+  scope: string[]
+  access_token: string
+  refresh_token: string
+  expires_in: number
+}
 
 export class TwitchControllers {
   private authRedirect: string
@@ -33,7 +39,7 @@ export class TwitchControllers {
     if (code && typeof code === 'string') {
       try {
         const data = await this.getAuthToken(code)
-        this.client.updateTokens(data as AccessToken)
+        this.client.updateTokens(data)
         await this.client.connect()
         res.json({ success: true, data })
       } catch (err) {
@@ -45,7 +51,7 @@ export class TwitchControllers {
   }
 
   private async getAuthToken(code: string) {
-    const response = await got<any>('https://id.twitch.tv/oauth2/token', {
+    const response = await got<TwitchTokens>('https://id.twitch.tv/oauth2/token', {
       method: 'POST',
       responseType: 'json',
       searchParams: {
@@ -68,7 +74,8 @@ export class TwitchControllers {
       scope,
       accessToken: access_token,
       refreshToken: refresh_token,
-      expiresIn: expires_in
+      expiresIn: expires_in,
+      obtainmentTimestamp: +new Date
     }
   }
 }

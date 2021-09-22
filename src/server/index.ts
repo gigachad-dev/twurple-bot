@@ -1,6 +1,6 @@
 import cors from 'cors'
 import express, { Express } from 'express'
-import { Twitch } from './routes/twitch.router'
+import twitch from './routes/twitch.router'
 import { TwurpleClient } from '../client/TwurpleClient'
 
 export class Server {
@@ -15,6 +15,6 @@ export class Server {
     this.app.use(cors())
     this.app.use(express.json())
 
-    new Twitch(this.client, this.app)
+    twitch(this.client, this.app)
   }
 }
