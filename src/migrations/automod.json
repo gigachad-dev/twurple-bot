@@ -2,8 +2,10 @@
   "enabled": true,
   "ban_words": [
     "bigfollows",
+    "strеamdеtаils",
     "strеam dеtаils",
     "strеamdеtаilsвоt",
+    "streamdеtаilsbot",
     "g et vie wers pr o"
   ]
 }
