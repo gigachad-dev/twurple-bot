@@ -5,7 +5,7 @@ import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
 interface IAutoMod {
   enabled: boolean
-  ban_words: string[]
+  rules: string[]
 }
 
 export default class AutoMod extends BaseCommand {
@@ -49,12 +49,12 @@ export default class AutoMod extends BaseCommand {
   }
 
   findWord(word: string): string | undefined {
-    return this.db.data.ban_words.find(v => word === v)
+    return this.db.data.rules.find(v => word === v)
   }
 
   addWord(msg: ChatMessage, word: string): void {
     if (!this.findWord(word)) {
-      this.db.data.ban_words.push(word)
+      this.db.data.rules.push(word)
       this.db.write()
       msg.reply('Правило добавлено VoteYea')
     } else {
@@ -64,7 +64,7 @@ export default class AutoMod extends BaseCommand {
 
   removeWord(msg: ChatMessage, word: string): void {
     if (this.findWord(word)) {
-      this.db.data.ban_words = this.db.data.ban_words.filter(v => word !== v)
+      this.db.data.rules = this.db.data.rules.filter(v => word !== v)
       this.db.write()
       msg.reply('Правило удалено VoteYea')
     } else {
@@ -79,28 +79,27 @@ export default class AutoMod extends BaseCommand {
     msg.reply(`AutoMod ${isEnabled ? 'включен VoteYea' : 'выключен VoteNay'}`)
   }
 
-  async execute(msg: ChatMessage): Promise<void> {
+  async execute(msg: ChatMessage): Promise<[string]> {
     if (this.db.data.enabled) {
       const message = msg.text.toLowerCase()
+      const includes = (value: string) => message.indexOf(value) !== -1
 
-      this.db.data.ban_words.find(async (word) => {
-        if (message.indexOf(word) > -1) {
-          const { total } = await this.client.api.users.getFollows({
-            user: msg.author.id,
-            followedUser: msg.channel.id
-          })
+      if (this.db.data.rules.some(includes)) {
+        const { total } = await this.client.api.users.getFollows({
+          user: msg.author.id,
+          followedUser: msg.channel.id
+        })
 
-          if (total) {
-            if ((msg.author.isVip || msg.author.isSubscriber) && !msg.author.isMods) {
-              return this.client.tmi.deletemessage(msg.channel.name, msg.id)
-            }
-
-            return this.client.tmi.timeout(msg.channel.name, msg.author.username, 600, `Reason: ${word}`)
-          } else {
-            return this.client.tmi.ban(msg.channel.name, msg.author.username, `Banned: ${word}`)
+        if (total) {
+          if ((msg.author.isVip || msg.author.isSubscriber)) {
+            return this.client.tmi.deletemessage(msg.channel.name, msg.id)
           }
+
+          this.client.tmi.timeout(msg.channel.name, msg.author.username, 600)
+        } else {
+          this.client.tmi.ban(msg.channel.name, msg.author.username)
         }
-      })
+      }
     }
   }
 }
