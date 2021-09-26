@@ -21,7 +21,8 @@ export default class AutoMod extends BaseCommand {
 
     this.db = this.client.lowdbAdapter<IAutoMod>({
       path: path.join(__dirname, '../../config/automod.json'),
-      initialData: migration
+      initialData: migration,
+      merge: ['rules']
     })
   }
 

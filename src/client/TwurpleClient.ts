@@ -241,7 +241,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     return this.tmi.getChannels()
   }
 
-  lowdbAdapter<T extends object>(opts: { path: string, initialData?: T }): LowSync<T> {
+  lowdbAdapter<T extends object>(opts: { path: string, initialData?: T, merge?: Array<keyof T> }): LowSync<T> {
     const db = new LowSync<T>(
       new JSONFileSync(opts.path)
     )
@@ -253,6 +253,20 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
       Object.assign(db, { data: opts.initialData })
     } else if (!db.data) {
       Object.assign(db, { data: {} })
+    }
+
+    if (opts.merge) {
+      for (const key of opts.merge) {
+        if (typeof db.data[key] === 'object') {
+          lodash(db.data)
+            .keyBy(key)
+            .merge(lodash.keyBy(opts.initialData, key))
+            .values()
+            .value()
+        } else {
+          db.data[key] = opts.initialData[key]
+        }
+      }
     }
 
     db.chain = lodash.chain(db.data)
