@@ -70,6 +70,24 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
       prefix: '!',
       botOwners: [],
       ignoreList: [],
+      scope: [
+        'channel:manage:broadcast',
+        'channel:manage:redemptions',
+        'channel:moderate',
+        'channel:read:editors',
+        'channel:read:redemptions',
+        'channel_editor',
+        'chat:edit',
+        'chat:read',
+        'user:edit:broadcast',
+        'user:read:broadcast',
+        'whispers:edit',
+        'whispers:read',
+        'channel:manage:polls',
+        'channel:manage:predictions',
+        'channel:read:polls',
+        'channel:read:predictions'
+      ],
       server: {
         hostname: 'localhost',
         port: 3000
