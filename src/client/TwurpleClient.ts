@@ -94,7 +94,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
       }
     } as const
 
-    this.config = Object.assign(defaultConfig, this.db.data)
+    this.config = Object.assign(this.db.data, defaultConfig)
 
     this.auth = new RefreshingAuthProvider(
       {
