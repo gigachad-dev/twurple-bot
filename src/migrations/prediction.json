@@ -1,6 +1,15 @@
 {
   "options": {
-    "enabled": true
+    "enabled": true,
+    "channel_id": "155644238",
+    "prediction": {
+      "title": "Стример выиграет?",
+      "outcomes": [
+        "Выиграет",
+        "Лузанет, как обычно"
+      ],
+      "autoLockAfter": 120
+    }
   },
   "winners": {},
   "losers": {}
