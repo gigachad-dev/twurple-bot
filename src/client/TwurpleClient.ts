@@ -216,7 +216,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
   }
 
   private onRaid(channel: string, username: string, viewers: number): void {
-    this.say(channel, `${username} проводит рейд в количестве ${viewers} ${viewers ? 'зрителя' : 'зрителей'} KonCha`)
+    this.say(channel, `${username} проводит рейд в количестве ${viewers} ${viewers === 1 ? 'зрителя' : 'зрителей'} KonCha`)
   }
 
   findCommand(parserResult: Partial<CommandArguments>): BaseCommand | undefined {
