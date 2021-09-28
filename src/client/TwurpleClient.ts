@@ -108,7 +108,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     this.server = new Server(this)
 
     this.server.app.listen(this.config.server.port, this.config.server.hostname, () => {
-      this.logger.warn(`Server now listening on http://${this.config.server.hostname}:${this.config.server.port}`)
+      this.logger.info(`Server now listening on http://${this.config.server.hostname}:${this.config.server.port}`)
 
       this.auth.refresh().then(() => {
         this.connect()
