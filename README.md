@@ -1,6 +1,6 @@
 ## Создание Twitch приложения
 
-Перейдите в [консоль разработчика Twitch](https://dev.twitch.tv/console/apps) и создайте новое приложение. Если вы не знаете, что такое OAuth Redirect URL перенаправления, то используйте `http://localhost:550/twitch/callback`. Запишите где-нибудь идентификатор клиента (`clientId`) и секретный код клиента (`clientSecret`).
+Перейдите в [консоль разработчика Twitch](https://dev.twitch.tv/console/apps) и создайте новое приложение. Если вы не знаете, что такое OAuth Redirect URL перенаправления, то используйте `http://localhost:5500/twitch/callback`. Запишите где-нибудь идентификатор клиента (`clientId`) и секретный код клиента (`clientSecret`).
 
 ## Конфигурация
 
