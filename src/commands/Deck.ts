@@ -23,13 +23,13 @@ interface ShortURLResponse {
   shortURL: string
 }
 
-export default class HearthstoneDeck extends BaseCommand {
+export default class Deck extends BaseCommand {
   private heroes: HsHeroes[]
   private formats: HsFormats[]
 
   constructor(client: TwurpleClient) {
     super(client, {
-      name: 'hsdeck',
+      name: 'deck',
       userlevel: 'everyone',
       description: 'Decode Hearthstone deckstrings',
       hideFromHelp: true
@@ -107,6 +107,7 @@ export default class HearthstoneDeck extends BaseCommand {
   }
 
   async run(msg: ChatMessage): Promise<void> {
+    // TODO: deck code of your currently active deck
     msg.reply(this.options.description)
   }
 

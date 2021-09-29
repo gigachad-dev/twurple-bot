@@ -1,21 +1,13 @@
-# Twurple Bot
+## Создание Twitch приложения
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-green.svg?label=License)](https://github.com/twurple/twurple/blob/main/LICENSE)
-[![npm version](https://img.shields.io/npm/v/@twurple/auth.svg?style=flat&label=@twurple/auth)](https://www.npmjs.com/package/@twurple/auth)
-![GitHub package.json version](https://img.shields.io/github/package-json/v/crashmax-dev/twurple-bot?label=Twurple%20Bot)
+Перейдите в [консоль разработчика Twitch](https://dev.twitch.tv/console/apps) и создайте новое приложение. Если вы не знаете, что такое OAuth Redirect URL перенаправления, то используйте `http://localhost:550/twitch/callback`. Запишите где-нибудь идентификатор клиента (`clientId`) и секретный код клиента (`clientSecret`).
 
-## 1. Create a Twitch application
+## Конфигурация
 
-Go to your [Twitch developer console](https://dev.twitch.tv/console/apps) and create a new application. If you don't know what a Redirect URI is, use `http://localhost:3030/twitch/auth`. Write down Client ID and Client Secret somewhere - you're gonna need them!
+В папке `config` создайте файл `config.json`, аналогичный [`config.example.json`](/config/config.example.json). Заполните поля `clientId` и `clientSecret`.
 
-## 2. Create config file & environment
+## Запуск
 
-Create a `config.json` file similar to [`config.example.json`](config/config.example.json). Write the `clientId` and `clientSecret`
-Create a `.env` file similar to [`.env.example`](.env.example)
-
-## 3. Running
-
-```bash
-npm install
-npm start
-```
+ - Установите [NodeJS 14+](https://nodejs.org/en/)
+ - Запустите установки зависимостей [`install.bat`](/install.bat)
+ - Запуск бота [`start.bat`](/start.bat)

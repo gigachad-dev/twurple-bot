@@ -9,7 +9,7 @@ export default class TextToSpeech extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'tts',
-      userlevel: 'vip',
+      userlevel: 'regular',
       description: 'Text to speech'
     })
 

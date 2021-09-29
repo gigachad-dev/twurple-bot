@@ -1,6 +1,5 @@
 import path from 'path'
 import { LowSync } from 'lowdb'
-import Commands from './Commands'
 import { ChatMessage, BaseCommand, CommandOptions, MessageType, TwurpleClient, UserLevel } from '../index'
 
 type ITextCommand = Pick<CommandOptions, 'name' | 'message' | 'sendType' | 'hideFromHelp' | 'userlevel'>
@@ -81,7 +80,29 @@ export default class TextCommandManager extends BaseCommand {
           msg.reply(`Аргумент '${action}' не найден`)
       }
     } else {
-      Commands.commandHelp(msg, this.client.commands, this.options.name)
+      this.commandHelp(msg, this.options.name)
+    }
+  }
+
+  commandHelp(msg: ChatMessage, name: string): void {
+    const selectedCommand = this.client.commands.find(({ options }) => {
+      return options.name === name && !options.hideFromHelp
+    })
+
+    if (selectedCommand) {
+      let messageText = selectedCommand.options.description
+
+      if (selectedCommand.options.examples?.length) {
+        messageText += ', Использование: !' + selectedCommand.options.examples.join(', !')
+      }
+
+      if (messageText) {
+        msg.reply(messageText)
+      } else {
+        msg.reply('Информация о команде отсутствует')
+      }
+    } else {
+      msg.reply('Команда не найдена')
     }
   }
 

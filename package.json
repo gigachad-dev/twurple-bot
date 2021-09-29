@@ -19,8 +19,6 @@
     "@types/express": "^4.17.13",
     "@types/lodash": "^4.14.175",
     "@types/node": "^16.10.1",
-    "@types/sound-play": "^1.1.0",
-    "dotenv": "^10.0.0",
     "nodemon": "^2.0.13",
     "rimraf": "^3.0.2",
     "strict-event-emitter-types": "^2.0.0",
@@ -37,13 +35,9 @@
     "deckstrings": "^2.2.1",
     "express": "^4.17.1",
     "got": "^11.8.2",
-    "html-entities": "^2.3.2",
     "lodash": "^4.17.21",
     "lowdb": "github:dankreiger/lowdb#chore/esm-cjs-hybrid-WITH-LIB",
-    "ms": "^3.0.0-canary.1",
-    "sound-play": "^1.1.0",
     "tmi.js": "^1.8.5",
-    "winston": "^3.3.3",
-    "youtube-search": "^1.1.6"
+    "winston": "^3.3.3"
   }
 }

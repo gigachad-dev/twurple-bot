@@ -71,22 +71,11 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
       botOwners: [],
       ignoreList: [],
       scope: [
-        'channel:manage:broadcast',
-        'channel:manage:redemptions',
-        'channel:moderate',
-        'channel:read:editors',
-        'channel:read:redemptions',
-        'channel_editor',
         'chat:edit',
         'chat:read',
-        'user:edit:broadcast',
-        'user:read:broadcast',
-        'whispers:edit',
-        'whispers:read',
-        'channel:manage:polls',
-        'channel:manage:predictions',
-        'channel:read:polls',
-        'channel:read:predictions'
+        'channel:moderate',
+        'channel:read:predictions',
+        'channel:manage:predictions'
       ],
       server: {
         hostname: 'localhost',
@@ -153,8 +142,6 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     })
 
     this.tmi.on('message', this.onMessage.bind(this))
-    this.tmi.on('raided', this.onRaid.bind(this))
-
     await this.tmi.connect()
   }
 
@@ -213,10 +200,6 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
         }
       }
     }
-  }
-
-  private onRaid(channel: string, username: string, viewers: number): void {
-    this.say(channel, `${username} проводит рейд в количестве ${viewers} ${viewers === 1 ? 'зрителя' : 'зрителей'} KonCha`)
   }
 
   findCommand(parserResult: Partial<CommandArguments>): BaseCommand | undefined {

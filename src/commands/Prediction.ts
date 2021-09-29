@@ -28,7 +28,7 @@ export default class Prediction extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'prediction',
-      userlevel: 'everyone',
+      userlevel: 'regular',
       hideFromHelp: true,
       args: [
         {
@@ -50,7 +50,7 @@ export default class Prediction extends BaseCommand {
 
   async run(msg: ChatMessage, { action }: { action: string }): Promise<void> {
     // TODO: Prediction everyone commands
-    if (msg.channel.id === this.channel_id && msg.author.isMods) {
+    if (msg.channel.id === this.channel_id) {
       if (action) {
         this.onAction(action)
       } else {
