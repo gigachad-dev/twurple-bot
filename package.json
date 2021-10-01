@@ -35,6 +35,7 @@
     "deckstrings": "^2.2.1",
     "express": "^4.17.1",
     "got": "^11.8.2",
+    "hearthstone-parser": "^5.5.0",
     "lodash": "^4.17.21",
     "lowdb": "github:dankreiger/lowdb#chore/esm-cjs-hybrid-WITH-LIB",
     "tmi.js": "^1.8.5",
