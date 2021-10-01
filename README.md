@@ -6,7 +6,7 @@
 
 ## 1. Create a Twitch application
 
-Go to your [Twitch developer console](https://dev.twitch.tv/console/apps) and create a new application. If you don't know what a Redirect URI is, use `http://localhost:3030/twitch/auth`. Write down Client ID and Client Secret somewhere - you're gonna need them!
+Go to your [Twitch developer console](https://dev.twitch.tv/console/apps) and create a new application. If you don't know what a Redirect URI is, use `http://localhost:3030/twitch/callback`. Write down Client ID and Client Secret somewhere - you're gonna need them!
 
 ## 2. Create config file & environment
 
