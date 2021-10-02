@@ -80,7 +80,7 @@ export default class AutoMod extends BaseCommand {
     msg.reply(`AutoMod ${isEnabled ? 'включен VoteYea' : 'выключен VoteNay'}`)
   }
 
-  async execute(msg: ChatMessage): Promise<[string]> {
+  async execute(msg: ChatMessage): Promise<void> {
     if (this.db.data.enabled) {
       const message = msg.text.toLowerCase()
       const word = this.db.data.rules.find(word => message.indexOf(word) !== -1)
@@ -93,15 +93,15 @@ export default class AutoMod extends BaseCommand {
 
         if (total) {
           if ((msg.author.isVip || msg.author.isSubscriber)) {
-            return this.client.tmi.deletemessage(msg.channel.name, msg.id)
+            this.client.tmi.deletemessage(msg.channel.name, msg.id)
+          } else {
+            this.client.tmi.timeout(msg.channel.name, msg.author.username, 600)
           }
-
-          this.client.tmi.timeout(msg.channel.name, msg.author.username, 600)
         } else {
           this.client.tmi.ban(msg.channel.name, msg.author.username)
         }
 
-        this.client.say(msg.channel.name, `@${msg.author.displayName} отлетаешь по причине: ${word.slice(0, 2) + '*'.repeat(word.length - 2)} OSFrog`)
+        msg.reply(`Отлетаешь по причине: ${word.slice(0, 2) + '*'.repeat(word.length - 2)} OSFrog`)
       }
     }
   }
