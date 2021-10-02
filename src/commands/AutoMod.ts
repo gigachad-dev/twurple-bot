@@ -83,9 +83,9 @@ export default class AutoMod extends BaseCommand {
   async execute(msg: ChatMessage): Promise<[string]> {
     if (this.db.data.enabled) {
       const message = msg.text.toLowerCase()
-      const includes = (value: string) => message.indexOf(value) !== -1
+      const word = this.db.data.rules.find(word => message.indexOf(word) !== -1)
 
-      if (this.db.data.rules.some(includes)) {
+      if (word) {
         const { total } = await this.client.api.users.getFollows({
           user: msg.author.id,
           followedUser: msg.channel.id
@@ -100,6 +100,8 @@ export default class AutoMod extends BaseCommand {
         } else {
           this.client.tmi.ban(msg.channel.name, msg.author.username)
         }
+
+        msg.reply(`Отлетаешь по причине: ${word.slice(0, 2) + '*'.repeat(word.length - 2)} OSFrog`)
       }
     }
   }
