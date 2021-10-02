@@ -101,7 +101,7 @@ export default class AutoMod extends BaseCommand {
           this.client.tmi.ban(msg.channel.name, msg.author.username)
         }
 
-        msg.reply(`Отлетаешь по причине: ${word.slice(0, 2) + '*'.repeat(word.length - 2)} OSFrog`)
+        this.client.say(msg.channel.name, `@${msg.author.displayName} отлетаешь по причине: ${word.slice(0, 2) + '*'.repeat(word.length - 2)} OSFrog`)
       }
     }
   }
