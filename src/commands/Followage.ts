@@ -1,4 +1,4 @@
-import { declOfNum } from '../utils'
+import { declOfNum, dateDiff } from '../utils'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
 
 export default class Followage extends BaseCommand {
@@ -40,8 +40,8 @@ export default class Followage extends BaseCommand {
 
   async followByBroadcaster(msg: ChatMessage): Promise<void> {
     const { creationDate } = await this.getUserInfo(msg.channel.name)
-    const { date, days } = this.formatDate(creationDate)
-    msg.reply(`Стример родился ${date} (${days})`)
+    const { formatDate, days } = this.formatDate(creationDate)
+    msg.reply(`Стример родился ${formatDate} (${days})`)
   }
 
   async followByUsername(msg: ChatMessage, username: string): Promise<void> {
@@ -50,8 +50,8 @@ export default class Followage extends BaseCommand {
       const { total, user } = await this.getFollows(id, msg.channel.id)
 
       if (total) {
-        const { date, days } = this.formatDate(user.followDate)
-        msg.reply(`${displayName} отслеживает канал с ${date} (${days})`)
+        const { formatDate, days } = this.formatDate(user.followDate)
+        msg.reply(`${displayName} отслеживает канал с ${formatDate} (${days})`)
       } else {
         msg.reply(`Пользователь ${displayName} не подписан`)
       }
@@ -64,8 +64,8 @@ export default class Followage extends BaseCommand {
     const { total, user } = await this.getFollows(msg.author.id, msg.channel.id)
 
     if (total) {
-      const { date, days } = this.formatDate(user.followDate)
-      msg.reply(`отслеживает канал с ${date} (${days})`)
+      const { formatDate, days } = this.formatDate(user.followDate)
+      msg.reply(`отслеживает канал с ${formatDate} (${days})`)
     } else {
       msg.reply(`Подпишись на канал SMOrc`)
     }
@@ -84,21 +84,11 @@ export default class Followage extends BaseCommand {
   }
 
   formatDate(startDate: string | number | Date) {
-    const date = new Intl.DateTimeFormat('ru-RU', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      timeZone: 'UTC'
-    }).format(new Date(startDate))
-
-    const days = Math.ceil(
-      (Date.now() - new Date(startDate).getTime()) /
-      (1000 * 60 * 60 * 24)
-    )
+    const { formatDate, fullDays } = dateDiff(startDate)
 
     return {
-      date,
-      days: `${days} ${declOfNum(days, ['день', 'дня', 'дней'])}`
+      formatDate,
+      days: `${fullDays} ${declOfNum(fullDays, ['день', 'дня', 'дней'])}`
     }
   }
 }

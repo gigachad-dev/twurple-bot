@@ -26,11 +26,11 @@ export default class Uptime extends BaseCommand {
     ).getStream()
 
     if (stream) {
-      const dates = dateDiff(stream.startDate)
-      const time = Object.entries(dates)
+      const { hours, minutes, seconds } = dateDiff(stream.startDate)
+      const time = Object.entries({ 'ч': hours, 'мин': minutes, 'сек': seconds })
         .map(date => {
           if (date[1] > 0) {
-            return date[1] + date[0].charAt(0)
+            return date[1] + date[0]
           }
         })
         .filter(v => v !== undefined)
