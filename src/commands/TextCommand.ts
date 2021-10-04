@@ -1,7 +1,9 @@
 import path from 'path'
 import { LowSync } from 'lowdb'
 import Commands from './Commands'
-import { ChatMessage, BaseCommand, CommandOptions, MessageType, TwurpleClient, UserLevel } from '../index'
+// @ts-ignore
+import compile from 'compile-template'
+import { CommandVariables, ChatMessage, BaseCommand, CommandOptions, MessageType, TwurpleClient, UserLevel } from '../index'
 
 type ITextCommand = Pick<CommandOptions, 'name' | 'message' | 'sendType' | 'hideFromHelp' | 'userlevel'>
 
@@ -11,7 +13,22 @@ class TextCommand extends BaseCommand {
   }
 
   async run(msg: ChatMessage) {
-    msg[this.options.sendType](this.options.message)
+    try {
+      const message = this.formatCommand(msg)
+      msg[this.options.sendType](message)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  formatCommand(msg: ChatMessage) {
+    const { user, channel, random } = new CommandVariables(this.client, msg)
+
+    return compile(this.options.message, {
+      user,
+      channel,
+      random
+    })()
   }
 }
 

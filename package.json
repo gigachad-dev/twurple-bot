@@ -33,6 +33,7 @@
     "@twurple/auth": "^5.0.4",
     "@twurple/auth-tmi": "^5.0.4",
     "@twurple/chat": "^5.0.4",
+    "compile-template": "^0.3.1",
     "cors": "^2.8.5",
     "deckstrings": "^2.2.1",
     "express": "^4.17.1",
