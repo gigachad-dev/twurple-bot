@@ -1,6 +1,7 @@
 import path from 'path'
 import { LowSync } from 'lowdb'
 import Commands from './Commands'
+import { randomInt } from '../utils'
 // @ts-ignore
 import compile from 'compile-template'
 import { CommandVariables, ChatMessage, BaseCommand, CommandOptions, MessageType, TwurpleClient, UserLevel } from '../index'
@@ -14,21 +15,40 @@ class TextCommand extends BaseCommand {
 
   async run(msg: ChatMessage) {
     try {
-      const message = this.formatCommand(msg)
+      const message = await this.formatMessage(msg)
       msg[this.options.sendType](message)
     } catch (err) {
       console.log(err)
     }
   }
 
-  formatCommand(msg: ChatMessage) {
-    const { user, channel, random } = new CommandVariables(this.client, msg)
+  async formatMessage(msg: ChatMessage) {
+    let message = this.options.message
+    const regex = /\${([^}]+)}/g
+    const matches = [...message.matchAll(regex)]
 
-    return compile(this.options.message, {
-      user,
-      channel,
-      random
-    })()
+    if (matches.length) {
+      const { user, channel, random, chatter } = new CommandVariables(this.client, msg)
+
+      // promises
+      for (const match of matches) {
+        switch (match[1]) {
+          case 'chatter':
+            const chatters = await chatter()
+            const randomChatter = chatters[randomInt(0, chatters.length - 1)]
+            message = message.replace(match[0], randomChatter)
+        }
+      }
+
+      return compile(message, {
+        // without promises
+        user,
+        channel,
+        random
+      })()
+    } else {
+      return message
+    }
   }
 }
 

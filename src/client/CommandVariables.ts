@@ -17,10 +17,19 @@ interface ChattersApiResponse {
 }
 
 export class CommandVariables {
+  private cache: {
+    chatters: string[]
+  }
+
   constructor(
     private client: TwurpleClient,
     private msg: ChatMessage
-  ) { }
+  ) {
+    this.chatter = this.chatter.bind(this)
+    this.cache = {
+      chatters: []
+    }
+  }
 
   get user() {
     return this.msg.author
@@ -34,20 +43,21 @@ export class CommandVariables {
     return randomInt(min, max)
   }
 
-  // TODO: Async variables
-  // async chatter() {
-  //   const { body } = await got<ChattersApiResponse>(
-  //     `https://tmi.twitch.tv/group/user/${this.msg.channel.name}/chatters`,
-  //     { responseType: 'json' }
-  //   )
+  async chatter() {
+    if (!this.cache.chatters.length) {
+      const { body } = await got<ChattersApiResponse>(
+        `https://tmi.twitch.tv/group/user/${'dicktor_inc' || this.msg.channel.name}/chatters`,
+        { responseType: 'json' }
+      )
 
-  //   const chatters = [
-  //     ...body.chatters.broadcaster,
-  //     ...body.chatters.vips,
-  //     ...body.chatters.moderators.filter(user => !this.client.config.ignoreList.includes(user)),
-  //     ...body.chatters.viewers
-  //   ]
+      this.cache.chatters = [
+        ...body.chatters.broadcaster,
+        ...body.chatters.vips,
+        ...body.chatters.moderators.filter(user => !this.client.config.ignoreList.includes(user)),
+        ...body.chatters.viewers
+      ]
+    }
 
-  //   return chatters[randomInt(0, chatters.length - 1)]
-  // }
+    return this.cache.chatters
+  }
 }
