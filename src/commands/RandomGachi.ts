@@ -9,6 +9,7 @@ export default class RandomGachi extends BaseCommand {
   private words: string[]
   private result: YouTubeSearchResults
   private history: string[]
+  private key: string
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -56,14 +57,22 @@ export default class RandomGachi extends BaseCommand {
     ]
 
     this.history = []
+    this.key = process.env.YOUTUBE_KEY
   }
 
   async run(msg: ChatMessage): Promise<void> {
+    if (!this.key) {
+      return this.client.logger.error(
+        'Please define the YOUTUBE_KEY environment variable inside .env',
+        this.constructor.name
+      )
+    }
+
     const term = this.words[randomInt(0, this.words.length - 1)]
     const opts = {
       maxResults: 50,
       order: this.orders[randomInt(0, this.orders.length - 1)],
-      key: process.env.YOUTUBE_KEY
+      key: this.key
     }
 
     search(term, opts, (err, results) => {

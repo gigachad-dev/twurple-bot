@@ -24,7 +24,14 @@ export default class YouTubeSearch extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
-    if (args.length > 0) {
+    if (!this.opts.key) {
+      return this.client.logger.error(
+        'Please define the YOUTUBE_KEY environment variable inside .env',
+        this.constructor.name
+      )
+    }
+
+    if (args.length) {
       try {
         const query = args.join(' ')
 

@@ -17,6 +17,8 @@ interface WeatherApiResponse {
 }
 
 export default class Weather extends BaseCommand {
+  private key: string
+
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'weather',
@@ -29,12 +31,22 @@ export default class Weather extends BaseCommand {
         'weather <location>'
       ]
     })
+
+    this.key = process.env.WEATHER_KEY
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
-    if (args.length > 0) {
+    if (!this.key) {
+      return this.client.logger.error(
+        'Please define the WEATHER_KEY environment variable inside .env',
+        this.constructor.name
+      )
+    }
+
+    if (args.length) {
       try {
         const query = args.join('%20')
+        // TODO: Refactor bullshit!
         const replaced = query.replace(/[&\/\\#,+()$~.':*?<>{}=]/g, '')
 
         if (query !== replaced) {
@@ -42,7 +54,7 @@ export default class Weather extends BaseCommand {
         }
 
         const { body } = await got<WeatherApiResponse>(
-          `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.WEATHER_KEY}&lang=ru&units=metric&q=${query}`,
+          `https://api.openweathermap.org/data/2.5/weather?appid=${this.key}&lang=ru&units=metric&q=${query}`,
           { responseType: 'json' }
         )
 
