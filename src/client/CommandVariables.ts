@@ -46,7 +46,7 @@ export class CommandVariables {
   async chatter() {
     if (!this.cache.chatters.length) {
       const { body } = await got<ChattersApiResponse>(
-        `https://tmi.twitch.tv/group/user/${'dicktor_inc' || this.msg.channel.name}/chatters`,
+        `https://tmi.twitch.tv/group/user/${this.msg.channel.name}/chatters`,
         { responseType: 'json' }
       )
 
