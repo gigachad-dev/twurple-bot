@@ -28,24 +28,28 @@ class TextCommand extends BaseCommand {
     const matches = [...message.matchAll(regex)]
 
     if (matches.length) {
-      const { user, channel, random, chatter } = new CommandVariables(this.client, msg)
+      try {
+        const { user, channel, random, chatter } = new CommandVariables(this.client, msg)
 
-      // promises
-      for (const match of matches) {
-        switch (match[1]) {
-          case 'chatter':
-            const chatters = await chatter()
-            const randomChatter = chatters[randomInt(0, chatters.length - 1)]
-            message = message.replace(match[0], randomChatter)
+        // promises
+        for (const match of matches) {
+          switch (match[1]) {
+            case 'chatter':
+              const chatters = await chatter()
+              const randomChatter = chatters[randomInt(0, chatters.length - 1)]
+              message = message.replace(match[0], randomChatter)
+          }
         }
-      }
 
-      return compile(message, {
-        // without promises
-        user,
-        channel,
-        random
-      })()
+        return compile(message, {
+          // without promises
+          user,
+          channel,
+          random
+        })()
+      } catch (err) {
+        console.log(err)
+      }
     } else {
       return message
     }
@@ -142,7 +146,7 @@ export default class TextCommandManager extends BaseCommand {
       this.commands.data.push(newCommand)
       this.commands.write()
 
-      msg.reply(`Команда создана: ${this.client.config.prefix}${name} - ${message}`)
+      msg.reply(`Команда создана: ${this.client.config.prefix}${name}`)
     } else {
       msg.reply('Команда уже существует')
     }
