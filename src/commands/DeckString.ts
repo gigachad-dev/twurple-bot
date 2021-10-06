@@ -23,7 +23,7 @@ interface ShortURLResponse {
   shortURL: string
 }
 
-export default class Deck extends BaseCommand {
+export default class DeckString extends BaseCommand {
   private heroes: HsHeroes[]
   private formats: HsFormats[]
 

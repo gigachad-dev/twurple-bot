@@ -7,9 +7,5 @@ const client = new TwurpleClient({
 })
 
 client.on('message', (msg) => {
-  if (!msg.author.isMods) {
-    client.execCommand('automod', msg)
-  }
-
   client.execCommand('deck', msg)
 })
