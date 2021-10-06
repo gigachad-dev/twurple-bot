@@ -6,7 +6,10 @@
     "start": "npm run build && node dist/main.js",
     "dev": "nodemon src/main.ts",
     "dev:debug": "nodemon --inspect src/main.ts",
-    "build": "rimraf dist/ && tsc"
+    "build": "tsc",
+    "prebuild": "rimraf dist",
+    "lint": "eslint --ext ts src",
+    "lint:fix": "eslint --fix --ext ts src"
   },
   "author": {
     "name": "Vitalij Ryndin",
@@ -20,7 +23,10 @@
     "@types/lodash": "^4.14.175",
     "@types/node": "^16.10.1",
     "@types/sound-play": "^1.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
     "dotenv": "^10.0.0",
+    "eslint": "^7.32.0",
     "nodemon": "^2.0.13",
     "rimraf": "^3.0.2",
     "strict-event-emitter-types": "^2.0.0",

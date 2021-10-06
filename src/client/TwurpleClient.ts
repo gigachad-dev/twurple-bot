@@ -234,6 +234,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
   execCommand(command: string, msg: ChatMessage): void {
     const cmd = this.findCommand({ command })
 
+    // eslint-disable-next-line no-prototype-builtins
     if (cmd.constructor.prototype.hasOwnProperty('execute')) {
       cmd.execute(msg)
     }
@@ -259,6 +260,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     return this.tmi.getChannels()
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   lowdbAdapter<T extends object>(opts: { path: string, initialData?: T, merge?: Array<keyof T> }): LowSync<T> {
     const db = new LowSync<T>(
       new JSONFileSync(opts.path)

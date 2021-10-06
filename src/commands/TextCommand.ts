@@ -34,10 +34,11 @@ class TextCommand extends BaseCommand {
         // promises
         for (const match of matches) {
           switch (match[1]) {
-            case 'chatter':
+            case 'chatter': {
               const chatters = await chatter()
               const randomChatter = chatters[randomInt(0, chatters.length - 1)]
               message = message.replace(match[0], randomChatter)
+            }
           }
         }
 

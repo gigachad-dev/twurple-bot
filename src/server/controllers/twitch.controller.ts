@@ -65,7 +65,7 @@ export class TwitchControllers {
 
     if (response.statusCode !== 200) {
       this.client.logger.error(`Bad response from twitch getting oauth token.\nStatus: ${response.statusCode}\nBody: ${JSON.stringify(response.body)}`)
-      throw new Error(`Bad response from twitch getting oauth token.`)
+      throw new Error('Bad response from twitch getting oauth token.')
     }
 
     const { scope, access_token, refresh_token, expires_in } = response.body

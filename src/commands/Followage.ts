@@ -67,7 +67,7 @@ export default class Followage extends BaseCommand {
       const { formatDate, days } = this.formatDate(user.followDate)
       msg.reply(`отслеживает канал с ${formatDate} (${days})`)
     } else {
-      msg.reply(`Подпишись на канал SMOrc`)
+      msg.reply('Подпишись на канал SMOrc')
     }
   }
 

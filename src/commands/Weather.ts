@@ -47,6 +47,7 @@ export default class Weather extends BaseCommand {
       try {
         const query = args.join('%20')
         // TODO: Refactor bullshit!
+        // eslint-disable-next-line no-useless-escape
         const replaced = query.replace(/[&\/\\#,+()$~.':*?<>{}=]/g, '')
 
         if (query !== replaced) {

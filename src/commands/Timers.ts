@@ -68,7 +68,7 @@ export default class Timers extends BaseCommand {
 
   /**
    * TODO: Timers manager
-   * 
+   *
    * @param msg
    * @param args
    */
