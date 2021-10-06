@@ -16,7 +16,7 @@
   ],
   "include": [
     "src/**/*",
-    "declaration.d.ts"
+    "@types/*"
   ],
   "ts-node": {
     "files": true

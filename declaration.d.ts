@@ -1,5 +1,3 @@
-import { ObjectChain } from 'lodash'
-
 declare namespace NodeJS {
   interface ProcessEnv {
     SPOTIFY_NOW_PLAYING_KEY: string
@@ -8,8 +6,11 @@ declare namespace NodeJS {
   }
 }
 
+
 // https://github.com/typicode/lowdb/issues/485#issuecomment-870201372
 declare module 'lowdb/lib/types/LowSync' {
+  import type { ObjectChain } from 'lodash'
+
   interface LowSync<T> {
     chain: ObjectChain<T>
   }
