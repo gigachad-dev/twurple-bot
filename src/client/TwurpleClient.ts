@@ -1,3 +1,4 @@
+import got from 'got'
 import path from 'path'
 import lodash from 'lodash'
 import { readdirSync } from 'fs'
@@ -21,6 +22,7 @@ export interface TwurpleConfig extends TwurpleTokens {
   channels: string[]
   botOwners: string[]
   ignoreList: string[]
+  viewerBots: string[]
   prefix: string
   server: {
     hostname: string
@@ -155,6 +157,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     this.tmi.on('message', this.onMessage.bind(this))
     this.tmi.on('raided', this.onRaid.bind(this))
 
+    await this.loadViewerBots()
     await this.tmi.connect()
   }
 
@@ -293,5 +296,23 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     db.write()
 
     return db
+  }
+
+  async loadViewerBots() {
+    try {
+      this.logger.info('Loading current online twitch viewer bots..')
+
+      const { body } = await got<{ bots: [string, number, number][] }>(
+        'https://api.twitchinsights.net/v1/bots/online',
+        { responseType: 'json' }
+      )
+
+      this.config.viewerBots = [
+        ...this.config.ignoreList,
+        ...body.bots.map(bot => bot[0])
+      ]
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
