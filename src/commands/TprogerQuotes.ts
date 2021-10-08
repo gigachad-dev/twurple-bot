@@ -1,7 +1,7 @@
 import path from 'path'
 import { LowSync } from 'lowdb'
 import { randomInt, declOfNum } from '../utils'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
+import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
 export default class TprogerQuotes extends BaseCommand {
   private quotes: LowSync<string[]>

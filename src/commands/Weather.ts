@@ -1,5 +1,5 @@
 import got from 'got'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
+import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
 interface WeatherApiResponse {
   id: number

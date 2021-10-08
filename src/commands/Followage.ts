@@ -1,5 +1,5 @@
 import { declOfNum, dateDiff } from '../utils'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
+import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
 export default class Followage extends BaseCommand {
   constructor(client: TwurpleClient) {

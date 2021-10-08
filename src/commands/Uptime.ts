@@ -1,5 +1,5 @@
 import { dateDiff } from '../utils'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
+import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
 export default class Uptime extends BaseCommand {
   constructor(client: TwurpleClient) {

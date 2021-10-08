@@ -1,5 +1,5 @@
 import { exec } from 'child_process'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
+import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
 export default class TextToSpeech extends BaseCommand {
   private speed: number

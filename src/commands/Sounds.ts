@@ -3,7 +3,7 @@ import { LowSync } from 'lowdb'
 import { play } from 'sound-play'
 import { declOfNum } from '../utils'
 import migration from '../migrations/sounds.json'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
+import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
 interface IPlaySound {
   options: {

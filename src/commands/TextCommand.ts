@@ -4,7 +4,7 @@ import Commands from './Commands'
 import { randomInt } from '../utils'
 // @ts-ignore
 import compile from 'compile-template'
-import { CommandVariables, ChatMessage, BaseCommand, CommandOptions, MessageType, TwurpleClient, UserLevel } from '../index'
+import { CommandVariables, ChatMessage, BaseCommand, CommandOptions, MessageType, TwurpleClient, UserLevel } from '../client'
 
 type ITextCommand = Pick<CommandOptions, 'name' | 'message' | 'sendType' | 'hideFromHelp' | 'userlevel'>
 

@@ -1,7 +1,7 @@
 import path from 'path'
 import { LowSync } from 'lowdb'
 import { randomInt } from '../utils'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
+import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
 interface IPokemons {
   id: string

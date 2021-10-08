@@ -1,4 +1,4 @@
-import { TwurpleClient, BaseCommand, ChatMessage } from '../index'
+import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
 export default class Game extends BaseCommand {
   constructor(client: TwurpleClient) {
