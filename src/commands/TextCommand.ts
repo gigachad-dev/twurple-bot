@@ -38,12 +38,15 @@ class TextCommand extends BaseCommand {
               const chatters = await chatter()
               const randomChatter = chatters[randomInt(0, chatters.length - 1)]
               message = message.replace(match[0], randomChatter)
+              break
             }
-            // eslint-disable-next-line no-fallthrough
             case 'eval': {
               const vms = await vm(match[0].slice(5).slice(0, -1))
               message = message.replace(match[0], vms)
+              break
             }
+            default:
+              break
           }
         }
 
