@@ -1,4 +1,4 @@
-import { vm } from 'src/utils'
+import { vm } from '../utils'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
 export default class Eval extends BaseCommand {
