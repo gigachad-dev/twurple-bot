@@ -15,7 +15,7 @@ export const vm = async (code: string) => {
     }
 
     return evaled
-  } catch (e) {
-    console.log(e)
+  } catch (err) {
+    return err.toString()
   }
 }
