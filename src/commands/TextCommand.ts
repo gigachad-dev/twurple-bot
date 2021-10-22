@@ -29,7 +29,7 @@ class TextCommand extends BaseCommand {
 
     if (matches.length) {
       try {
-        const { user, channel, random, chatter } = new CommandVariables(this.client, msg)
+        const { user, channel, random, chatter, vm } = new CommandVariables(this.client, msg)
 
         // promises
         for (const match of matches) {
@@ -38,6 +38,11 @@ class TextCommand extends BaseCommand {
               const chatters = await chatter()
               const randomChatter = chatters[randomInt(0, chatters.length - 1)]
               message = message.replace(match[0], randomChatter)
+            }
+            // eslint-disable-next-line no-fallthrough
+            case 'eval': {
+              const vms = await vm(match[0].slice(5).slice(0, -1))
+              message = message.replace(match[0], vms)
             }
           }
         }
@@ -70,8 +75,8 @@ export default class TextCommandManager extends BaseCommand {
         'command remove <name>',
         'command list',
         'command get <name>',
-        'command userlevel <userlevel>',
-        'command sendtype <sendtype>'
+        'command userlevel <command> <userlevel> <level>',
+        'command sendtype <command> <sendtype> <type>'
       ]
     })
 
@@ -138,7 +143,7 @@ export default class TextCommandManager extends BaseCommand {
       const newCommand: ITextCommand = {
         name,
         message,
-        sendType: 'reply',
+        sendType: 'say',
         userlevel: 'everyone',
         hideFromHelp: true
       }

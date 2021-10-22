@@ -1,5 +1,5 @@
 import got from 'got'
-import { randomInt } from '../utils'
+import { randomInt, vm } from '../utils'
 import { ChatMessage } from './ChatMessage'
 import { TwurpleClient } from './TwurpleClient'
 
@@ -41,6 +41,10 @@ export class CommandVariables {
 
   random(min: number, max: number) {
     return randomInt(min, max)
+  }
+
+  vm(code: string) {
+    return vm(code)
   }
 
   async chatter() {
