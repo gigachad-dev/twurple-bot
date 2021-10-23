@@ -48,10 +48,10 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
   public api: ApiClient
   public commands: BaseCommand[]
   public logger: typeof Logger
+  public db: LowSync<TwurpleConfig>
 
   private options: TwurpleOptions
   private parser: typeof CommandParser
-  private db: LowSync<TwurpleConfig>
   private server: Server
 
   constructor(options: TwurpleOptions) {
@@ -121,7 +121,6 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
   }
 
   updateConfig(config: Partial<TwurpleConfig>) {
-    this.logger.info('Refreshing config file..')
     Object.assign(this.db.data, config)
     this.db.write()
   }
