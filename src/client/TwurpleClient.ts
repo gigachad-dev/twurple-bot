@@ -102,7 +102,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
       {
         clientId: this.config.clientId,
         clientSecret: this.config.clientSecret,
-        onRefresh: (tokens) => this.updateTokens(tokens)
+        onRefresh: (tokens) => this.updateConfig(tokens)
       },
       this.db.data
     )
@@ -120,9 +120,9 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     })
   }
 
-  updateTokens(tokens: AccessToken) {
-    this.logger.info('Refreshing auth tokens..')
-    Object.assign(this.db.data, tokens)
+  updateConfig(config: Partial<TwurpleConfig>) {
+    this.logger.info('Refreshing config file..')
+    Object.assign(this.db.data, config)
     this.db.write()
   }
 

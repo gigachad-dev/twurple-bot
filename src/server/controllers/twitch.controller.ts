@@ -39,7 +39,7 @@ export class TwitchControllers {
     if (code && typeof code === 'string') {
       try {
         const data = await this.getAuthToken(code)
-        this.client.updateTokens(data)
+        this.client.updateConfig(data)
         await this.client.connect()
         res.json({ success: true, data })
       } catch (err) {
