@@ -185,7 +185,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
       return
     }
 
-    if (this.config.ignoreList.includes(userstate.username)) {
+    if (this.db.data.ignoreList.includes(userstate.username)) {
       return
     }
 
