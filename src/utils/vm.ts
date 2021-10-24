@@ -3,7 +3,7 @@ import { inspect } from 'util'
 export const vm = async (code: string) => {
   try {
     let isPromise = false
-    let evaled = eval(code)
+    let evaled = eval(`(async() => { ${code} })()`)
 
     if (evaled && evaled instanceof Promise) {
       isPromise = true
