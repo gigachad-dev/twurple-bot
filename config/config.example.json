@@ -2,9 +2,7 @@
   "channels": [
     "#le_xot"
   ],
-  "botOwners": [
-    "vs_code"
-  ],
+  "botOwners": [],
   "ignoreList": [
     "moobot",
     "mirrobot",

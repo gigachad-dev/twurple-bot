@@ -187,7 +187,10 @@ export class BaseCommand {
     }
 
     if (this.options.userlevel === UserLevel.regular) {
-      if (!this.client.config?.botOwners.includes(msg.author.username)) {
+      if (
+        msg.channel.name !== this.client.getUsername() ||
+        !this.client.config.botOwners.includes(msg.author.username)
+      ) {
         return 'This command can be executed only from bot owners'
       }
     }
