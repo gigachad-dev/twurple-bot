@@ -59,7 +59,7 @@ export class CommandVariables {
         ...body.chatters.vips,
         ...body.chatters.moderators,
         ...body.chatters.viewers
-      ].filter(chatter => !this.client.config.viewerBots.includes(chatter))
+      ].filter(chatter => this.client.db.data.ignoreList.includes(chatter) || !this.client.config.bots.includes(chatter))
     }
 
     return this.cache.chatters

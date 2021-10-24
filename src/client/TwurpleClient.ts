@@ -22,7 +22,7 @@ export interface TwurpleConfig extends TwurpleTokens {
   channels: string[]
   botOwners: string[]
   ignoreList: string[]
-  viewerBots: string[]
+  bots: string[]
   prefix: string
   server: {
     hostname: string
@@ -156,7 +156,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     this.tmi.on('message', this.onMessage.bind(this))
     this.tmi.on('raided', this.onRaid.bind(this))
 
-    await this.loadViewerBots()
+    await this.loadTwitchBots()
     await this.tmi.connect()
   }
 
@@ -297,7 +297,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     return db
   }
 
-  async loadViewerBots() {
+  async loadTwitchBots() {
     try {
       this.logger.info('Loading current online twitch viewer bots..')
 
@@ -306,10 +306,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
         { responseType: 'json' }
       )
 
-      this.config.viewerBots = [
-        ...this.config.ignoreList,
-        ...body.bots.map(bot => bot[0])
-      ]
+      this.config.bots = body.bots.map(bot => bot[0])
     } catch (err) {
       console.log(err)
     }
