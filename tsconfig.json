@@ -2,7 +2,11 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "module": "es2020",
+<<<<<<< Updated upstream
     "target": "es2020",
+=======
+    "target": "esnext",
+>>>>>>> Stashed changes
     "declaration": false,
     "skipLibCheck": true,
     "noImplicitAny": true,
@@ -13,9 +17,6 @@
     "outDir": "dist",
     "baseUrl": "."
   },
-  "exclude": [
-    "node_modules"
-  ],
   "include": [
     "src/**/*",
     "declaration.d.ts"
