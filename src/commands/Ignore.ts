@@ -60,7 +60,7 @@ export default class Ignore extends BaseCommand {
         ]
       })
 
-      msg.reply(`Пользователь ${channel} заблокирован`)
+      msg.reply(`Пользователю ${channel} запрещено использовать команды`)
     } else {
       msg.reply('Нельзя заблокировать самого себя')
     }
