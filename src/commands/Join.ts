@@ -26,7 +26,7 @@ export default class Join extends BaseCommand {
     const findedChannel = this.client.config.channels.find(v => {
       return channel === v.replace('#', '')
     })
-    
+
     if (!findedChannel && channel !== this.client.getUsername()) {
       this.client.tmi.join(channel).then(() => {
         this.client.updateConfig({
