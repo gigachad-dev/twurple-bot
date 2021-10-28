@@ -2,7 +2,6 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-green.svg?label=License)](https://github.com/twurple/twurple/blob/main/LICENSE)
 [![npm version](https://img.shields.io/npm/v/@twurple/auth.svg?style=flat&label=@twurple/auth)](https://www.npmjs.com/package/@twurple/auth)
-![GitHub package.json version](https://img.shields.io/github/package-json/v/crashmax-dev/twurple-bot?label=Twurple%20Bot)
 
 ## 1. Create a Twitch application
 
