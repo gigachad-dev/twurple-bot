@@ -180,6 +180,10 @@
     {
       "alias": "салам",
       "file": "салам.mp3"
+    },
+    {
+      "alias": "заткни",
+      "file": "zatkni_ebalo.mp3"
     }
   ]
 }
