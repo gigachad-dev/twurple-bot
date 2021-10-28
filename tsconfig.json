@@ -16,7 +16,7 @@
   ],
   "include": [
     "src/**/*",
-    "@types/*"
+    "types/*"
   ],
   "ts-node": {
     "files": true
