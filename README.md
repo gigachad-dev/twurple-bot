@@ -7,7 +7,7 @@
 
 - Перейдите в [консоль приложения разработчика](https://dev.twitch.tv/console/apps) и зарегистрируйте новое приложение.
   
-  [![](/docs/1.png)]()
+ [![](/docs/1.png)]()
  
  OAuth Redirect URL - `http://localhost:3030/twitch/callback`.
  - Нажмите на `Управление`.
@@ -26,7 +26,7 @@
 Также, укажите канал, к которому будет подключен бот в `channels`.
 
 Например:
- ```bash
+ ```javascript
  {
   "channels": [
     "user0943831"
@@ -87,7 +87,7 @@
 Для корректной работы таких команд как `!giphy`, `!song`, `!youtube` и `!weather` нужно создать файл `.env` подобный `.env.example` и внести в него ваши ключи
 
 Например:
-```bash
+```javascript
 # https://nowplaying.tinyrobot.co
 SPOTIFY_NOW_PLAYING_KEY=884f5b25-1ab5-4cee-b999-da448d8fab0e
 
