@@ -7,29 +7,25 @@
 
 - Перейдите в [консоль приложения разработчика](https://dev.twitch.tv/console/apps) и зарегистрируйте новое приложение.
   
- [![](/docs/1.png)]()
- 
- OAuth Redirect URL - `http://localhost:3030/twitch/callback`.
- - Нажмите на `Управление`.
+<img src="docs/1.png"></img>
+
+- Укажите OAuth Redirect URL - `http://localhost:3030/twitch/callback`.
   
- [![](/docs/2.png)]()
+<img src="docs/2.png"></img>
 
- - Сгенерируйте токены, нажав на кнопку `Новый секретный код`.
+- Сгенерируйте токены, нажав на кнопку `Новый секретный код`.
 
- [![](/docs/3.png)]()
+<img src="docs/3.png"></img>
 
 # 📄 Создание конфига
 
-Создайте в папке файл `config.json` подобный [`config.example.json`](config/config.example.json). 
+Создайте в папке файл `config.json` подобный файлу [`config.example.json`](config/config.example.json). 
+Настройте конфигурационный файл, введите идентификатор клиента - `clientId` и секретный код клиента - `clientSecret`, полученные выше. Указажите канал(-ы), к которому будет подключен бот.
 
-Введите `clientId` и `clientSecret`, полученные выше.
-Также, укажите канал, к которому будет подключен бот в `channels`.
-
-Например:
- ```javascript
- {
+```json
+{
   "channels": [
-    "user0943831"
+    "channel_name"
   ],
   "botOwners": [],
   "ignoreList": [
@@ -50,56 +46,50 @@
   "accessToken": "",
   "refreshToken": ""
 }
- ```
+```
 
-# 📌 Команды
+# 📌 Список команды
 
-<details><summary>Список доступных на данный момент команд</summary>
+- [!aphorism](#aphorism)
+- [!automod](#automod)
+- [!cat](#cat)
+- [!commands](#commands)
+- [!eval](#eval)
+- [!followage](#followage)
+- [!game](#game)
+- [!giphy](#giphy)
+- [!heartstonedeck](#heartstonedeck)
+- [!ignore](#ignore)
+- [!join](#join)
+- [!part](#part)
+- [!pokemon](#pokemon)
+- [!raid](#raid)
+- [!sounds](#sounds)
+- [!song](#song)
+- [!command](#command)
+- [!tts](#tts)
+- [!title](#title)
+- [!quote](#quote)
+- [!uptime](#uptime)
+- [!weather](#weather)
+- [!youtube](#youtube)
 
-  <!-- no toc -->
-- [aphorism](#!aphorism)
-- [automod](#!automod)
-- [cat](#!cat)
-- [commands](#!commands)
-- [eval](#!eval)
-- [followage](#!followage)
-- [game](#!game)
-- [giphy](#!giphy)
-- [heartstonedeck](#!heartstonedeck)
-- [ignore](#!ignore)
-- [join](#!join)
-- [part](#!part)
-- [pokemon](#!pokemon)
-- [raid](#!raid)
-- [sounds](#!sounds)
-- [song](#!song)
-- [command](#!command)
-- [tts](#!tts)
-- [title](#!title)
-- [quote](#!quote)
-- [uptime](#!uptime)
-- [weather](#!weather)
-- [youtube](#!youtube)
-</details>
+# ⚠ Интеграция с другими приложениями (не обязательно)
 
-# ⚠ Интеграция с другими приложениями
+Для корректной работы таких команд как [`!giphy`](#giphy), [`!song`](#song), [`!youtube`](#youtube) и [`!weather`](#weather) нужно создать файл `.env` подобный файлу [`.env.example`](.env.example) и внести в него ваши api-ключи.
 
-Для корректной работы таких команд как `!giphy`, `!song`, `!youtube` и `!weather` нужно создать файл `.env` подобный `.env.example` и внести в него ваши ключи
-
-Например:
-```javascript
+```
 # https://nowplaying.tinyrobot.co
-SPOTIFY_NOW_PLAYING_KEY=884f5b25-1ab5-4cee-b999-da448d8fab0e
+SPOTIFY_NOW_PLAYING_KEY=xxxxxxxxxxxx
 
 # https://openweathermap.org/api
-WEATHER_KEY=4b7f55a8e15af3ec5d463f83ce5dd419
+WEATHER_KEY=xxxxxxxxxxxx
 
 # https://console.cloud.google.com/apis/credentials
-YOUTUBE_KEY=AIzaSyBbw9O8K5DTLY1KQKfhv55v5GNe84g5Jy0
+YOUTUBE_KEY=xxxxxxxxxxxx
 
 # https://developers.giphy.com/dashboard/
-GIPHY_KEY=O5U93Th2J5dQEgc5rEqzS4HLnkPWZNlN
-
+GIPHY_KEY=xxxxxxxxxx
 ```
 
 # ▶ Запуск бота
@@ -107,7 +97,6 @@ GIPHY_KEY=O5U93Th2J5dQEgc5rEqzS4HLnkPWZNlN
 - Установите [Node.js](https://nodejs.org/en/)
 - Установите зависимости командой `npm install`
 - Для запуска используйте команду `npm start`
-  
 
 ## `!aphorism`
 
@@ -126,16 +115,19 @@ twurple: Ошибки всегда извинительны, когда имее
 usage: !automod
 twurple: AutoMod включен VoteYea
 ```
+
 - добавляет или удаляет правило для Automod
 
 ```
 usage: !automod remove Kappa
 twurple: @le_xot, Правило добавлено
 ```
+
 ```
 usage: !automod remove Kappa
 twurple: @le_xot, Правило удалено
 ```
+
 ## `!cat`
 
 - Случайная картинка котейки
@@ -171,6 +163,7 @@ twurple: 4
 usage: !followage
 twurple: @user, отслеживает канал с 7 сентября 2021 г. (52 день)
 ```
+
 - проверяет продолжительность отслеживания конкретного пользователя
 
 ```
@@ -202,18 +195,20 @@ twurple: @user, Игра изменена: <newGame>
 usage: !giphy
 twurple: @user, Its Friday GIF by telenet → http://gph.is/27H8H5h
 ```
+
 - в качестве поиска используется аргумент команды
+
 ```
 usage: !giphy cat
 twurple: @user, Dance Cat GIF by Banggood → http://gph.is/2chfxc6
 ```
 
-## `!heartstonedeck`
+## `!hsdeck`
 
-- Декодирует колоду из Hearthstone
+- Декодирует код колоды из Hearthstone
 
 ```
-usage: AAECAf0EAuj3A/T8Aw7BuAPHzgPNzgOk0QP30QPU6gPQ7APR7AOn9wOu9wOy9wP8ngT9ngTonwQA
+usage: !hsdeck AAECAf0EAuj3A/T8Aw7BuAPHzgPNzgOk0QP30QPU6gPQ7APR7AOn9wOu9wOy9wP8ngT9ngTonwQA
 twurple: @user скинул колоду Мага для Стандартного формата: https://decklist.hsdeckviewer.com/Vvh8gS HSCheers
 ```
 
@@ -225,6 +220,7 @@ twurple: @user скинул колоду Мага для Стандартног�
 usage: !ignore add @user
 twurple: Пользователю @user запрещено использовать команды
 ```
+
 ```
 usage: !ignore remove @user
 twurple:  Пользователь @user удален из черного списка
@@ -256,7 +252,8 @@ twurple: Бот на канале @user успешно отключен
 usage: !покемон
 twurple: @user, А ты что за покемон? Ты Бронзор KomodoHype modpixelmon.ru/bronzor
 ```
-- или даёт ссылку на вики конкретного 
+
+- поиск в вики
 
 ```
 usage: !покемон дитто
@@ -265,7 +262,7 @@ twurple: @user, Дитто: modpixelmon.ru/ditto
 
 ## `!raid`
 
-- Проводит рейд на случайный канал из текущей категории
+- Запускает рейд на случайный канал из текущей категории
 
 ```
 usage: !raid
@@ -287,42 +284,48 @@ twurple: @user, !погнали, !казино, etc..
 
 ```
 usage: !song
-twurple: Duck Sauce - aNYway
-```
-```
-usage: !song
-twurple: Музыка не проигрывается
+twurple: Rick Astley - Never Gonna Give You Up
 ```
 
 ## `!command`
 
-  Эта команда позволяет управлять текстовыми командами.
-- добавляет команды
+- создание команды
+
 ```
 usage: !command add twitter https://twitter.com/user
 twurple: @user, Команда создана: !twitter
 ```
-- удаляет созданные команды
+
+- удаление команды
+
 ```
 usage: !command remove twitter
 twurple: @user, Команда !twitter удалена
 ```
-- выводит список созданных команд
+
+- список ранее созданных команд
+
 ```
 usage: !command list
 twurple: @user, Текстовые команды: !gametiers, !rules, etc..
 ```
-- выводит информацию о команде
+
+- информация о команде
+
 ```
 usage: !command get test
 twurple: @user,Параметры: message - test, userlevel - everyone, sendType - reply
 ```
-- меняет юзерлевел команды 
+
+- изменение уровня доступа для команды 
+
 ```
 usage: !command userlevel test vip
 twurple: @user, Уровень доступа обновлен: vip
 ```
-- меняет тип отправки команды 
+
+- измненения типа отправки команда 
+
 ```
 usage: !command sendtype test say
 twurple: @user, Метод отправки сообщения обновлен: say
@@ -330,7 +333,7 @@ twurple: @user, Метод отправки сообщения обновлен:
 
 ## `!tts`
 
-- Воспроизводит написанный текст с помощью технологии Text-To-Speech.
+- Воспроизводит написанный текст с помощью технологии Text-To-Speech (Только для Windows!).
 
 ```
 usage: !tts Привет, я робот
@@ -344,6 +347,7 @@ usage: !tts Привет, я робот
 usage: !title
 twurple: @user, <title>
 ```
+
 - изменяет текущее название стрима
 
 ```
@@ -353,7 +357,7 @@ twurple: @user, Название стрима изменено: <newTitle>
 
 ## `!quote`
 
-- Цитаты с сайта tproger
+- IT-цитаты с TProger.ru
 
 ```
 usage: !quote
@@ -380,7 +384,7 @@ twurple: @user, Москва 9°C Подробнее: openweathermap.org/city/52
 
 ## `!youtube`
 
-Поиск видео на ютуб прямо в чате
+Поиск видео на YouTube
 
 ```
 usage: !youtube daft punk
