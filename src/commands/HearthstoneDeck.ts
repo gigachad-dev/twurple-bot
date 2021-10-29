@@ -32,7 +32,13 @@ export default class HearthstoneDeck extends BaseCommand {
       name: 'hsdeck',
       userlevel: 'everyone',
       description: 'Decode Hearthstone deckstrings',
-      hideFromHelp: true
+      hideFromHelp: true,
+      args: [
+        {
+          name: 'deckstring',
+          type: String
+        }
+      ]
     })
 
     this.heroes = [
@@ -106,8 +112,16 @@ export default class HearthstoneDeck extends BaseCommand {
     this.loadCards()
   }
 
-  async run(msg: ChatMessage): Promise<void> {
-    msg.reply(this.options.description)
+  async run(msg: ChatMessage, { deckstring }: { deckstring: string }): Promise<void> {
+    if (deckstring) {
+      await this.parseDeck(msg, deckstring)
+    } else {
+      msg.reply(this.options.description)
+    }
+  }
+
+  async execute(msg: ChatMessage): Promise<void> {
+    await this.parseDeck(msg, msg.text)
   }
 
   async loadCards(): Promise<void> {
@@ -129,8 +143,7 @@ export default class HearthstoneDeck extends BaseCommand {
     }
   }
 
-  async execute(msg: ChatMessage): Promise<void> {
-    const text = msg.text
+  async parseDeck(msg: ChatMessage, text: string) {
     const isDeck = (str: string) => str.indexOf('AAE') > -1
 
     if (isDeck(text) && text.length > 16) {
