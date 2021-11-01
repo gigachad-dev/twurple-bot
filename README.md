@@ -58,7 +58,7 @@
 - [!followage](#followage)
 - [!game](#game)
 - [!giphy](#giphy)
-- [!heartstonedeck](#heartstonedeck)
+- [!hsdeck](#hsdeck)
 - [!ignore](#ignore)
 - [!join](#join)
 - [!part](#part)
