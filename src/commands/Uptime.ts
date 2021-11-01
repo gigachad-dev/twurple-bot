@@ -26,19 +26,20 @@ export default class Uptime extends BaseCommand {
     ).getStream()
 
     if (stream) {
-      const { hours, minutes, seconds } = dateDiff(stream.startDate)
-      const time = Object.entries({ 'ч': hours, 'мин': minutes, 'сек': seconds })
-        .map(date => {
-          if (date[1] > 0) {
-            return date[1] + date[0]
-          }
-        })
-        .filter(v => v !== undefined)
-        .join(' ')
-
+      const time = this.formatTime(stream.startDate)
       msg.reply(`${stream.userDisplayName} вещает ${time}`)
     } else {
       msg.reply(`${channel} не в сети`)
     }
+  }
+
+  formatTime(startDate: Date): string {
+    const { hours, minutes, seconds } = dateDiff(startDate)
+
+    return Object
+      .entries({ 'ч.': hours, 'мин.': minutes, 'сек.': seconds })
+      .map(date => !!date[1] && `${date[1]} ${date[0]}`)
+      .filter(v => v !== undefined)
+      .join(' ')
   }
 }
