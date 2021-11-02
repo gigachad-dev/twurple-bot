@@ -36,13 +36,11 @@ export default class AutoMod extends BaseCommand {
         case 'add':
           this.addWord(msg, word)
           break
-
         case 'remove':
           this.removeWord(msg, word)
           break
-
         default:
-          msg.reply(`Аргумент '${action}' не найден`)
+          msg.reply(`Аргумент "${action}" не найден`)
       }
     } else {
       this.toggleAutoMod(msg)
@@ -94,15 +92,20 @@ export default class AutoMod extends BaseCommand {
         if (total) {
           if ((msg.author.isVip || msg.author.isSubscriber)) {
             this.client.tmi.deletemessage(msg.channel.name, msg.id)
+              .then(() => this.banMessage(msg, word))
           } else {
             this.client.tmi.timeout(msg.channel.name, msg.author.username, 600)
+              .then(() => this.banMessage(msg, word))
           }
         } else {
           this.client.tmi.ban(msg.channel.name, msg.author.username)
+            .then(() => this.banMessage(msg, word))
         }
-
-        msg.reply(`Отлетаешь по причине: ${word.slice(0, 2) + '*'.repeat(word.length - 2)} OSFrog`)
       }
     }
+  }
+
+  banMessage(msg: ChatMessage, word: string) {
+    msg.reply(`Отлетаешь по причине: ${word.slice(0, 2) + '*'.repeat(word.length - 2)} OSFrog`)
   }
 }
