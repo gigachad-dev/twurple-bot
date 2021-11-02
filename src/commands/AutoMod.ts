@@ -93,6 +93,7 @@ export default class AutoMod extends BaseCommand {
           if ((msg.author.isVip || msg.author.isSubscriber)) {
             this.client.tmi.deletemessage(msg.channel.name, msg.id)
               .then(() => this.banMessage(msg, word))
+              .catch((err) => this.client.logger.error(err))
           } else {
             this.client.tmi.timeout(msg.channel.name, msg.author.username, 600)
               .then(() => this.banMessage(msg, word))
