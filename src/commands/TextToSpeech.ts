@@ -1,12 +1,19 @@
-import { exec } from 'child_process'
+import path from 'path'
+import { LowSync } from 'lowdb'
+import { exec, spawn } from 'child_process'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
+interface ITextToSpeech {
+  speed: number
+  volume: number
+  voice: string
+}
+
 export default class TextToSpeech extends BaseCommand {
-  private speed: number
-  private volume: number
-  private voice: string
   private playing = false
+  private cmd: string
   private queue: string[] = []
+  private db: LowSync<ITextToSpeech>
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -15,33 +22,126 @@ export default class TextToSpeech extends BaseCommand {
       description: 'Text to speech'
     })
 
-    this.speed = 5
-    this.volume = 35
-    this.voice = 'Microsoft Irina Desktop'
+    this.cmd = 'Add-Type -AssemblyName System.speech; $speak = New-Object System.Speech.Synthesis.SpeechSynthesizer;'
+
+    this.db = this.client.lowdbAdapter<ITextToSpeech>({
+      path: path.join(__dirname, '../../config/tts.json')
+    })
   }
 
   async prepareRun(msg: ChatMessage, args: string[]) {
     if (args.length) {
-      const message = args
-        .join(' ')
-        .replace(/[&'<>]/gi, '')
-
-      this.speech(message)
+      switch (args[0]) {
+        case 'voices':
+          this.getVoices(response => {
+            msg.reply(response)
+          })
+          break
+        case 'voice':
+          args.shift()
+          this.changeVoice(msg, args.join(' '))
+          break
+        case 'speed':
+          this.changeSpeed(msg, args[1])
+          break
+        case 'volume':
+          this.changeVolume(msg, args[1])
+          break
+        default: {
+          this.speech(args)
+        }
+      }
     } else {
-      msg.reply(`${this.options.description}, Speed: ${this.speed}, Volume: ${this.volume}, Voice: ${this.voice}`)
+      const { speed, volume, voice } = this.db.data
+      msg.reply(`${this.options.description}, speed: ${speed}, volume: ${volume}, voice: ${voice}`)
     }
   }
 
-  speech(message: string) {
+  getVoices(callback: (response: string) => void) {
+    let voices = ''
+    let cmd = this.cmd
+    cmd += '$speak.GetInstalledVoices() | % {$_.VoiceInfo.Name}'
+
+    const shell = spawn('powershell', [cmd])
+    shell.stdout.on('data', (data: Buffer) => {
+      voices += data.toString().split('\r\n')
+    })
+
+    shell.addListener('exit', (code, signal) => {
+      if (code === null || signal !== null) {
+        return callback(`say.getInstalledVoices(): could not get installed voices, had an error [code: ${code}] [signal: ${signal}]`)
+      }
+
+      if (voices.length > 0) {
+        voices = (voices[voices.length - 1] === '') ? voices.slice(0, voices.length - 1) : voices
+      }
+
+      voices = voices.slice(0, -1)
+      callback(voices.replace(',', ', '))
+    })
+
+    shell.stdin.end()
+  }
+
+  changeVoice(msg: ChatMessage, voice: string | undefined) {
+    if (voice) {
+      this.db.data.voice = voice
+      this.db.write()
+    } else {
+      this.getVoices(response => {
+        msg.reply(response)
+      })
+    }
+  }
+
+  changeSpeed(msg: ChatMessage, speed: string) {
+    try {
+      const spd = Number(speed)
+
+      if (isNaN(spd)) {
+        throw false
+      }
+
+      this.db.data.speed = spd
+      this.db.write()
+    } catch (err) {
+      msg.reply('Укажите тембр. (рекомендумое значение: 25-50)')
+    }
+  }
+
+  changeVolume(msg: ChatMessage, volume: string) {
+    try {
+      const vol = Number(volume)
+
+      if (isNaN(vol)) {
+        throw false
+      }
+
+      if (vol > 100 || vol < 0) {
+        throw false
+      }
+
+      this.db.data.volume = vol
+      this.db.write()
+    } catch (err) {
+      msg.reply('Укажите громкость звука от 0-100')
+    }
+  }
+
+  speech(args: string | string[]) {
+    const message = typeof args !== 'string' &&
+      args.join(' ').replace(/[&'<>]/gi, '')
+
     if (this.playing) {
       return this.queue.push(message)
     }
 
-    let cmd = 'powershell.exe Add-Type -AssemblyName System.speech; $speak = New-Object System.Speech.Synthesis.SpeechSynthesizer;'
-    cmd += `$speak.SelectVoice('${this.voice}');`
-    cmd += `$speak.Volume = ${this.volume};`
-    cmd += `$speak.Rate = ${this.speed};`
-    cmd += `$speak.Speak('${message}');`
+    const { speed, volume, voice } = this.db.data
+    let cmd = 'powershell.exe ' + this.cmd
+    cmd += `$speak.SelectVoice('${voice}'); `
+    cmd += `$speak.Volume = ${volume}; `
+    cmd += `$speak.Rate = ${speed}; `
+    cmd += `$speak.Speak('${message}'); `
 
     this.playing = true
 
