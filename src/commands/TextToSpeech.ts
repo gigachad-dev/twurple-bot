@@ -105,7 +105,7 @@ export default class TextToSpeech extends BaseCommand {
       this.db.data.speed = spd
       this.db.write()
     } catch (err) {
-      msg.reply('Укажите тембр. (рекомендумое значение: 25-50)')
+      msg.reply('Укажите тембр. (рекомендуемое значение: 25-50)')
     }
   }
 
