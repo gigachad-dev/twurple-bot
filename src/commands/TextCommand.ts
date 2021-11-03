@@ -2,7 +2,6 @@ import path from 'path'
 import { LowSync } from 'lowdb'
 import Commands from './Commands'
 import { randomInt } from '../utils'
-// @ts-ignore
 import compile from 'compile-template'
 import { CommandVariables, ChatMessage, BaseCommand, CommandOptions, MessageType, TwurpleClient, UserLevel } from '../client'
 
