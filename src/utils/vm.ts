@@ -5,6 +5,11 @@ import { inspect } from 'util'
 
 export const vm = async (code: string) => {
   try {
+    // https://github.com/advisories/GHSA-9pcf-h8q9-63f6 ¯\_(ツ)_/¯
+    if (code.toLowerCase().indexOf('require') !== -1) {
+      return 'ReferenceError: require is not defined'
+    }
+
     const isPromise = code.indexOf('await') !== -1
     const context = {
       _,
