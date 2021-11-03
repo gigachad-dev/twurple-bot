@@ -1,22 +1,21 @@
 import got from 'got'
 import _ from 'lodash'
-import safeEval from 'safe-eval'
+import { VM } from 'vm2'
 import { inspect } from 'util'
 
 export const vm = async (code: string) => {
   try {
-    // https://github.com/advisories/GHSA-9pcf-h8q9-63f6 ¯\_(ツ)_/¯
-    if (code.toLowerCase().indexOf('require') !== -1) {
-      return 'ReferenceError: require is not defined'
-    }
-
     const isPromise = code.indexOf('await') !== -1
-    const context = {
-      _,
-      got
-    }
+    const nodeVM = new VM({
+      sandbox: { _, got },
+      timeout: 5000,
+      fixAsync: true
+    })
 
-    let evaled = await safeEval(isPromise ? `(async function fn() { ${code} })()` : code, context)
+    let evaled = await nodeVM.run(isPromise ?
+      `(async function(){${code}})()` :
+      code
+    )
 
     if (typeof evaled !== 'string') {
       evaled = inspect(evaled, { depth: 0 }).toString()
@@ -24,7 +23,7 @@ export const vm = async (code: string) => {
 
     if (evaled.length > 500) {
       console.log(evaled)
-      return 'Exceeded character limit (500)'
+      return 'Error: Exceeded character limit (500)'
     }
 
     return evaled
