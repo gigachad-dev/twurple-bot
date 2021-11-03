@@ -1,17 +1,25 @@
+import got from 'got'
+import _ from 'lodash'
+import safeEval from 'safe-eval'
 import { inspect } from 'util'
 
 export const vm = async (code: string) => {
   try {
-    let isPromise = false
-    let evaled = eval(code.indexOf('await') !== -1 ? `(async() => { ${code} })()` : code)
-
-    if (evaled && evaled instanceof Promise) {
-      isPromise = true
-      evaled = await evaled
+    const isPromise = code.indexOf('await') !== -1
+    const context = {
+      _,
+      got
     }
 
+    let evaled = await safeEval(isPromise ? `(async function fn() { ${code} })()` : code, context)
+
     if (typeof evaled !== 'string') {
-      evaled = inspect(evaled, { depth: 0 })
+      evaled = inspect(evaled, { depth: 0 }).toString()
+    }
+
+    if (evaled.length > 500) {
+      console.log(evaled)
+      return 'Exceeded character limit (500)'
     }
 
     return evaled

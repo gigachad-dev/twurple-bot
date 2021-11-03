@@ -10,7 +10,8 @@ export default class Eval extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
-    const result = await vm(args.join(' '))
+    const code = args.join(' ')
+    const result = await vm(code)
     msg.say(result)
   }
 }
