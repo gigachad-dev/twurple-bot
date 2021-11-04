@@ -23,15 +23,16 @@ export default class Part extends BaseCommand {
       return msg.reply('Укажите ник канала')
     }
 
-    const findedChannel = this.client.db.data.channels.find(v => {
+    const { channels } = this.client.db.data
+    const findedChannel = channels.find(v => {
       return channel === v.replace('#', '')
     })
 
-    if (findedChannel && findedChannel !== this.client.getUsername()) {
+    if (findedChannel && channel !== this.client.getUsername()) {
       this.client.tmi.part(channel).then(() => {
         this.client.updateConfig({
-          channels: this.client.db.data.channels.filter(v => {
-            return channel !== v
+          channels: channels.filter(v => {
+            return channel !== v.replace('#', '')
           })
         })
 

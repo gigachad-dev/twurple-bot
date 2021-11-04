@@ -22,8 +22,9 @@ export default class Join extends BaseCommand {
     if (!channel) {
       return msg.reply('Укажите ник канала')
     }
-
-    const findedChannel = this.client.config.channels.find(v => {
+    
+    const { channels } = this.client.db.data
+    const findedChannel = channels.find(v => {
       return channel === v.replace('#', '')
     })
 
@@ -31,7 +32,7 @@ export default class Join extends BaseCommand {
       this.client.tmi.join(channel).then(() => {
         this.client.updateConfig({
           channels: [
-            ...this.client.config.channels,
+            ...channels,
             '#' + channel
           ]
         })
