@@ -3,7 +3,7 @@ import path from 'path'
 import lodash from 'lodash'
 import { readdirSync } from 'fs'
 import { EventEmitter } from 'events'
-import { LowSync, JSONFileSync } from 'lowdb'
+import { LowSync, JSONFileSync } from 'lowdb-hybrid'
 import StrictEventEmitter from 'strict-event-emitter-types'
 
 import { ApiClient } from '@twurple/api'

@@ -1,5 +1,5 @@
 import path from 'path'
-import { LowSync } from 'lowdb'
+import { LowSync } from 'lowdb-hybrid'
 import { play } from 'sound-play'
 import { declOfNum } from '../utils'
 import migration from '../migrations/sounds.json'

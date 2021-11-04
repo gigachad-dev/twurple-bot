@@ -1,6 +1,6 @@
 import ms, { StringValue } from 'ms'
 import path from 'path'
-import { LowSync } from 'lowdb'
+import { LowSync } from 'lowdb-hybrid'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
 interface ITimerMessages {

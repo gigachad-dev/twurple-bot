@@ -1,5 +1,5 @@
 import path from 'path'
-import { LowSync } from 'lowdb'
+import { LowSync } from 'lowdb-hybrid'
 import { exec, spawn } from 'child_process'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
@@ -47,9 +47,8 @@ export default class TextToSpeech extends BaseCommand {
         case 'volume':
           this.changeVolume(msg, args[1])
           break
-        default: {
+        default:
           this.speech(args)
-        }
       }
     } else {
       const { speed, volume, voice } = this.db.data

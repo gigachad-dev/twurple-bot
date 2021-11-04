@@ -1,5 +1,5 @@
 import path from 'path'
-import { LowSync } from 'lowdb'
+import { LowSync } from 'lowdb-hybrid'
 import Commands from './Commands'
 import { randomInt } from '../utils'
 import compile from 'compile-template'

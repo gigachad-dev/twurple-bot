@@ -1,5 +1,5 @@
 import path from 'path'
-import { LowSync } from 'lowdb'
+import { LowSync } from 'lowdb-hybrid'
 import { randomInt, declOfNum } from '../utils'
 import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
