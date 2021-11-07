@@ -19,7 +19,13 @@ export default class TextToSpeech extends BaseCommand {
     super(client, {
       name: 'tts',
       userlevel: 'vip',
-      description: 'Text to speech'
+      description: 'Text to speech',
+      examples: [
+        'tts voices',
+        'tts voice <voice>',
+        'tts speed <speed>',
+        'tts volume <volume>'
+      ]
     })
 
     this.cmd = 'Add-Type -AssemblyName System.speech; $speak = New-Object System.Speech.Synthesis.SpeechSynthesizer;'
@@ -31,11 +37,18 @@ export default class TextToSpeech extends BaseCommand {
 
   async prepareRun(msg: ChatMessage, args: string[]) {
     if (args.length) {
+      this.parseArguments(msg, args)
+    } else {
+      const { speed, volume, voice } = this.db.data
+      msg.reply(`${this.options.description}, speed: ${speed}, volume: ${volume}, voice: ${voice}`)
+    }
+  }
+
+  parseArguments(msg: ChatMessage, args: string[]) {
+    if (msg.author.isRegular) {
       switch (args[0]) {
         case 'voices':
-          this.getVoices(response => {
-            msg.reply(response)
-          })
+          this.getVoices(response => msg.reply(response))
           break
         case 'voice':
           args.shift()
@@ -48,11 +61,11 @@ export default class TextToSpeech extends BaseCommand {
           this.changeVolume(msg, args[1])
           break
         default:
-          this.speech(args)
+          msg.reply(`Доступные аргументы: ${this.options.examples.join(`, ${this.client.config.prefix}`)}`)
+          break
       }
     } else {
-      const { speed, volume, voice } = this.db.data
-      msg.reply(`${this.options.description}, speed: ${speed}, volume: ${volume}, voice: ${voice}`)
+      this.speech(args)
     }
   }
 
