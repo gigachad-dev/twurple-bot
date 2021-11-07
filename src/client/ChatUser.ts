@@ -92,4 +92,11 @@ export class ChatUser {
   get isMods(): boolean {
     return this.isBroadcaster || this.isModerator
   }
+
+  get isRegular(): boolean {
+    return [
+      ...this.client.config.botOwners,
+      this.client.getUsername()
+    ].includes(this.username)
+  }
 }
