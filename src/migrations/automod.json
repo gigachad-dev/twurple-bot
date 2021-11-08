@@ -1,5 +1,6 @@
 {
   "enabled": true,
+  "silence": true,
   "rules": [
     "пoдними c",
     "подними c",

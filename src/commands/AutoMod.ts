@@ -5,6 +5,7 @@ import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
 
 interface IAutoMod {
   enabled: boolean
+  silence: boolean
   rules: string[]
 }
 
@@ -107,6 +108,8 @@ export default class AutoMod extends BaseCommand {
   }
 
   banMessage(msg: ChatMessage, word: string) {
-    msg.reply(`Отлетаешь по причине: ${word.slice(0, 2) + '*'.repeat(word.length - 2)} OSFrog`)
+    if (!this.db.data.silence) {
+      msg.reply(`Отлетаешь по причине: ${word.slice(0, 2) + '*'.repeat(word.length - 2)} OSFrog`)
+    }
   }
 }
