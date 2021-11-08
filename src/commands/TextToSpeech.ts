@@ -36,16 +36,7 @@ export default class TextToSpeech extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]) {
-    if (args.length) {
-      this.parseArguments(msg, args)
-    } else {
-      const { speed, volume, voice } = this.db.data
-      msg.reply(`${this.options.description}, speed: ${speed}, volume: ${volume}, voice: ${voice}`)
-    }
-  }
-
-  parseArguments(msg: ChatMessage, args: string[]) {
-    if (msg.author.isRegular) {
+    if (args.length && msg.author.isRegular) {
       switch (args[0]) {
         case 'voices':
           this.getVoices(response => msg.reply(response))
@@ -60,12 +51,18 @@ export default class TextToSpeech extends BaseCommand {
         case 'volume':
           this.changeVolume(msg, args[1])
           break
-        default:
+        case 'help':
           msg.reply(`Доступные аргументы: ${this.options.examples.join(`, ${this.client.config.prefix}`)}`)
           break
+        default:
+          this.speech(args)
+          break
       }
-    } else {
+    } else if (args.length) {
       this.speech(args)
+    } else {
+      const { speed, volume, voice } = this.db.data
+      msg.reply(`${this.options.description}, speed: ${speed}, volume: ${volume}, voice: ${voice}`)
     }
   }
 
