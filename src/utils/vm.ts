@@ -8,8 +8,7 @@ export const vm = async (code: string) => {
     const isPromise = code.indexOf('await') !== -1
     const nodeVM = new VM({
       sandbox: { _, got },
-      timeout: 5000,
-      fixAsync: true
+      timeout: 5000
     })
 
     let evaled = await nodeVM.run(isPromise ?
