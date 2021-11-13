@@ -1,5 +1,5 @@
 import got from 'got'
-import { randomInt, vm } from '../utils'
+import { randomInt } from '../utils'
 import { ChatMessage } from './ChatMessage'
 import { TwurpleClient } from './TwurpleClient'
 
@@ -25,26 +25,15 @@ export class CommandVariables {
     private client: TwurpleClient,
     private msg: ChatMessage
   ) {
+    this.random = this.random.bind(this)
     this.chatter = this.chatter.bind(this)
     this.cache = {
       chatters: []
     }
   }
 
-  get user() {
-    return this.msg.author
-  }
-
-  get channel() {
-    return this.msg.channel
-  }
-
   random(min: number, max: number) {
     return randomInt(min, max)
-  }
-
-  vm(code: string) {
-    return vm(code)
   }
 
   async chatter() {
@@ -62,6 +51,6 @@ export class CommandVariables {
       ].filter(chatter => ![...this.client.db.data.ignoreList, ...this.client.config.bots].includes(chatter))
     }
 
-    return this.cache.chatters
+    return this.cache.chatters[this.random(0, this.cache.chatters.length - 1)]
   }
 }

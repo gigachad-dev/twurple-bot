@@ -1,5 +1,5 @@
 import { vm } from '../utils'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
+import { TwurpleClient, BaseCommand, ChatMessage, CommandVariables } from '../client'
 
 export default class Eval extends BaseCommand {
   constructor(client: TwurpleClient) {
@@ -11,7 +11,8 @@ export default class Eval extends BaseCommand {
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
     const code = args.join(' ')
-    const result = await vm(code)
+    const variables = new CommandVariables(this.client, msg)
+    const result = await vm(code, variables)
     msg.say(result)
   }
 }

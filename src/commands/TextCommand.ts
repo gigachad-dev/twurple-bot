@@ -1,11 +1,12 @@
 import path from 'path'
 import { LowSync } from 'lowdb-hybrid'
 import Commands from './Commands'
-import { randomInt } from '../utils'
-import compile from 'compile-template'
+import { vm } from '../utils'
 import { CommandVariables, ChatMessage, BaseCommand, CommandOptions, MessageType, TwurpleClient, UserLevel } from '../client'
 
 type ITextCommand = Pick<CommandOptions, 'name' | 'message' | 'sendType' | 'hideFromHelp' | 'userlevel'>
+
+const TEMPLATE_LITERALS = /\${(.+)}/g
 
 class TextCommand extends BaseCommand {
   constructor(client: TwurpleClient, options: CommandOptions) {
@@ -22,41 +23,15 @@ class TextCommand extends BaseCommand {
   }
 
   async formatMessage(msg: ChatMessage) {
-    let message = this.options.message
-    const regex = /\${([^}]+)}/g
-    const matches = [...message.matchAll(regex)]
+    const message = this.options.message
+    const matches = [...message.matchAll(TEMPLATE_LITERALS)]
 
     if (matches.length) {
       try {
-        const { user, channel, random, chatter, vm } = new CommandVariables(this.client, msg)
-
-        // promises
-        for (const match of matches) {
-          switch (match[1]) {
-            case 'chatter': {
-              const chatters = await chatter()
-              const randomChatter = chatters[randomInt(0, chatters.length - 1)]
-              message = message.replace(match[0], randomChatter)
-              break
-            }
-            case 'eval': {
-              const vms = await vm(match[0].slice(5).slice(0, -1))
-              message = message.replace(match[0], vms)
-              break
-            }
-            default:
-              break
-          }
-        }
-
-        return compile(message, {
-          // without promises
-          user,
-          channel,
-          random
-        })()
+        const variables = new CommandVariables(this.client, msg)
+        return await vm(message, variables)
       } catch (err) {
-        console.log(err)
+        return err.toString()
       }
     } else {
       return message
@@ -142,6 +117,16 @@ export default class TextCommandManager extends BaseCommand {
     const command = this.client.findCommand({ command: name })
 
     if (!command) {
+      const matches = [...message.matchAll(TEMPLATE_LITERALS)]
+
+      if (matches.length) {
+        if (message.indexOf('await') !== -1) {
+          message = 'return `' + message + '`'
+        } else {
+          message = '`' + message + '`'
+        }
+      }
+
       const newCommand: ITextCommand = {
         name,
         message,
