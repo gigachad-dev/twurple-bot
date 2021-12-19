@@ -38,11 +38,6 @@ export interface CommandOptions {
   hideFromHelp?: boolean
 
   /**
-   * The command is available only in the private message of the bot
-   */
-  privmsgOnly?: boolean
-
-  /**
   * The command is available only on the bot channel
   */
   botChannelOnly?: boolean
@@ -162,8 +157,9 @@ export class BaseCommand {
    * @param msg
    */
   preValidate(msg: ChatMessage): string | boolean {
-    if (msg.messageType !== 'whisper' && this.options.privmsgOnly) {
-      return 'This command is available only via private message'
+    // TODO: withWhisper command option
+    if (msg.messageType === 'whisper') {
+      return 'This command can be executed only in the bot channel'
     }
 
     if (this.options.botChannelOnly) {
