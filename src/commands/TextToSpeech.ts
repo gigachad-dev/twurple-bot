@@ -138,8 +138,9 @@ export default class TextToSpeech extends BaseCommand {
   }
 
   speech(args: string | string[]) {
-    const message = typeof args !== 'string' &&
-      args.join(' ').replace(/[&'<>]/gi, '')
+    const message = typeof args !== 'string' ?
+      args.join(' ').replace(/[&'<>]/gi, '') :
+      args
 
     if (this.playing) {
       return this.queue.push(message)
