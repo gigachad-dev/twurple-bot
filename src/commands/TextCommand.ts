@@ -1,8 +1,9 @@
 import path from 'path'
-import { LowSync } from 'lowdb-hybrid'
+import type { LowSync } from 'lowdb-hybrid'
 import Commands from './Commands'
 import { vm } from '../utils'
-import { CommandVariables, ChatMessage, BaseCommand, CommandOptions, MessageType, TwurpleClient, UserLevel } from '../client'
+import type { ChatMessage, CommandOptions, TwurpleClient } from '../client'
+import { CommandVariables, BaseCommand, MessageType, UserLevel } from '../client'
 
 type ITextCommand = Pick<CommandOptions, 'name' | 'message' | 'sendType' | 'hideFromHelp' | 'userlevel'>
 

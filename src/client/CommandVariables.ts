@@ -1,7 +1,7 @@
 import got from 'got'
 import { randomInt } from '../utils'
-import { ChatMessage } from './ChatMessage'
-import { TwurpleClient } from './TwurpleClient'
+import type { ChatMessage } from './ChatMessage'
+import type { TwurpleClient } from './TwurpleClient'
 
 interface ChattersApiResponse {
   chatter_count: number

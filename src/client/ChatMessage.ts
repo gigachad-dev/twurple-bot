@@ -1,7 +1,7 @@
 import { ChatUser } from './ChatUser'
 import { ChatChannel } from './ChatChannel'
-import { TwurpleClient } from './TwurpleClient'
-import { ChatUserstate, CommonUserstate } from '@twurple/auth-tmi'
+import type { TwurpleClient } from './TwurpleClient'
+import type { ChatUserstate, CommonUserstate } from '@twurple/auth-tmi'
 
 export type ChatterState = ChatUserstate & { message: string }
 

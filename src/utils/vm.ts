@@ -2,7 +2,7 @@ import got from 'got'
 import _ from 'lodash'
 import { VM } from 'vm2'
 import { inspect } from 'util'
-import { CommandVariables } from '../client'
+import type { CommandVariables } from '../client'
 
 export const vm = async (code: string, variables: CommandVariables) => {
   try {

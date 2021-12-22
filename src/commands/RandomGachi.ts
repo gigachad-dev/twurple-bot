@@ -1,7 +1,9 @@
 import { decode } from 'html-entities'
 import { randomInt } from '../utils'
-import search, { YouTubeSearchResults } from 'youtube-search'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
+import type { YouTubeSearchResults } from 'youtube-search'
+import search from 'youtube-search'
+import type { TwurpleClient, ChatMessage } from '../client'
+import { BaseCommand } from '../client'
 
 export default class RandomGachi extends BaseCommand {
   private orders: string[]

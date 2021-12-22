@@ -1,7 +1,8 @@
 import path from 'path'
-import { LowSync } from 'lowdb-hybrid'
+import type { LowSync } from 'lowdb-hybrid'
 import migration from '../migrations/automod.json'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
+import type { TwurpleClient, ChatMessage } from '../client'
+import { BaseCommand } from '../client'
 
 interface IAutoMod {
   enabled: boolean

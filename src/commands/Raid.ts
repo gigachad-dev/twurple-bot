@@ -1,5 +1,6 @@
 import { randomInt } from '../utils'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
+import type { TwurpleClient, ChatMessage } from '../client'
+import { BaseCommand } from '../client'
 
 export default class Raid extends BaseCommand {
   constructor(client: TwurpleClient) {

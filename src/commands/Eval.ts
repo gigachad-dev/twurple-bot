@@ -1,5 +1,6 @@
 import { vm } from '../utils'
-import { TwurpleClient, BaseCommand, ChatMessage, CommandVariables } from '../client'
+import type { TwurpleClient, ChatMessage } from '../client'
+import { BaseCommand, CommandVariables } from '../client'
 
 export default class Eval extends BaseCommand {
   constructor(client: TwurpleClient) {

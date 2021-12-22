@@ -1,7 +1,9 @@
-import ms, { StringValue } from 'ms'
+import type { StringValue } from 'ms'
+import ms from 'ms'
 import path from 'path'
-import { LowSync } from 'lowdb-hybrid'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
+import type { LowSync } from 'lowdb-hybrid'
+import type { TwurpleClient, ChatMessage } from '../client'
+import { BaseCommand } from '../client'
 
 interface ITimerMessages {
   time?: StringValue

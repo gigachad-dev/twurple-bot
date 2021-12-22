@@ -1,6 +1,7 @@
 import got from 'got'
 import FormData from 'form-data'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
+import type { TwurpleClient, ChatMessage } from '../client'
+import { BaseCommand } from '../client'
 
 interface QuoteApiResponse {
   quoteLink: string

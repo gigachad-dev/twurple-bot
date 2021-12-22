@@ -1,6 +1,7 @@
 import got from 'got'
 import { randomInt } from '../utils'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
+import type { TwurpleClient, ChatMessage } from '../client'
+import { BaseCommand } from '../client'
 
 export interface CatApiResponse {
   id: string

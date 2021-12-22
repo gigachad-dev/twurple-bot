@@ -1,7 +1,8 @@
 import path from 'path'
-import { LowSync } from 'lowdb-hybrid'
+import type { LowSync } from 'lowdb-hybrid'
 import { exec, spawn } from 'child_process'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
+import type { TwurpleClient, ChatMessage } from '../client'
+import { BaseCommand } from '../client'
 
 interface ITextToSpeech {
   speed: number

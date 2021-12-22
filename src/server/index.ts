@@ -1,7 +1,8 @@
 import cors from 'cors'
-import express, { Express } from 'express'
+import type { Express } from 'express'
+import express from 'express'
 import twitch from './routes/twitch.router'
-import { TwurpleClient } from '../client/TwurpleClient'
+import type { TwurpleClient } from '../client/TwurpleClient'
 
 export class Server {
   public app: Express

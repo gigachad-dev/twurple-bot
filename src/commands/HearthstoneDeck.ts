@@ -1,6 +1,7 @@
 import got from 'got'
 import { decode } from 'deckstrings'
-import { TwurpleClient, BaseCommand, ChatMessage } from '../client'
+import type { TwurpleClient, ChatMessage } from '../client'
+import { BaseCommand } from '../client'
 
 interface HsHeroes {
   id: number[]

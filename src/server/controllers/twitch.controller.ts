@@ -1,6 +1,6 @@
 import got from 'got'
-import { TwurpleClient } from '../../client/TwurpleClient'
-import { Request, Response, NextFunction } from 'express'
+import type { TwurpleClient } from '../../client/TwurpleClient'
+import type { Request, Response, NextFunction } from 'express'
 
 interface TwitchTokens {
   scope: string[]
