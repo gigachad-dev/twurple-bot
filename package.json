@@ -1,6 +1,6 @@
 {
   "name": "twurple-bot",
-  "version": "1.4.0-pre.17",
+  "version": "1.4.0-pre.18",
   "description": "Twitch chat bot built with Twurple",
   "scripts": {
     "start": "npm run update && npm run build && node dist/index.js",
