@@ -21,10 +21,10 @@ export default class Uptime extends BaseCommand {
   }
 
   async run(msg: ChatMessage, { username }: { username: string }): Promise<void> {
-    const channel = msg.channel.name
+    const channel = username || msg.channel.name
     const stream = await (
-      await this.client.api.users.getUserByName(username || channel)
-    ).getStream()
+      await this.client.api.users.getUserByName(channel)
+    )?.getStream()
 
     if (stream) {
       const time = this.formatTime(stream.startDate)
@@ -39,8 +39,8 @@ export default class Uptime extends BaseCommand {
 
     return Object
       .entries({ 'ч.': hours, 'мин.': minutes, 'сек.': seconds })
-      .map(date => !!date[1] && `${date[1]} ${date[0]}`)
-      .filter(v => v !== undefined)
+      .filter(date => date[1] !== 0)
+      .map(date => `${date[1]} ${date[0]}`)
       .join(' ')
   }
 }
