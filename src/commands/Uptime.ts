@@ -22,15 +22,20 @@ export default class Uptime extends BaseCommand {
 
   async run(msg: ChatMessage, { username }: { username: string }): Promise<void> {
     const channel = username || msg.channel.name
-    const stream = await (
-      await this.client.api.users.getUserByName(channel)
-    )?.getStream()
 
-    if (stream) {
-      const time = this.formatTime(stream.startDate)
-      msg.reply(`${stream.userDisplayName} вещает ${time}`)
-    } else {
-      msg.reply(`${channel} не в сети`)
+    try {
+      const stream = await (
+        await this.client.api.users.getUserByName(channel)
+      ).getStream()
+
+      if (stream) {
+        const time = this.formatTime(stream.startDate)
+        msg.reply(`${stream.userDisplayName} вещает ${time}`)
+      } else {
+        msg.reply(`${channel} не в сети`)
+      }
+    } catch (err) {
+      msg.reply(`Канал ${channel} не найден`)
     }
   }
 
