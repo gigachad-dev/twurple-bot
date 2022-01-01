@@ -10,13 +10,13 @@ const client = new TwurpleClient({
 })
 
 client.on('message', (msg) => {
-  if (msg.text.startsWith(client.config.prefix)) {
-    return client.execCommand('sounds', msg)
-  }
+  if (msg.author.username === '4arodei_kudesnik') {
+    if (msg.text === '!play') {
+      msg.say('!play')
+    }
 
-  if (!msg.author.isMods) {
-    client.execCommand('automod', msg)
+    if (msg.text.indexOf('выиграл Королевскую битву!') !== -1) {
+      setTimeout(() => msg.say('!битва'), 5000)
+    }
   }
-
-  client.execCommand('hsdeck', msg)
 })

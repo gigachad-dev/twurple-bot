@@ -1,13 +1,12 @@
 {
   "name": "twurple-bot",
-  "version": "1.4.0-pre.17",
+  "version": "0.0.0",
   "description": "Twitch chat bot built with Twurple",
   "scripts": {
-    "start": "npm run update && npm run build && node dist/index.js",
+    "start": "npm run build && node dist/index.js",
     "dev": "nodemon src/index.ts",
     "dev:debug": "nodemon --inspect src/index.ts",
     "build": "tsc",
-    "update": "node scripts/updater.js",
     "prebuild": "rimraf dist",
     "lint": "eslint --ext ts src",
     "lint:fix": "eslint --fix --ext ts src"
@@ -38,8 +37,8 @@
     "@twurple/auth": "^5.0.7",
     "@twurple/auth-tmi": "^5.0.7",
     "@twurple/chat": "^5.0.7",
+    "@twurple/pubsub": "^5.0.13",
     "auto-git-update": "^2.0.2",
-    "compile-template": "^0.3.1",
     "cors": "^2.8.5",
     "deckstrings": "^2.2.1",
     "express": "^4.17.1",
