@@ -5,6 +5,9 @@ import { BaseCommand } from '../client'
 interface WeatherApiResponse {
   id: number
   name: string
+  weather: {
+    description: string
+  }[]
   main: {
     humidity: number
     temp: number
@@ -46,21 +49,20 @@ export default class Weather extends BaseCommand {
 
     if (args.length) {
       try {
-        const query = args.join('%20')
-        // TODO: Refactor bullshit!
-        // eslint-disable-next-line no-useless-escape
-        const replaced = query.replace(/[&\/\\#,+()$~.':*?<>{}=]/g, '')
-
-        if (query !== replaced) {
-          throw new Error()
-        }
-
+        const query = args.join(' ')
         const { body } = await got<WeatherApiResponse>(
-          `https://api.openweathermap.org/data/2.5/weather?appid=${this.key}&lang=ru&units=metric&q=${query}`,
+          `https://api.openweathermap.org/data/2.5/weather?appid=${this.key}&lang=ru&units=metric&q=${encodeURI(query)}`,
           { responseType: 'json' }
         )
 
-        msg.reply(`${body.name} ${Math.round(body.main.temp)}°C Подробнее: openweathermap.org/city/${body.id}`)
+        const { name, main, clouds, wind } = body
+        const celsius = main.temp.toFixed(1)
+        const fahrenheit = ((+celsius * 9 / 5) + 32).toFixed(1)
+        const weather = body.weather.map(({ description }) => {
+          return description.charAt(0).toUpperCase() + description.slice(1)
+        }).join(', ')
+
+        msg.reply(`${name}: ${weather}, 🌡️ ${celsius}°C (${fahrenheit}°F), ☁️ ${clouds.all}%, 💦 ${main.humidity}%, 💨 ${wind.speed}m/sec`)
       } catch (err) {
         msg.reply('Город не найден')
       }
