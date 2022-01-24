@@ -1,8 +1,8 @@
 import path from 'path'
-import type { LowSync } from 'lowdb-hybrid'
 import migration from '../migrations/automod.json'
-import type { TwurpleClient, ChatMessage } from '../client'
 import { BaseCommand } from '../client'
+import type { LowSync } from 'lowdb-hybrid'
+import type { TwurpleClient, ChatMessage } from '../client'
 
 interface IAutoMod {
   enabled: boolean
@@ -32,7 +32,7 @@ export default class AutoMod extends BaseCommand {
     if (args.length > 1) {
       const action = args[0]
       args.shift()
-      const word = args.join(' ')
+      const word = args.join(' ').toLowerCase()
 
       switch (action) {
         case 'add':
