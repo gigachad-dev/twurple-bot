@@ -1,6 +1,6 @@
 {
   "name": "twurple-bot",
-  "version": "1.4.3-pre.1",
+  "version": "1.4.3-pre.2",
   "description": "Twitch chat bot built with Twurple",
   "scripts": {
     "start": "npm run update && npm run build && node dist/index.js",
@@ -39,7 +39,7 @@
     "@twurple/auth-tmi": "^5.0.18",
     "@twurple/chat": "^5.0.18",
     "@twurple/pubsub": "^5.0.18",
-    "auto-git-update": "^1.1.0",
+    "auto-git-update": "^2.1.0",
     "cors": "^2.8.5",
     "deckstrings": "^2.2.1",
     "express": "^4.17.3",
