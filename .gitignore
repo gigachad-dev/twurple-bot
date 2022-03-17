@@ -2,4 +2,3 @@
 /dist
 *.log
 .env
-package-lock.json
