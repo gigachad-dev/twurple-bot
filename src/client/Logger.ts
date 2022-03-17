@@ -6,7 +6,8 @@ export class Logger {
       format: 'YYYY/MM/DD HH:mm:ss'
     }),
     winston.format.printf(info =>
-      `[${info.timestamp}]${info.module ? ' (' + info.module + ') ' : ' '}${info.level.toUpperCase()}: ${info.message}`
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      `[${info.timestamp}]${info.module ? ` (${info.module}) ` : ' '}${info.level.toUpperCase()}: ${info.message}`
     )
   )
 
