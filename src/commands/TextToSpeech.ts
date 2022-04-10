@@ -19,7 +19,7 @@ export default class TextToSpeech extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'tts',
-      userlevel: 'vip',
+      userlevel: 'everyone',
       description: 'Text to speech',
       examples: [
         'tts voices',
@@ -37,6 +37,10 @@ export default class TextToSpeech extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]) {
+    // if (msg.author.username === 'b0do4ka') {
+    //   return
+    // }
+
     if (args.length && msg.author.isRegular) {
       switch (args[0]) {
         case 'voices':

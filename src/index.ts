@@ -9,14 +9,4 @@ const client = new TwurpleClient({
   commands: join(__dirname, './commands')
 })
 
-client.on('message', (msg) => {
-  if (msg.text.startsWith(client.config.prefix)) {
-    return client.execCommand('sounds', msg)
-  }
-
-  if (!msg.author.isMods) {
-    client.execCommand('automod', msg)
-  }
-
-  client.execCommand('hsdeck', msg)
-})
+client.on('message', (msg) => {})
