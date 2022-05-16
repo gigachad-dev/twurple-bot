@@ -1,4 +1,3 @@
 #!/bin/bash
-cd ..
-npm start
+cd .. && npm start
 exit
