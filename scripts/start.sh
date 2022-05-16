@@ -1,3 +1,3 @@
 #!/bin/bash
-cd .. && npm start
+cd ~/github/twurple-bot && npm start
 exit
