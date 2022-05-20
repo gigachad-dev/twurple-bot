@@ -9,6 +9,7 @@ import type { LowSync } from 'lowdb-hybrid'
 import type { TwurpleClient, ChatMessage } from '../client'
 
 interface ITextToSpeech {
+  tempo: number
   volume: number
 }
 
@@ -23,6 +24,7 @@ export default class TextToSpeech extends BaseCommand {
       userlevel: 'vip',
       description: 'Text to speech',
       examples: [
+        'tts tempo <temp>',
         'tts volume <volume>'
       ]
     })
@@ -35,6 +37,9 @@ export default class TextToSpeech extends BaseCommand {
   async prepareRun(msg: ChatMessage, args: string[]) {
     if (args.length && msg.author.isRegular) {
       switch (args[0]) {
+        case 'tempo':
+          this.changeTemp(msg, args[1])
+          break
         case 'volume':
           this.changeVolume(msg, args[1])
           break
@@ -48,7 +53,23 @@ export default class TextToSpeech extends BaseCommand {
     } else if (args.length) {
       this.speech(args)
     } else {
-      msg.reply(`${this.options.description}, volume: ${this.db.data.volume}`)
+      const { tempo, volume } = this.db.data
+      msg.reply(`${this.options.description}, volume: ${volume}, speed: ${tempo}`)
+    }
+  }
+
+  changeTemp(msg: ChatMessage, tempo: string) {
+    try {
+      const v = Number(tempo)
+
+      if (isNaN(v)) {
+        throw false
+      }
+
+      this.db.data.tempo = v
+      this.db.write()
+    } catch (err) {
+      msg.reply('Укажите тембр.')
     }
   }
 
@@ -96,7 +117,8 @@ export default class TextToSpeech extends BaseCommand {
   }
 
   private playSound(): void {
-    const cmd = ['play', `-v ${this.db.data.volume}`, '~/tts.mp3']
+    const { tempo, volume } = this.db.data
+    const cmd = ['play', `-v ${volume}`, '~/tts.mp3', `tempo ${tempo}`]
 
     exec(cmd.join(' '), (err) => {
       if (err) {
