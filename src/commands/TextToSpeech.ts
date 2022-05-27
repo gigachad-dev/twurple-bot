@@ -110,6 +110,8 @@ export default class TextToSpeech extends BaseCommand {
           err.toString(),
           this.constructor.name
         )
+        this.playing = false
+        return
       }
 
       this.playSound()
