@@ -1,7 +1,4 @@
-/**
- * dnf install gtts-cli
- * dnf install sox
- */
+// sudo dnf install gtts sox
 import path from 'path'
 import { exec } from 'child_process'
 import { BaseCommand } from '../client'
