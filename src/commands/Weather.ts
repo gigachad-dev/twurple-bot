@@ -18,6 +18,9 @@ interface WeatherApiResponse {
   wind: {
     speed: number
   }
+  sys: {
+    country: string
+  }
 }
 
 export default class Weather extends BaseCommand {
@@ -55,13 +58,13 @@ export default class Weather extends BaseCommand {
           { responseType: 'json' }
         )
 
-        const { name, main, clouds, wind } = body
+        const { name, main, clouds, wind, sys } = body
         const celsius = main.temp.toFixed(1)
         const weather = body.weather.map(({ description }) => {
           return description.charAt(0).toUpperCase() + description.slice(1)
         }).join(', ')
 
-        msg.reply(`${name}: ${weather}, 🌡️ ${celsius}°C, ☁️ ${clouds.all}%, 💦 ${main.humidity}%, 💨 ${wind.speed}m/sec`)
+        msg.reply(`${name} (${sys.country}): ${weather}, 🌡️ ${celsius}°C, ☁️ ${clouds.all}%, 💦 ${main.humidity}%, 💨 ${wind.speed}m/sec`)
       } catch (err) {
         msg.reply('Город не найден')
       }
