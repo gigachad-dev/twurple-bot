@@ -25,7 +25,6 @@
     "@types/lodash": "^4.14.180",
     "@types/node": "^17.0.21",
     "@types/sound-play": "^1.1.0",
-    "dotenv": "^16.0.0",
     "nodemon": "^2.0.15",
     "rimraf": "^3.0.2",
     "strict-event-emitter-types": "^2.0.0",
@@ -42,6 +41,7 @@
     "auto-git-update": "^2.1.0",
     "cors": "^2.8.5",
     "deckstrings": "^2.2.1",
+    "dotenv": "^16.0.1",
     "express": "^4.17.3",
     "got": "^11.8.2",
     "html-entities": "^2.3.2",
@@ -50,7 +50,7 @@
     "ms": "^3.0.0-canary.1",
     "sound-play": "^1.1.0",
     "tmi.js": "^1.8.5",
-    "vm2": "^3.9.9",
+    "vm2": "^3.9.10",
     "winston": "^3.6.0",
     "youtube-search": "^1.1.6"
   }
