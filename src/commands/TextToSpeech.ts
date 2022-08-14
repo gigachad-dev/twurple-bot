@@ -1,4 +1,5 @@
 // sudo dnf install gtts sox
+// espeak-ng
 import path from 'path'
 import { exec } from 'child_process'
 import { BaseCommand } from '../client'
@@ -99,7 +100,7 @@ export default class TextToSpeech extends BaseCommand {
     }
 
     this.playing = true
-    const cmd = ['gtts-cli', `"${message}"`, '-l ru', '-o ~/tts.mp3']
+    const cmd = ['espeak-ng', '-vru', '-s130', '-w ~/tts.mp3', `"${message}"`]
 
     exec(cmd.join(' '), (err) => {
       if (err) {
