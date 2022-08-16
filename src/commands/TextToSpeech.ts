@@ -6,6 +6,7 @@ import path from 'path'
 import { exec } from 'child_process'
 import { BaseCommand } from '../client'
 import type { LowSync } from 'lowdb-hybrid'
+import type { ChildProcess } from 'child_process'
 import type { TwurpleClient, ChatMessage } from '../client'
 
 interface ITextToSpeech {
@@ -16,6 +17,7 @@ interface ITextToSpeech {
 export default class TextToSpeech extends BaseCommand {
   private playing = false
   private queue: string[][] = []
+  private soundQueue: ChildProcess[] = []
   private db: LowSync<ITextToSpeech>
   private voices = [
     'aleksandr',
@@ -54,6 +56,11 @@ export default class TextToSpeech extends BaseCommand {
   async prepareRun(msg: ChatMessage, args: string[]) {
     if (args.length && msg.author.isRegular) {
       switch (args[0]) {
+        case 'skip':
+          // eslint-disable-next-line no-case-declarations
+          const proc = this.soundQueue.shift()
+          proc?.kill()
+          break
         case 'tempo':
           this.changeTemp(msg, args[1])
           break
@@ -152,7 +159,7 @@ export default class TextToSpeech extends BaseCommand {
     const { tempo, volume } = this.db.data
     const cmd = `play -v ${volume} ~/tts.mp3 tempo ${tempo}`
 
-    exec(cmd, (err) => {
+    const proc = exec(cmd, (err) => {
       if (err) {
         this.client.logger.error(err.message, this.constructor.name)
       }
@@ -162,5 +169,7 @@ export default class TextToSpeech extends BaseCommand {
         this.speech(this.queue.shift())
       }
     })
+
+    this.soundQueue.push(proc)
   }
 }
