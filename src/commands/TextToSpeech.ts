@@ -1,6 +1,8 @@
-// sudo dnf install gtts sox
-// espeak-ng
-import path from 'path'
+//// sudo dnf install gtts sox
+//// espeak-ng
+// tts docker
+// https://github.com/rprtr258/tts
+import path, { resolve } from 'path'
 import { exec } from 'child_process'
 import { BaseCommand } from '../client'
 import type { LowSync } from 'lowdb-hybrid'
@@ -100,9 +102,9 @@ export default class TextToSpeech extends BaseCommand {
     }
 
     this.playing = true
-    const cmd = ['espeak-ng', '-vru', '-s130', '-w ~/tts.mp3', `"${message}"`]
+    const cmd = `docker run -v /home/crashmax:/out tts '${message}' tts.mp3`
 
-    exec(cmd.join(' '), (err) => {
+    exec(cmd, (err) => {
       if (err) {
         this.client.logger.error(
           err.toString(),
@@ -118,9 +120,9 @@ export default class TextToSpeech extends BaseCommand {
 
   private playSound(): void {
     const { tempo, volume } = this.db.data
-    const cmd = ['play', `-v ${volume}`, '~/tts.mp3', `tempo ${tempo}`]
+    const cmd = `play -v ${volume} ~/tts.mp3 tempo ${tempo}`
 
-    exec(cmd.join(' '), (err) => {
+    exec(cmd, (err) => {
       if (err) {
         this.client.logger.error(err.message, this.constructor.name)
       }
