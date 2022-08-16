@@ -163,7 +163,9 @@ export default class TextToSpeech extends BaseCommand {
       if (err) {
         this.client.logger.error(err.message, this.constructor.name)
       }
+    })
 
+    proc.on('close', () => {
       this.playing = false
       if (this.queue.length) {
         this.speech(this.queue.shift())
