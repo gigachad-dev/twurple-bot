@@ -102,7 +102,7 @@ export default class TextToSpeech extends BaseCommand {
     }
 
     this.playing = true
-    const cmd = `docker run -v /home/crashmax:/out tts '${message}' tts.mp3`
+    const cmd = `docker run -v /home/crashmax:/out tts anna '${message}' tts.mp3`
 
     exec(cmd, (err) => {
       if (err) {
