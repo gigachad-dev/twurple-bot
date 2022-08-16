@@ -2,7 +2,7 @@
 //// espeak-ng
 // tts docker
 // https://github.com/rprtr258/tts
-import path, { resolve } from 'path'
+import path from 'path'
 import { exec } from 'child_process'
 import { BaseCommand } from '../client'
 import type { LowSync } from 'lowdb-hybrid'
@@ -15,8 +15,24 @@ interface ITextToSpeech {
 
 export default class TextToSpeech extends BaseCommand {
   private playing = false
-  private queue: string[] = []
+  private queue: string[][] = []
   private db: LowSync<ITextToSpeech>
+  private voices = [
+    'aleksandr',
+    'aleksandr-hq',
+    'anna',
+    'arina',
+    'artemiy',
+    'elena',
+    'evgeniy-rus',
+    'irina',
+    'mikhail',
+    'pavel',
+    'tatiana',
+    'victoria',
+    'vitaliy',
+    'yuriy'
+  ]
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -25,7 +41,8 @@ export default class TextToSpeech extends BaseCommand {
       description: 'Text to speech',
       examples: [
         'tts tempo <temp>',
-        'tts volume <volume>'
+        'tts volume <volume>',
+        'tts voices'
       ]
     })
 
@@ -54,7 +71,7 @@ export default class TextToSpeech extends BaseCommand {
       this.speech(args)
     } else {
       const { tempo, volume } = this.db.data
-      msg.reply(`${this.options.description}, volume: ${volume}, speed: ${tempo}`)
+      msg.reply(`${this.options.description}, volume: ${volume}, speed: ${tempo}, voices: ${this.voices.join(', ')}`)
     }
   }
 
@@ -92,17 +109,30 @@ export default class TextToSpeech extends BaseCommand {
     }
   }
 
-  speech(args: string | string[]) {
-    const message = typeof args !== 'string' ?
-      args.join(' ').replace(/[&'<>]/gi, '') :
-      args
+  speech(args: string[]) {
+    const { message, voice } = (() => {
+      let voice = 'aleksandr-hq'
+
+      if (this.voices.includes(args[0])) {
+        voice = args.shift()
+      }
+
+      const message = args
+        .join(' ')
+        .replace(/[&'<>]/gi, '')
+
+      return {
+        message,
+        voice
+      }
+    })()
 
     if (this.playing) {
-      return this.queue.push(message)
+      return this.queue.push(args)
     }
 
     this.playing = true
-    const cmd = `docker run -v /home/crashmax:/out tts anna '${message}' tts.mp3`
+    const cmd = `docker run -v /home/crashmax:/out tts ${voice} '${message}' tts.mp3`
 
     exec(cmd, (err) => {
       if (err) {
