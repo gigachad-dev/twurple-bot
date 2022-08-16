@@ -56,11 +56,12 @@ export default class TextToSpeech extends BaseCommand {
   async prepareRun(msg: ChatMessage, args: string[]) {
     if (args.length && msg.author.isRegular) {
       switch (args[0]) {
-        case 'skip':
-          // eslint-disable-next-line no-case-declarations
+        case 'skip': {
+          if (!this.soundQueue.length) return
           const proc = this.soundQueue.shift()
-          proc?.kill()
+          proc.kill()
           break
+        }
         case 'tempo':
           this.changeTemp(msg, args[1])
           break
@@ -159,17 +160,26 @@ export default class TextToSpeech extends BaseCommand {
     const { tempo, volume } = this.db.data
     const cmd = `play -v ${volume} ~/tts.mp3 tempo ${tempo}`
 
+    const nextSound = () => {
+      this.playing = false
+
+      if (this.queue.length) {
+        this.speech(this.queue.shift())
+      }
+
+      this.soundQueue.shift()
+    }
+
     const proc = exec(cmd, (err) => {
       if (err) {
         this.client.logger.error(err.message, this.constructor.name)
       }
+
+      nextSound()
     })
 
     proc.on('close', () => {
-      this.playing = false
-      if (this.queue.length) {
-        this.speech(this.queue.shift())
-      }
+      nextSound()
     })
 
     this.soundQueue.push(proc)
