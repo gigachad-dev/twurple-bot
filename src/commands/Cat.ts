@@ -4,9 +4,6 @@ import type { TwurpleClient, ChatMessage } from '../client'
 import { BaseCommand } from '../client'
 
 export interface CatApiResponse {
-  id: string
-  created_at: string
-  tags: string[]
   url: string
 }
 
@@ -24,15 +21,15 @@ export default class Cat extends BaseCommand {
 
   async run(msg: ChatMessage): Promise<void> {
     try {
-      const { body } = await got.get<CatApiResponse>(
-        'https://cataas.com/cat?json=true',
+      const { body } = await got.get<CatApiResponse[]>(
+        'https://api.thecatapi.com/v1/images/search',
         { responseType: 'json' }
       )
 
       const cats = ['CoolCat', 'DxCat', 'GlitchCat']
       const emote = cats[randomInt(0, cats.length - 1)]
 
-      msg.reply(`${emote} cataas.com${body.url}`)
+      msg.reply(`${emote} ${body[0].url}`)
     } catch (err) {
       this.client.logger.error(err, this.constructor.name)
     }
