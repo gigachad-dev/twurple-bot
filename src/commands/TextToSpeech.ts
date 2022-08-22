@@ -1,7 +1,7 @@
 //// sudo dnf install gtts sox
 //// espeak-ng
-// tts docker
-// https://github.com/rprtr258/tts
+//// https://github.com/rprtr258/tts
+// https://github.com/emcifuntik/silero-tts
 import path from 'path'
 import { exec } from 'child_process'
 import { BaseCommand } from '../client'
@@ -20,20 +20,12 @@ export default class TextToSpeech extends BaseCommand {
   private soundQueue: ChildProcess[] = []
   private db: LowSync<ITextToSpeech>
   private voices = [
-    'aleksandr',
-    'aleksandr-hq',
-    'anna',
-    'arina',
-    'artemiy',
-    'elena',
-    'evgeniy-rus',
-    'irina',
-    'mikhail',
-    'pavel',
-    'tatiana',
-    'victoria',
-    'vitaliy',
-    'yuriy'
+    'kseniya',
+    'xenia',
+    'aidar',
+    'baya',
+    'eugene',
+    'random'
   ]
 
   constructor(client: TwurpleClient) {
@@ -119,7 +111,7 @@ export default class TextToSpeech extends BaseCommand {
 
   speech(args: string[]) {
     const { message, voice } = (() => {
-      let voice = 'aleksandr-hq'
+      let voice = this.voices[0]
 
       if (this.voices.includes(args[0])) {
         voice = args.shift()
@@ -127,7 +119,8 @@ export default class TextToSpeech extends BaseCommand {
 
       const message = args
         .join(' ')
-        .replace(/[&'<>]/gi, '')
+        // тут был rprtr258
+        .replace(/[^а-яА-Я ]/g, '')
 
       return {
         message,
@@ -140,7 +133,7 @@ export default class TextToSpeech extends BaseCommand {
     }
 
     this.playing = true
-    const cmd = `docker run -v /home/crashmax:/out tts ${voice} '${message}' tts.mp3`
+    const cmd = `docker run --rm -v /home/crashmax:/out tts ${voice} "${message}" tts.wav`
 
     exec(cmd, (err) => {
       if (err) {
@@ -158,7 +151,7 @@ export default class TextToSpeech extends BaseCommand {
 
   private playSound(): void {
     const { tempo, volume } = this.db.data
-    const cmd = `play -v ${volume} ~/tts.mp3 tempo ${tempo}`
+    const cmd = `play -v ${volume} ~/tts.wav tempo ${tempo}`
 
     const nextSound = () => {
       this.playing = false
