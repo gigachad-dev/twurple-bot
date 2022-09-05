@@ -31,7 +31,7 @@ export default class TextToSpeech extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'tts',
-      userlevel: 'vip',
+      userlevel: 'everyone',
       description: 'Text to speech',
       examples: [
         'tts tempo <temp>',
@@ -46,29 +46,35 @@ export default class TextToSpeech extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]) {
-    if (args.length && msg.author.isRegular) {
-      switch (args[0]) {
-        case 'skip': {
-          if (!this.soundQueue.length) return
-          const proc = this.soundQueue.shift()
-          proc.kill()
-          break
+    if (args.length) {
+      if (msg.author.isRegular) {
+        switch (args[0]) {
+          case 'skip': {
+            if (!this.soundQueue.length) return
+            const proc = this.soundQueue.shift()
+            proc.kill()
+            break
+          }
+          case 'tempo':
+            this.changeTemp(msg, args[1])
+            break
+          case 'volume':
+            this.changeVolume(msg, args[1])
+            break
+          case 'help':
+            msg.reply(`Доступные аргументы: ${this.options.examples.join(`, ${this.client.config.prefix}`)}`)
+            break
+          default:
+            this.speech(args)
+            break
         }
-        case 'tempo':
-          this.changeTemp(msg, args[1])
-          break
-        case 'volume':
-          this.changeVolume(msg, args[1])
-          break
-        case 'help':
-          msg.reply(`Доступные аргументы: ${this.options.examples.join(`, ${this.client.config.prefix}`)}`)
-          break
-        default:
-          this.speech(args)
-          break
       }
-    } else if (args.length) {
-      this.speech(args)
+
+      if (msg.author.isVip || msg.author.isSubscriber || msg.author.isModerator) {
+        this.speech(args)
+      } else {
+        msg.reply('Text to speech доступен только для Vips, Subs и Mods.')
+      }
     } else {
       const { tempo, volume } = this.db.data
       msg.reply(`${this.options.description}, volume: ${volume}, speed: ${tempo}, voices: ${this.voices.join(', ')}`)
