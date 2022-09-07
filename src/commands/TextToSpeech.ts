@@ -64,9 +64,6 @@ export default class TextToSpeech extends BaseCommand {
           case 'help':
             msg.reply(`Доступные аргументы: ${this.options.examples.join(`, ${this.client.config.prefix}`)}`)
             break
-          default:
-            this.speech(args)
-            break
         }
       }
 
