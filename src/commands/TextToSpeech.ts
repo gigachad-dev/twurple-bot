@@ -33,6 +33,9 @@ export default class TextToSpeech extends BaseCommand {
       name: 'tts',
       userlevel: 'everyone',
       description: 'Text to speech',
+      aliases: [
+        'ттс'
+      ],
       examples: [
         'tts tempo <temp>',
         'tts volume <volume>',
