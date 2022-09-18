@@ -196,6 +196,10 @@
     {
       "alias": "бум",
       "file": "boom.mp3"
+    },
+    {
+      "alias": "ною",
+      "file": "noi.mp3"
     }
   ]
 }
