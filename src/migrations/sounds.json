@@ -188,6 +188,10 @@
     {
       "alias": "афк",
       "file": "afk.mp3"
+    },
+    {
+      "alias": "када",
+      "file": "kubi.mp3"
     }
   ]
 }
