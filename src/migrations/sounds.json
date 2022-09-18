@@ -1,7 +1,7 @@
 {
   "options": {
     "volume": 0.3,
-    "cooldown": 30,
+    "cooldown": 60,
     "blacklist": []
   },
   "sounds": [
