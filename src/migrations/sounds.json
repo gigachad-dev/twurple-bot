@@ -212,6 +212,10 @@
     {
       "alias": "тг",
       "file": "tg.mp3"
+    },
+    {
+      "alias": "афк",
+      "file": "afk.mp3"
     }
   ]
 }
