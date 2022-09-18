@@ -192,6 +192,10 @@
     {
       "alias": "када",
       "file": "kubi.mp3"
+    },
+    {
+      "alias": "бум",
+      "file": "boom.mp3"
     }
   ]
 }
