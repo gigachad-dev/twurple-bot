@@ -208,6 +208,10 @@
     {
       "alias": "грустно",
       "file": "grustno.mp3"
+    },
+    {
+      "alias": "тг",
+      "file": "tg.mp3"
     }
   ]
 }
