@@ -1,205 +1,248 @@
 {
   "options": {
-    "volume": 0.3,
     "cooldown": 60,
     "blacklist": []
   },
   "sounds": [
     {
       "alias": "погнали",
-      "file": "погнали_нахуй.mp3"
+      "file": "погнали_нахуй.mp3",
+      "volume": 0.2
     },
     {
       "alias": "ису",
-      "file": "kekw.mp3"
+      "file": "kekw.mp3",
+      "volume": 0.2
     },
     {
       "alias": "майнкрафт",
-      "file": "майнкрафт_моя_жизнь.mp3"
+      "file": "майнкрафт_моя_жизнь.mp3",
+      "volume": 0.2
     },
     {
       "alias": "бан",
-      "file": "бан.mp3"
+      "file": "бан.mp3",
+      "volume": 0.2
     },
     {
       "alias": "лежать",
-      "file": "лежать.mp3"
+      "file": "лежать.mp3",
+      "volume": 0.2
     },
     {
       "alias": "дебил",
-      "file": "дебил.mp3"
+      "file": "дебил.mp3",
+      "volume": 0.2
     },
     {
       "alias": "зарежу",
-      "file": "зарежу.mp3"
+      "file": "зарежу.mp3",
+      "volume": 0.2
     },
     {
       "alias": "почему",
-      "file": "почему_он.mp3"
+      "file": "почему_он.mp3",
+      "volume": 0.2
     },
     {
       "alias": "долбоеб",
-      "file": "сказочный_долбаёб.mp3"
+      "file": "сказочный_долбаёб.mp3",
+      "volume": 0.2
     },
     {
       "alias": "полномочия",
-      "file": "полномочия_всё.mp3"
+      "file": "полномочия_всё.mp3",
+      "volume": 0.2
     },
     {
       "alias": "волшебник",
-      "file": "ёбаный_волшебник.mp3"
+      "file": "ёбаный_волшебник.mp3",
+      "volume": 0.2
     },
     {
       "alias": "айбля",
-      "file": "айбля.mp3"
+      "file": "айбля.mp3",
+      "volume": 0.2
     },
     {
       "alias": "быдло",
-      "file": "быдло_ты_ебаное.mp3"
+      "file": "быдло_ты_ебаное.mp3",
+      "volume": 0.2
     },
     {
       "alias": "работать",
-      "file": "вы_работать_будите.mp3"
+      "file": "вы_работать_будите.mp3",
+      "volume": 0.2
     },
     {
       "alias": "всего",
-      "file": "всего_хо_ро_ше_го_.mp3"
+      "file": "всего_хо_ро_ше_го_.mp3",
+      "volume": 0.2
     },
     {
       "alias": "беги",
-      "file": "беги_сука_беги.mp3"
+      "file": "беги_сука_беги.mp3",
+      "volume": 0.2
     },
     {
       "alias": "проснулися",
-      "file": "проснулися.mp3"
+      "file": "проснулися.mp3",
+      "volume": 0.2
     },
     {
       "alias": "переиграю",
-      "file": "переиграю.mp3"
+      "file": "переиграю.mp3",
+      "volume": 0.2
     },
     {
       "alias": "повезло",
-      "file": "повезло.mp3"
+      "file": "повезло.mp3",
+      "volume": 0.2
     },
     {
       "alias": "казино",
-      "file": "казино.mp3"
+      "file": "казино.mp3",
+      "volume": 0.2
     },
     {
       "alias": "нелезь",
-      "file": "не_лезь.mp3"
+      "file": "не_лезь.mp3",
+      "volume": 0.2
     },
     {
       "alias": "здарова",
-      "file": "здарова.mp3"
+      "file": "здарова.mp3",
+      "volume": 0.2
     },
     {
       "alias": "блятьвот",
-      "file": "блятьвот.mp3"
+      "file": "блятьвот.mp3",
+      "volume": 0.2
     },
     {
       "alias": "извини",
-      "file": "извини.mp3"
+      "file": "извини.mp3",
+      "volume": 0.2
     },
     {
       "alias": "задницы",
-      "file": "задницы.mp3"
+      "file": "задницы.mp3",
+      "volume": 0.2
     },
     {
       "alias": "соси",
-      "file": "соси.mp3"
+      "file": "соси.mp3",
+      "volume": 0.2
     },
     {
       "alias": "300",
-      "file": "300врагов.mp3"
+      "file": "300врагов.mp3",
+      "volume": 0.2
     },
     {
       "alias": "биошок",
-      "file": "биошок.mp3"
+      "file": "биошок.mp3",
+      "volume": 0.2
     },
     {
       "alias": "вычеркиваю",
-      "file": "вычёркиваю.mp3"
+      "file": "вычёркиваю.mp3",
+      "volume": 0.2
     },
     {
       "alias": "лестница",
-      "file": "лестница.mp3"
+      "file": "лестница.mp3",
+      "volume": 0.2
     },
     {
       "alias": "патрего",
-      "file": "патрего.mp3"
+      "file": "патрего.mp3",
+      "volume": 0.2
     },
     {
       "alias": "понимаю",
-      "file": "понимаю.mp3"
+      "file": "понимаю.mp3",
+      "volume": 0.2
     },
     {
       "alias": "дурак",
-      "file": "дурак.mp3"
+      "file": "дурак.mp3",
+      "volume": 0.2
     },
     {
       "alias": "че",
-      "file": "чё.mp3"
+      "file": "чё.mp3",
+      "volume": 0.2
     },
     {
       "alias": "хуйня",
-      "file": "хуйня.mp3"
+      "file": "хуйня.mp3",
+      "volume": 0.2
     },
     {
       "alias": "нихуя",
-      "file": "нихуя.mp3"
+      "file": "нихуя.mp3",
+      "volume": 0.2
     },
     {
       "alias": "салам",
-      "file": "салам.mp3"
+      "file": "салам.mp3",
+      "volume": 0.2
     },
     {
       "alias": "заткни",
-      "file": "zatkni_ebalo.mp3"
+      "file": "zatkni_ebalo.mp3",
+      "volume": 0.2
     },
     {
       "alias": "крыса",
-      "file": "ля_ты_крыса.mp3"
+      "file": "ля_ты_крыса.mp3",
+      "volume": 0.2
     },
     {
       "alias": "какойпохуй",
-      "file": "какой_похуй.mp3"
+      "file": "какой_похуй.mp3",
+      "volume": 0.2
     },
     {
       "alias": "непохуй",
-      "file": "не_похуй.mp3"
+      "file": "не_похуй.mp3",
+      "volume": 0.2
     },
     {
       "alias": "привет",
-      "file": "всем_привет.mp3"
+      "file": "всем_привет.mp3",
+      "volume": 0.2
     },
     {
       "alias": "лучший",
-      "file": "ты_лучший.mp3"
+      "file": "ты_лучший.mp3",
+      "volume": 0.2
     },
     {
       "alias": "грустно",
-      "file": "grustno.mp3"
+      "file": "grustno.mp3",
+      "volume": 0.2
     },
     {
       "alias": "тг",
-      "file": "tg.mp3"
+      "file": "tg.mp3",
+      "volume": 0.2
     },
     {
       "alias": "афк",
-      "file": "afk.mp3"
+      "file": "afk.mp3",
+      "volume": 0.2
     },
     {
       "alias": "када",
-      "file": "kubi.mp3"
+      "file": "kubi.mp3",
+      "volume": 0.2
     },
     {
       "alias": "бум",
-      "file": "boom.mp3"
-    },
-    {
-      "alias": "ною",
-      "file": "noi.mp3"
+      "file": "boom.mp3",
+      "volume": 0.2
     }
   ]
 }

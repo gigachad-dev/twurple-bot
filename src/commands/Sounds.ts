@@ -7,27 +7,22 @@ import { BaseCommand } from '../client'
 import { exec } from 'child_process'
 
 interface IPlaySound {
+  sounds: Sound[]
   options: {
-    volume: number
     cooldown: number
     blacklist: string[]
   }
-  sounds: Sound[]
 }
 
 interface Sound {
   alias: string
   file: string
+  volume: number
 }
 
 interface UsedBy {
   name: string
   timestamp: number
-}
-
-interface CommandArgs {
-  command: string
-  value: string
 }
 
 export default class Sounds extends BaseCommand {
@@ -44,23 +39,13 @@ export default class Sounds extends BaseCommand {
       description: 'Воспроизведение звуков на стриме',
       aliases: [
         'звуки'
-      ],
-      args: [
-        {
-          type: String,
-          name: 'command'
-        },
-        {
-          type: String,
-          name: 'value'
-        }
       ]
     })
 
     this.db = this.client.lowdbAdapter<IPlaySound>({
       path: path.join(__dirname, '../../config/sounds.json'),
-      initialData: migration,
-      merge: ['sounds']
+      initialData: migration
+      // merge: ['sounds']
     })
 
     this.sounds = this.db.data.sounds
@@ -69,24 +54,90 @@ export default class Sounds extends BaseCommand {
     this.usedBy = []
   }
 
-  async run(msg: ChatMessage, { command, value }: CommandArgs): Promise<void> {
-    if (!command) {
+  async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
+    if (!args.length) {
       return this.soundsList(msg)
     }
 
-    // TODO: Управление командой
-    if (msg.author.isMods) {
+    if (msg.author.isRegular) {
+      const command = args[0]
+      args.shift()
+
+      const value = args[0]
+      args.shift()
+
       switch (command) {
-        case 'cooldown':
+        case 'cooldown': {
+          const cooldown = Number(value)
+          if (isNaN(cooldown)) {
+            return this.unknownArgument(msg)
+          }
+
+          this.updateCooldown(cooldown)
           break
-        case 'blacklist':
+        }
+        case 'add': {
+          if (!value) {
+            return this.unknownArgument(msg)
+          }
+
+          this.addToBlacklist(value)
           break
-        case 'volume':
+        }
+        case 'rm': {
+          if (!value) {
+            return this.unknownArgument(msg)
+          }
+
+          this.removeFromBlacklist(value)
           break
+        }
+        case 'volume': {
+          const sound = value
+          const volume = Number(args[0])
+
+          if (!sound || isNaN(volume)) {
+            return this.unknownArgument(msg)
+          }
+
+          this.updateVolume(sound, volume)
+          break
+        }
         default:
-          msg.reply('Аргумент команды не найден')
+          this.unknownArgument(msg)
       }
     }
+  }
+
+  private unknownArgument(msg: ChatMessage): void {
+    msg.reply('Аргумент команды не найден')
+  }
+
+  private updateCooldown(cooldown: number): void {
+    this.db.data.options.cooldown = cooldown
+    this.db.write()
+    this.usedBy.length = 0
+  }
+
+  private addToBlacklist(username: string): void {
+    this.db.data.options.blacklist = [
+      ...new Set([...this.db.data.options.blacklist, username])
+    ]
+    this.db.write()
+  }
+
+  private removeFromBlacklist(username): void {
+    const users = this.db.data.options.blacklist
+      .filter((usr) => usr !== username)
+    this.db.data.options.blacklist = users
+    this.db.write()
+  }
+
+  private updateVolume(soundName: string, volume: number): void {
+    const sound = this.db.data.sounds
+      .find(({ alias }) => alias === soundName)
+    Object.assign(sound, { volume })
+    this.db.write()
   }
 
   soundsList(msg: ChatMessage): void {
@@ -99,21 +150,23 @@ export default class Sounds extends BaseCommand {
     const command = msg.text.slice(1).toLowerCase()
 
     if (msg.text.startsWith(this.client.config.prefix) && command.length) {
-      const findSound = this.sounds.find(sound => {
+      const sound = this.sounds.find(sound => {
         if (sound.alias === command) {
           return sound
         }
       })
 
-      if (findSound) {
-        const { blacklist, cooldown, volume } = this.db.data.options
+      if (sound) {
+        const { blacklist, cooldown } = this.db.data.options
 
-        if (this.checkBlacklist(msg, name, blacklist)) {
-          return
-        }
+        if (!msg.author.isRegular) {
+          if (this.checkBlacklist(msg, name, blacklist)) {
+            return
+          }
 
-        if (this.checkCooldown(msg, name, cooldown)) {
-          return
+          if (this.checkCooldown(msg, name, cooldown)) {
+            return
+          }
         }
 
         this.usedBy.push({
@@ -121,7 +174,7 @@ export default class Sounds extends BaseCommand {
           timestamp: Math.floor(Date.now() / 1000)
         })
 
-        this.playSound(findSound, volume)
+        this.playSound(sound)
       }
     }
   }
@@ -148,7 +201,7 @@ export default class Sounds extends BaseCommand {
     })
   }
 
-  playSound(sound: Sound, volume: number): number {
+  playSound(sound: Sound): number {
     const folder = path.join(__dirname, '../../config/sounds')
     const file = path.join(folder, `${sound.file}`)
 
@@ -159,13 +212,13 @@ export default class Sounds extends BaseCommand {
     try {
       this.isPlaying = true
 
-      const cmd = `play -v ${volume} ${file}`
+      const cmd = `play -v ${sound.volume} ${file}`
       exec(cmd, (err) => {
         if (err) this.client.logger.error(err.message)
 
         this.isPlaying = false
         if (this.soundQueue.length) {
-          this.playSound(this.soundQueue.shift(), volume)
+          this.playSound(this.soundQueue.shift())
         }
 
         this.client.logger.info(sound.file, this.constructor.name)
