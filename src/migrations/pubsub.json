@@ -1,16 +1,28 @@
 {
   "redemptions": [
     {
-      "title": "Обмен валюты StreamAvatars",
-      "action": "!баланс дать ${event.userName} ${event.rewardCost / 2}"
+      "title": "Украсть VIP статус",
+      "action": "!vip ${event.userName} ${event.message.split(' ')[0]}"
     },
     {
-      "title": "5 минут чат только для смайликов",
+      "title": "Украсть случайный VIP статус",
+      "action": "!vip ${event.userName}"
+    },
+    {
+      "title": "Чат только для смайликов",
       "action": "/emoteonly",
       "timeout": {
         "time": "5m",
         "action": "/emoteonlyoff"
       }
+    },
+    {
+      "title": "Отстранить",
+      "action": "!timeout ${event.message.split(' ')[0]} 600"
+    },
+    {
+      "title": "Заткнуть балаболку",
+      "action": "!tts skip"
     },
     {
       "title": "VIP",
