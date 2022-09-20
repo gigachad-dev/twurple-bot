@@ -94,7 +94,9 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
         'channel:manage:polls',
         'channel:manage:predictions',
         'channel:read:polls',
-        'channel:read:predictions'
+        'channel:read:predictions',
+        'channel:read:vips',
+        'channel:manage:vips'
       ],
       server: {
         hostname: 'localhost',
