@@ -243,6 +243,11 @@
       "alias": "бум",
       "file": "boom.mp3",
       "volume": 0.2
+    },
+    {
+      "alias": "ною",
+      "file": "noi.mp3",
+      "volume": 0.1
     }
   ]
 }

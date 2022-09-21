@@ -24,8 +24,7 @@ export default class TextToSpeech extends BaseCommand {
     'xenia',
     'aidar',
     'baya',
-    'eugene',
-    'random'
+    'eugene'
   ]
 
   constructor(client: TwurpleClient) {
@@ -117,7 +116,7 @@ export default class TextToSpeech extends BaseCommand {
 
   speech(args: string[]) {
     const { message, voice } = (() => {
-      let voice = this.voices[0]
+      let voice = 'random'
 
       if (this.voices.includes(args[0])) {
         voice = args.shift()
