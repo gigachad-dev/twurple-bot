@@ -248,6 +248,11 @@
       "alias": "ною",
       "file": "noi.mp3",
       "volume": 0.1
+    },
+    {
+      "alias": "бабки",
+      "file": "babki.mp3",
+      "volume": 0.3
     }
   ]
 }
