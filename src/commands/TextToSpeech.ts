@@ -8,6 +8,7 @@ import { BaseCommand } from '../client'
 import type { LowSync } from 'lowdb-hybrid'
 import type { ChildProcess } from 'child_process'
 import type { TwurpleClient, ChatMessage } from '../client'
+import type { PubSubRedemptionMessage } from '@twurple/pubsub/lib'
 
 interface ITextToSpeech {
   tempo: number
@@ -45,6 +46,22 @@ export default class TextToSpeech extends BaseCommand {
     this.db = this.client.lowdbAdapter<ITextToSpeech>({
       path: path.join(__dirname, '../../config/tts.json')
     })
+  }
+
+  async onPubSub(event: PubSubRedemptionMessage): Promise<void> {
+    if (this.soundQueue.length) {
+      this.soundQueue
+        .shift()
+        .kill()
+      this.sendSkipMessage()
+    }
+  }
+
+  private sendSkipMessage(): void {
+    this.client.say(
+      this.client.getUsername(),
+      '/me Балаболка заткнута pepeSmack'
+    )
   }
 
   async prepareRun(msg: ChatMessage, args: string[]) {

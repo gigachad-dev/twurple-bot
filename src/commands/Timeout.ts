@@ -1,10 +1,6 @@
 import { BaseCommand } from '../client'
-import type { TwurpleClient, ChatMessage } from '../client'
-
-interface CommandArgs {
-  username: string
-  ms: number
-}
+import type { TwurpleClient } from '../client'
+import type { PubSubRedemptionMessage } from '@twurple/pubsub/lib'
 
 export default class Timeout extends BaseCommand {
   constructor(client: TwurpleClient) {
@@ -27,19 +23,33 @@ export default class Timeout extends BaseCommand {
     })
   }
 
-  async run(msg: ChatMessage, { username, ms }: CommandArgs): Promise<any> {
+  async onPubSub(event: PubSubRedemptionMessage): Promise<void> {
+    const [username] = event.message.split(' ')
+    const channel = this.client.getUsername()
+
     try {
       const user = await this.client.api.users.getUserByName(username)
-      if (!user) return msg.actionReply(`пользователь "${username}" не найден`)
+      if (!user) {
+        this.client.say(
+          channel,
+          `@${event.userName} пользователь "${username}" не найден`
+        )
+        return
+      }
 
-      const moderators = await this.client.tmi.mods(msg.channel.name)
-      if (!moderators.includes(user.name) && msg.channel.name !== user.name) {
-        msg.say(`/timeout ${user.name} ${ms}`)
+      const moderators = await this.client.tmi.mods(channel)
+      if (!moderators.includes(user.name) && channel !== user.name) {
+        this.say(`/timeout ${user.name} 600`)
       } else {
-        msg.actionSay('Запрещено отстранять модераторов и стримера (-15K KEKU)')
+        this.say(`@${event.userName} Запрещено отстранять модераторов и стримера (-15K KEKU)`)
       }
     } catch (err) {
-      msg.say(err.messsage)
+      this.say(err.messsage)
     }
+  }
+
+  private say(message: string): void {
+    const username = this.client.getUsername()
+    this.client.say(username, message)
   }
 }

@@ -1,17 +1,13 @@
 import { BaseCommand } from '../client'
 import { randomInt } from '../utils/randomInt'
-import type { TwurpleClient, ChatMessage } from '../client'
+import type { TwurpleClient } from '../client'
 import type { HelixUser, HelixUserRelation } from '@twurple/api/lib'
-
-interface Channel {
-  id: string
-  name: string
-}
+import type { PubSubRedemptionMessage } from '@twurple/pubsub/lib'
 
 interface PayloadVip {
   claimed: HelixUser | null
   target: HelixUser | HelixUserRelation | null
-  channel: Channel
+  channel: HelixUser
 }
 
 export default class Vip extends BaseCommand {
@@ -22,56 +18,34 @@ export default class Vip extends BaseCommand {
     })
   }
 
-  async prepareRun(msg: ChatMessage, args: string[]): Promise<any> {
-    const claimedUsername = this.removeMention(args[0])
-    const targetUsername = this.removeMention(args[1])
+  async onPubSub(event: PubSubRedemptionMessage): Promise<void> {
     const payload: PayloadVip = {
       claimed: null,
       target: null,
-      channel: msg.channel
+      channel: await this.client.api.users.getMe()
     }
 
     try {
-      if (claimedUsername) {
-        const claimedUser = await this.getUserByName(claimedUsername)
-        payload.claimed = claimedUser
-      }
-
-      if (targetUsername) {
-        const targetUser = await this.getUserByName(targetUsername)
-        if (!targetUser) {
-          throw new Error(`@${payload.claimed.name} пользователь с никнейном "${targetUsername}" не найден`)
-        }
-        payload.target = targetUser
-      }
+      payload.claimed = await this.getUserByName(event.userName)
 
       if (await this.checkForVips(payload.channel, payload.claimed.id)) {
         throw new Error(`@${payload.claimed.name} ты уже имеешь VIP`)
       }
 
-      if (args.length > 1) {
-        const targetIsVip = await this.checkForVips(payload.channel, payload.target.id)
-        if (targetIsVip) {
-          this.claimVipByUsername(payload)
-        } else {
-          throw new Error(`@${payload.target.name} пользователь @${payload.target.name} не имеет VIP`)
-        }
-      } else {
-        this.claimRandomVip(payload)
-      }
+      this.claimVip(payload)
     } catch (err) {
-      msg.actionSay(err.message)
+      this.client.say(payload.channel.name, err.message)
     }
   }
 
-  private async claimVipByUsername(
-    { channel, claimed, target }: PayloadVip
-  ): Promise<void> {
-    this.addVip(channel, claimed, target)
-  }
+  // private async claimVipByUsername(
+  //   { channel: channel, claimed, target }: PayloadVip
+  // ): Promise<void> {
+  //   this.addVip(channel, claimed, target)
+  // }
 
-  private async claimRandomVip(
-    { channel, claimed }: PayloadVip
+  private async claimVip(
+    { channel: channel, claimed }: PayloadVip
   ): Promise<void> {
     const vips = await this.getVips(channel)
     const randomVip = vips[randomInt(0, vips.length - 1)]
@@ -79,13 +53,13 @@ export default class Vip extends BaseCommand {
   }
 
   private async unVip(
-    ch: Channel, user: HelixUser | HelixUserRelation
+    ch: HelixUser, user: HelixUser | HelixUserRelation
   ): Promise<void> {
     this.client.api.channels.removeVip(ch, user.id)
   }
 
   private async addVip(
-    ch: Channel, claimed: HelixUser, target: HelixUser | HelixUserRelation
+    ch: HelixUser, claimed: HelixUser, target: HelixUser | HelixUserRelation
   ): Promise<void> {
     await this.unVip(ch, target)
     await this.client.api.channels.addVip(ch.id, claimed.id)
@@ -95,7 +69,7 @@ export default class Vip extends BaseCommand {
     )
   }
 
-  private async getVips(ch: Channel): Promise<HelixUserRelation[]> {
+  private async getVips(ch: HelixUser): Promise<HelixUserRelation[]> {
     const vips = await this.client.api.channels.getVips(
       ch.id,
       { limit: 100 }
@@ -104,16 +78,12 @@ export default class Vip extends BaseCommand {
     return vips.data
   }
 
-  private async checkForVips(ch: Channel, userId: string): Promise<boolean> {
+  private async checkForVips(ch: HelixUser, userId: string): Promise<boolean> {
     return await this.client.api.channels
       .checkVipForUser(ch.id, userId)
   }
 
   private async getUserByName(username: string): Promise<HelixUser> {
     return await this.client.api.users.getUserByName(username)
-  }
-
-  private removeMention(username: string): string {
-    return username.startsWith('@') ? username.slice(1) : username
   }
 }

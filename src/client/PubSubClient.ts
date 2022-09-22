@@ -1,47 +1,55 @@
 import ms from 'ms'
-import path from 'path'
 import { VM } from 'vm2'
 import { PubSubClient as PubSub } from '@twurple/pubsub'
 import type { StringValue } from 'ms'
-import type { LowSync } from 'lowdb-hybrid'
 import type { TokenInfo } from '@twurple/auth/lib'
 import type { TwurpleClient } from './TwurpleClient'
 import type { PubSubRedemptionMessage } from '@twurple/pubsub'
-import migration from '../migrations/pubsub.json'
 
 interface Redemption {
-  title: string
-  action: string
+  name: string
+  command: string
   timeout?: {
     time: StringValue
     action: string
   }
 }
 
-interface PubSubs {
-  redemptions: Redemption[]
-}
-
 export class PubSubClient {
-  private client: TwurpleClient
   private pubsub: PubSub
   private tokenInfo: TokenInfo
-
-  private db: LowSync<PubSubs>
   private redemptions: Redemption[]
 
-  constructor(client: TwurpleClient) {
-    this.client = client
-
-    this.db = this.client.lowdbAdapter<PubSubs>({
-      path: path.join(__dirname, '../../config/pubsub.json'),
-      initialData: migration as PubSubs
-    })
-
-    this.redemptions = this.db.data.redemptions
+  constructor(private readonly client: TwurpleClient) {
+    this.redemptions = [
+      {
+        name: 'Заткнуть балаболку',
+        command: 'tts'
+      },
+      {
+        name: 'Украсть VIP статус',
+        command: 'vip'
+      },
+      {
+        name: 'Отстранить',
+        command: 'timeout'
+      },
+      {
+        name: 'Чат только для смайликов',
+        command: '/emoteonly',
+        timeout: {
+          time: '5m',
+          action: '/emoteonlyoff'
+        }
+      },
+      {
+        name: 'VIP статус',
+        command: '/vip ${event.userName}'
+      }
+    ]
   }
 
-  async connect() {
+  async connect(): Promise<void> {
     this.pubsub = new PubSub()
     this.tokenInfo = await this.client.api.getTokenInfo()
 
@@ -49,19 +57,28 @@ export class PubSubClient {
     await this.registerOnRedemtion()
   }
 
-  private async registerOnRedemtion() {
+  private async registerOnRedemtion(): Promise<void> {
     await this.pubsub.onRedemption(this.tokenInfo.userId, (event) => {
-      const redemption = this.redemptions.find((redemption) => redemption.title === event.rewardTitle)
+      const redemption = this.redemptions
+        .find((redemption) => redemption.name === event.rewardTitle)
+
       if (redemption) {
-        this.say(redemption, event)
+        const command = this.client.findCommand({ command: redemption.command })
+        if (command) {
+          command.onPubSub(event)
+        } else {
+          this.say(redemption, event)
+        }
       }
     })
   }
 
-  private async say(redemption: Redemption, event: PubSubRedemptionMessage) {
+  private async say(
+    redemption: Redemption, event: PubSubRedemptionMessage
+  ): Promise<void> {
     this.client.say(
       this.tokenInfo.userName,
-      await this.vm(redemption.action, event)
+      await this.vm(redemption.command, event)
     )
 
     if (redemption.timeout) {
@@ -74,7 +91,9 @@ export class PubSubClient {
     }
   }
 
-  private async vm(code: string, event: PubSubRedemptionMessage): Promise<string> {
+  private async vm(
+    code: string, event: PubSubRedemptionMessage
+  ): Promise<string> {
     const vm = new VM({
       timeout: 5000,
       sandbox: { event }

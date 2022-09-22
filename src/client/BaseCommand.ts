@@ -1,3 +1,4 @@
+import type { PubSubRedemptionMessage } from '@twurple/pubsub/lib'
 import type { ChatMessage } from './ChatMessage'
 import type { TwurpleClient } from './TwurpleClient'
 
@@ -96,6 +97,8 @@ export class BaseCommand {
     public client: TwurpleClient,
     public options: CommandOptions
   ) { }
+
+  async onPubSub(event: PubSubRedemptionMessage, args?: string[]): Promise<void> {}
 
   /**
    * Method called when execCommand()
