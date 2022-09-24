@@ -258,6 +258,11 @@
       "alias": "кушать",
       "file": "pokushat.mp3",
       "volume": 0.2
+    },
+    {
+      "alias": "тьфу",
+      "file": "тьфу.mp3",
+      "volume": 0.3
     }
   ]
 }
