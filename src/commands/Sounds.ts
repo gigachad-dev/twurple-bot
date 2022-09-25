@@ -37,15 +37,12 @@ export default class Sounds extends BaseCommand {
       name: 'sounds',
       userlevel: 'everyone',
       description: 'Воспроизведение звуков на стриме',
-      aliases: [
-        'звуки'
-      ]
+      aliases: ['звуки']
     })
 
     this.db = this.client.lowdbAdapter<IPlaySound>({
       path: path.join(__dirname, '../../config/sounds.json'),
       initialData: migration
-      // merge: ['sounds']
     })
 
     this.sounds = this.db.data.sounds
@@ -60,11 +57,8 @@ export default class Sounds extends BaseCommand {
     }
 
     if (msg.author.isRegular) {
-      const command = args[0]
-      args.shift()
-
-      const value = args[0]
-      args.shift()
+      const command = args.shift()
+      const value = args.shift()
 
       switch (command) {
         case 'cooldown': {

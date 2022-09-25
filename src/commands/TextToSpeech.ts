@@ -21,6 +21,7 @@ export default class TextToSpeech extends BaseCommand {
       name: 'tts',
       userlevel: 'vip',
       description: 'Text to speech',
+      aliases: ['ттс'],
       examples: [
         'tts voices',
         'tts voice <voice>',
