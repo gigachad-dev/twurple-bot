@@ -263,6 +263,11 @@
       "alias": "тьфу",
       "file": "тьфу.mp3",
       "volume": 0.3
+    },
+    {
+      "alias": "ай",
+      "file": "lexot.mp3",
+      "volume": 0.2
     }
   ]
 }
