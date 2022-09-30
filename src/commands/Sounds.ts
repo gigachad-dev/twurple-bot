@@ -136,8 +136,11 @@ export default class Sounds extends BaseCommand {
   private updateVolume(soundName: string, volume: number): void {
     const sound = this.db.data.sounds
       .find(({ alias }) => alias === soundName)
-    Object.assign(sound, { volume })
-    this.db.write()
+
+    if (sound) {
+      Object.assign(sound, { volume })
+      this.db.write()
+    }
   }
 
   soundsList(msg: ChatMessage): void {
