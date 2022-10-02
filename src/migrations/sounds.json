@@ -273,6 +273,11 @@
       "alias": "гав",
       "file": "bark.ogg",
       "volume": 0.2
+    },
+    {
+      "alias": "блиа",
+      "file": "shulker.mp3",
+      "volume": 0.5
     }
   ]
 }
