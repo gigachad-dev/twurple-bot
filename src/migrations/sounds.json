@@ -278,6 +278,11 @@
       "alias": "блиа",
       "file": "shulker.mp3",
       "volume": 0.5
+    },
+    {
+      "alias": "ветра",
+      "file": "vetra.mp3",
+      "volume": 0.3
     }
   ]
 }
