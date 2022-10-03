@@ -283,6 +283,11 @@
       "alias": "ветра",
       "file": "vetra.mp3",
       "volume": 0.3
+    },
+    {
+      "alias": "дядя",
+      "file": "dyadya.mp3",
+      "volume": 0.01
     }
   ]
 }
