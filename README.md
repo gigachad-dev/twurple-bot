@@ -120,7 +120,7 @@ twurple: AutoMod включен VoteYea
 - добавляет или удаляет правило для Automod
 
 ```
-usage: !automod remove Kappa
+usage: !automod add Kappa
 twurple: @le_xot, Правило добавлено
 ```
 
