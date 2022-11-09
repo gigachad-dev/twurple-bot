@@ -25,8 +25,8 @@ export default class Title extends BaseCommand {
   async moderator(msg: ChatMessage, args: string[]): Promise<void> {
     const title = args.join(' ')
 
-    if (title.length > 106) {
-      msg.reply('Название стрима не может быть больше 106 символов')
+    if (title.length > 140) {
+      msg.reply('Название стрима не может быть больше 140 символов')
     } else {
       this.changeTitle(msg, title)
     }
