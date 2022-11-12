@@ -49,6 +49,7 @@ export default class TextCommandManager extends BaseCommand {
       userlevel: 'regular',
       description: 'Эта команда позволяет управлять текстовыми командами.',
       examples: [
+        'command edit <name> <new_message>',
         'command add <name> <message>',
         'command remove <name>',
         'command list',
@@ -78,6 +79,10 @@ export default class TextCommandManager extends BaseCommand {
       const options = args.join(' ')
 
       switch (action) {
+        case 'edit':
+          this.editCommand(msg, command, options)
+          break
+
         case 'add':
           this.addCommand(msg, command, options)
           break
@@ -108,6 +113,24 @@ export default class TextCommandManager extends BaseCommand {
     } else {
       Commands.commandHelp(msg, this.client.commands, this.options.name)
     }
+  }
+
+  editCommand(msg: ChatMessage, commandName: string, newMessage: string) {
+    const command = this.client.findCommand({ command: commandName })
+
+    if (!command) {
+      return msg.reply(`Команда "${commandName}" не найдена`)
+    }
+
+    if (!newMessage) {
+      return msg.reply('Укажите новое сообщение для команды')
+    }
+
+    this.updateCommandOptions(commandName, {
+      message: newMessage
+    })
+
+    msg.reply(`Команда "${commandName}" обновлена`)
   }
 
   addCommand(msg: ChatMessage, name: string, message: string): Promise<[string, string] | [string]> {
