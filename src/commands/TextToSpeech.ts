@@ -1,5 +1,6 @@
 import path from 'path'
 import type { LowSync } from 'lowdb-hybrid'
+import type { ChildProcess } from 'child_process'
 import { exec, spawn } from 'child_process'
 import type { TwurpleClient, ChatMessage } from '../client'
 import { BaseCommand } from '../client'
@@ -14,6 +15,7 @@ export default class TextToSpeech extends BaseCommand {
   private playing = false
   private cmd: string
   private queue: string[] = []
+  private currentSpeech: ChildProcess
   private db: LowSync<ITextToSpeech>
 
   constructor(client: TwurpleClient) {
@@ -23,6 +25,7 @@ export default class TextToSpeech extends BaseCommand {
       description: 'Text to speech',
       aliases: ['ттс'],
       examples: [
+        'tts skip',
         'tts voices',
         'tts voice <voice>',
         'tts speed <speed>',
@@ -40,6 +43,9 @@ export default class TextToSpeech extends BaseCommand {
   async prepareRun(msg: ChatMessage, args: string[]) {
     if (args.length && msg.author.isRegular) {
       switch (args[0]) {
+        case 'skip':
+          this.skipSpeech()
+          break
         case 'voices':
           this.getVoices(response => msg.reply(response))
           break
@@ -65,6 +71,12 @@ export default class TextToSpeech extends BaseCommand {
     } else {
       const { speed, volume, voice } = this.db.data
       msg.reply(`${this.options.description}, speed: ${speed}, volume: ${volume}, voice: ${voice}`)
+    }
+  }
+
+  skipSpeech() {
+    if (this.currentSpeech && !this.currentSpeech.killed) {
+      this.currentSpeech.kill()
     }
   }
 
@@ -157,7 +169,7 @@ export default class TextToSpeech extends BaseCommand {
 
     this.playing = true
 
-    exec(cmd, (err) => {
+    this.currentSpeech = exec(cmd, (err) => {
       if (err) {
         this.client.logger.error(
           err.toString(),
