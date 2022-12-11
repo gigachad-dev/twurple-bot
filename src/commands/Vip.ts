@@ -28,7 +28,8 @@ export default class Vip extends BaseCommand {
     try {
       payload.claimed = await this.getUserByName(event.userName)
 
-      if (await this.checkForVips(payload.channel, payload.claimed.id)) {
+      const isVip = await this.checkForVips(payload.channel, payload.claimed.id)
+      if (isVip) {
         throw new Error(`@${payload.claimed.name} ты уже имеешь VIP`)
       }
 
@@ -65,7 +66,7 @@ export default class Vip extends BaseCommand {
     await this.client.api.channels.addVip(ch.id, claimed.id)
     this.client.say(
       ch.name,
-      `@${claimed.name} украл EZ VIP у @${target.name} D:`
+      `/announce @${claimed.name} украл EZ VIP у @${target.name} D:`
     )
   }
 
