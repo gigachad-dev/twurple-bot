@@ -2,15 +2,29 @@ import path from 'path'
 import type { LowSync } from 'lowdb-hybrid'
 import type { ChildProcess } from 'child_process'
 import { exec, spawn } from 'child_process'
-import type { TwurpleClient, ChatMessage } from '../client'
+import type { TwurpleClient, ChatMessage, ChatUser } from '../client'
 import type { UserLevel } from '../client'
 import { BaseCommand } from '../client'
 import { ClearMsg } from '@twurple/chat/lib'
 
+
+interface ITtsSettings{
+  speed?: number
+  volume?: number
+  voice?: string
+}
+
+interface IUser extends ITtsSettings{
+  id: string
+  nickname: string
+}
+
 interface ITextToSpeech {
-  speed: number;
-  volume: number;
-  voice: string;
+  minSpeed: number
+  speed: number
+  volume: number
+  voice: string
+  users: IUser[]
 }
 
 export default class TextToSpeech extends BaseCommand {
@@ -18,7 +32,6 @@ export default class TextToSpeech extends BaseCommand {
   private cmd: string
   private queue: ChildProcess[] = []
   private db: LowSync<ITextToSpeech>
-  private levels: Record<string, UserLevel[]>
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -45,47 +58,49 @@ export default class TextToSpeech extends BaseCommand {
 
   async prepareRun(msg: ChatMessage, args: string[]) {
     if (args.length) {
-      if (msg.author.isRegular)
-        switch (args[0]){
-          case 'voices':
-            this.getVoices((response) => msg.reply(response))
-            break
-          case 'voice':
-            args.shift()
-            this.changeVoice(msg, args.join(' '))
-            break
-          case 'speed':
-            this.changeSpeed(msg, args[1])
-            break
-          case 'volume':
-            this.changeVolume(msg, args[1])
-            break
-          case 'help':
-            msg.reply(
-              `Доступные аргументы: ${this.options.examples.join(
-                `, ${this.client.config.prefix}`
-              )}`
-            )
-            break
-        }
-      else
-      {
-        switch (args[0]) {
-          case 'skip':
-            if (
-              msg.author.isModerator ||
+      // if (msg.author.isRegular)
+      // {
+      switch (args[0]){
+        case 'voices':
+          this.getVoices((response) => msg.reply(response))
+          break
+        case 'voice':
+          args.shift()
+          this.changeVoice(msg, args.join(' '))
+          break
+        case 'speed':
+          this.changeSpeed(msg, args[1])
+          break
+        case 'volume':
+          this.changeVolume(msg, args[1])
+          break
+        case 'help':
+          msg.reply(
+            `Доступные аргументы: ${this.options.examples.join(
+              `, ${this.client.config.prefix}`
+            )}`
+          )
+          break
+      }
+      // }
+      // else
+      // {
+      switch (args[0]) {
+        case 'skip':
+          if (
+            msg.author.isModerator ||
               msg.author.isSubscriber ||
               msg.author.isVip ||
               msg.author.isRegular
-            )
-              this.skipSpeech(msg)
-            break
+          )
+            this.skipSpeech(msg)
+          break
        
-          default:
-            this.speech(args)
-            break
-        }
+        default:
+          this.speech(msg,args)
+          break
       }
+      // }
     } else {
       const { speed, volume, voice } = this.db.data
       msg.reply(
@@ -149,7 +164,12 @@ export default class TextToSpeech extends BaseCommand {
 
   changeVoice(msg: ChatMessage, voice: string | undefined) {
     if (voice) {
-      this.db.data.voice = voice
+      if(msg.author.isRegular){
+        this.db.data.voice = voice
+      } else {
+        const user = this.findUser(msg.author)
+        Object.assign(user, { voice: voice })
+      }
       this.db.write()
     } else {
       this.getVoices((response) => {
@@ -165,8 +185,13 @@ export default class TextToSpeech extends BaseCommand {
       if (isNaN(spd)) {
         throw false
       }
-
-      this.db.data.speed = spd
+      if (msg.author.isRegular)
+      {
+        this.db.data.speed = spd
+      } else {
+        const user = this.findUser(msg.author)
+        Object.assign(user, { speed: speed })
+      }
       this.db.write()
     } catch (err) {
       msg.reply('Укажите тембр. (рекомендуемое значение: 25-50)')
@@ -185,20 +210,33 @@ export default class TextToSpeech extends BaseCommand {
         throw false
       }
 
-      this.db.data.volume = vol
+      if(msg.author.isRegular){
+        this.db.data.volume = vol
+       
+      } else {
+        const user = this.findUser(msg.author)
+        Object.assign(user, { volume: volume })
+      }
       this.db.write()
     } catch (err) {
       msg.reply('Укажите громкость звука от 0-100')
     }
   }
 
-  speech(args: string | string[]) {
+  speech(msg: ChatMessage, args: string | string[]) {
     if (this.playing > 5) return
 
     const message =
       typeof args !== 'string' ? args.join(' ').replace(/[&'<>]/gi, '') : args
 
-    const { speed, volume, voice } = this.db.data
+    let { speed, volume, voice } = this.db.data
+    const user = this.db.data.users.find((user) => user.id === msg.author.id)
+    if(user){
+      speed = user.speed && user.speed > this.db.data.minSpeed ? user.speed : speed
+      volume = user.volume && user.volume < volume ? user.volume : volume
+      voice = user.voice ? user.voice : voice
+    }
+
     let cmd = 'powershell.exe ' + this.cmd
     cmd += `$speak.SelectVoice('${voice}'); `
     cmd += `$speak.Volume = ${volume}; `
@@ -220,5 +258,16 @@ export default class TextToSpeech extends BaseCommand {
         }
       })
     )
+  }
+
+  findUser(chatUser : ChatUser) : IUser{
+
+    let user = this.db.data.users.find((user)=>user.id === chatUser.id)
+    if (!user){
+      user = { id: chatUser.id,
+        nickname: chatUser.displayName }
+      this.db.data.users.push(user)
+    }
+    return user
   }
 }
