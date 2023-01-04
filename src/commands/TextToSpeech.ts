@@ -6,7 +6,12 @@ import type { TwurpleClient, ChatMessage, ChatUser } from '../client'
 import type { UserLevel } from '../client'
 import { BaseCommand } from '../client'
 import { ClearMsg } from '@twurple/chat/lib'
+import { markAsUntransferable } from 'worker_threads'
 
+interface IPlayingTts{
+  cp: ChildProcess
+  cmd: string
+}
 
 interface ITtsSettings{
   speed?: number
@@ -30,7 +35,8 @@ interface ITextToSpeech {
 export default class TextToSpeech extends BaseCommand {
   private playing = 0
   private cmd: string
-  private queue: ChildProcess[] = []
+  private playingNow: IPlayingTts[] = []
+  private queue: {msg: string, userId: string}[] = []
   private db: LowSync<ITextToSpeech>
 
   constructor(client: TwurpleClient) {
@@ -38,7 +44,7 @@ export default class TextToSpeech extends BaseCommand {
       name: 'tts',
       userlevel: 'everyone',
       description: 'Text to speech',
-      aliases: ['ттс'],
+      aliases: ['ттс', 'ttsf', 'ттсф'],
       examples: [
         'tts skip',
         'tts voices',
@@ -57,6 +63,14 @@ export default class TextToSpeech extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]) {
+    //this.client.logger.info(`${msg.text} | ${args}`)
+
+    const forceChar = msg.text.split(' ')[0].slice(-1)
+    if (forceChar === 'f' || forceChar === 'ф'){
+      this.speech(args, msg.author.id, true)
+      return
+    }
+
     if (args.length) {
       // if (msg.author.isRegular)
       // {
@@ -97,12 +111,18 @@ export default class TextToSpeech extends BaseCommand {
           break
        
         default:
-          this.speech(msg,args)
+          this.speech(args, msg.author.id)
           break
       }
       // }
     } else {
-      const { speed, volume, voice } = this.db.data
+      let { speed, volume, voice } = this.db.data
+      const user = this.db.data.users.find((user) => user.id === msg.author.id)
+      if(user){
+        speed = user.speed && user.speed > this.db.data.minSpeed ? user.speed : speed
+        volume = user.volume && user.volume < volume ? user.volume : volume
+        voice = user.voice ? user.voice : voice
+      }
       msg.reply(
         `${this.options.description}, speed: ${speed}, volume: ${volume}, voice: ${voice}`
       )
@@ -111,19 +131,19 @@ export default class TextToSpeech extends BaseCommand {
 
   skipSpeech(msg: ChatMessage) {
     if (this.playing > 1) {
-      while (this.queue.length > 0) {
+      while (this.playingNow.length > 0) {
         spawn('taskkill', [
           '/pid',
-          this.queue.shift().pid.toString(),
+          this.playingNow.shift().cp.pid.toString(),
           '/f',
           '/t'
         ])
       }
     } else if (this.playing > 0 && msg.author.isRegular) {
-      while (this.queue.length > 0) {
+      while (this.playingNow.length > 0) {
         spawn('taskkill', [
           '/pid',
-          this.queue.shift().pid.toString(),
+          this.playingNow.shift().cp.pid.toString(),
           '/f',
           '/t'
         ])
@@ -164,7 +184,7 @@ export default class TextToSpeech extends BaseCommand {
 
   changeVoice(msg: ChatMessage, voice: string | undefined) {
     if (voice) {
-      if(msg.author.isRegular){
+      if(msg.author.isBroadcaster){
         this.db.data.voice = voice
       } else {
         const user = this.findUser(msg.author)
@@ -185,7 +205,7 @@ export default class TextToSpeech extends BaseCommand {
       if (isNaN(spd)) {
         throw false
       }
-      if (msg.author.isRegular)
+      if (msg.author.isBroadcaster)
       {
         this.db.data.speed = spd
       } else {
@@ -210,7 +230,7 @@ export default class TextToSpeech extends BaseCommand {
         throw false
       }
 
-      if(msg.author.isRegular){
+      if(msg.author.isBroadcaster){
         this.db.data.volume = vol
        
       } else {
@@ -223,14 +243,17 @@ export default class TextToSpeech extends BaseCommand {
     }
   }
 
-  speech(msg: ChatMessage, args: string | string[]) {
-    if (this.playing > 5) return
+  speech(args: string | string[], userId: string, isForce = false) {
 
     const message =
-      typeof args !== 'string' ? args.join(' ').replace(/[&'<>]/gi, '') : args
+      typeof args !== 'string' ? args.join(' ').replace(/[|&'<>]/gi, '') : args
+
+    if (!isForce && this.playing > 0){
+      return this.queue.push({ msg: message, userId: userId })
+    }
 
     let { speed, volume, voice } = this.db.data
-    const user = this.db.data.users.find((user) => user.id === msg.author.id)
+    const user = this.db.data.users.find((user) => user.id === userId)
     if(user){
       speed = user.speed && user.speed > this.db.data.minSpeed ? user.speed : speed
       volume = user.volume && user.volume < volume ? user.volume : volume
@@ -245,18 +268,19 @@ export default class TextToSpeech extends BaseCommand {
 
     this.playing++
 
-    this.queue.push(
-      exec(cmd, (err) => {
-        if (err) {
-          this.client.logger.error(err.toString(), this.constructor.name)
-        }
+    this.playingNow.push({ cmd, cp: exec(cmd, (err) => {
+      if (err) {
+        this.client.logger.error(err.toString(), this.constructor.name)
+      }
 
-        this.playing--
+      this.playingNow = this.playingNow.filter((val) => val.cmd !== cmd)
+      this.playing--
 
-        if (this.queue.length) {
-          this.queue.shift()
-        }
-      })
+      if (this.queue.length && this.playing === 0) {
+        const nextTts = this.queue.shift()
+        this.speech(nextTts.msg, nextTts.userId)
+      }
+    }) }
     )
   }
 
