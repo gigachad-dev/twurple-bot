@@ -98,6 +98,13 @@ export default class Sounds extends BaseCommand {
           this.updateVolume(sound, volume)
           break
         }
+        case 'top': {
+          const message = this.sounds.sort((a,b) => b.used - a.used)
+            .slice(0,this.sounds.length < 10 ? this.sounds.length : 10)
+            .map((val,index) => `${index < 3 ? String.fromCodePoint(129351+index) + ' ' : ''}${val.alias} - ${val.used}`)
+          msg.reply(message.join('; '))
+          break
+        }
         default:
           this.unknownArgument(msg)
       }
