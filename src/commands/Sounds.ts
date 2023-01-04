@@ -18,6 +18,7 @@ interface Sound {
   alias: string
   file: string
   volume: number
+  used?: number
 }
 
 interface UsedBy {
@@ -211,12 +212,16 @@ export default class Sounds extends BaseCommand {
 
       play(file, sound.volume).then(() => {
         this.isPlaying = false
+        
 
         if (this.soundQueue.length) {
           this.playSound(this.soundQueue.shift())
         }
 
         this.client.logger.info(sound.file, this.constructor.name)
+
+        Object.assign(sound, { used: sound.used? sound.used+1 : 1 })
+        this.db.write()
       })
     } catch (err) {
       this.client.logger.error(err, this.constructor.name)
