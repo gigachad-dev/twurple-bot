@@ -24,7 +24,7 @@ interface PubSubs {
 
 export class PubSubClient {
   private client: TwurpleClient
-  private pubsub: PubSub
+  public pubsub: PubSub
   private tokenInfo: TokenInfo
 
   private db: LowSync<PubSubs>
@@ -53,7 +53,9 @@ export class PubSubClient {
     await this.pubsub.onRedemption(this.tokenInfo.userId, (event) => {
       const redemption = this.redemptions.find((redemption) => redemption.title === event.rewardTitle)
       if (redemption) {
-        this.say(redemption, event)
+        if (redemption.action) {
+          this.say(redemption, event)
+        }
       }
     })
   }
