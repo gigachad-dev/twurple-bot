@@ -33,6 +33,7 @@ interface ITextToSpeech {
 }
 
 export default class TextToSpeech extends BaseCommand {
+  private enabled = true
   private playing = 0
   private cmd: string
   private playingNow: IPlayingTts[] = []
@@ -75,6 +76,14 @@ export default class TextToSpeech extends BaseCommand {
       // if (msg.author.isRegular)
       // {
       switch (args[0]){
+        case 'on':
+          if(msg.author.isRegular)
+            this.enabled = true
+          break
+        case 'off':
+          if(msg.author.isRegular)
+            this.enabled = false
+          break
         case 'voices':
           this.getVoices((response) => msg.reply(response))
           break
@@ -87,6 +96,9 @@ export default class TextToSpeech extends BaseCommand {
           break
         case 'volume':
           this.changeVolume(msg, args[1])
+          break
+        case 'user':
+          msg.reply(this.checkUser(args[1]))
           break
         case 'help':
           msg.reply(
@@ -117,12 +129,10 @@ export default class TextToSpeech extends BaseCommand {
       // }
     } else {
       let { speed, volume, voice } = this.db.data
-      const user = this.db.data.users.find((user) => user.id === msg.author.id)
-      if(user){
-        speed = user.speed && user.speed > this.db.data.minSpeed ? user.speed : speed
-        volume = user.volume && user.volume < volume ? user.volume : volume
-        voice = user.voice ? user.voice : voice
-      }
+      const settings = this.findUserSettingsById(msg.author.id)
+      speed = settings.speed ? settings.speed : speed
+      volume = settings.volume ? settings.volume : volume
+      voice = settings.voice ? settings.voice : voice
       msg.reply(
         `${this.options.description}, speed: ${speed}, volume: ${volume}, voice: ${voice}`
       )
@@ -245,6 +255,8 @@ export default class TextToSpeech extends BaseCommand {
 
   speech(args: string | string[], userId: string, isForce = false) {
 
+    if (!this.enabled) return
+
     const message =
       typeof args !== 'string' ? args.join(' ').replace(/[|&'<>]/gi, '') : args
 
@@ -253,12 +265,14 @@ export default class TextToSpeech extends BaseCommand {
     }
 
     let { speed, volume, voice } = this.db.data
-    const user = this.db.data.users.find((user) => user.id === userId)
-    if(user){
-      speed = user.speed && user.speed > this.db.data.minSpeed ? user.speed : speed
-      volume = user.volume && user.volume < volume ? user.volume : volume
-      voice = user.voice ? user.voice : voice
+    const settings = this.findUserSettingsById(userId)
+    if(settings)
+    {
+      speed = settings.speed && settings.speed > this.db.data.minSpeed ? settings.speed : speed
+      volume = settings.volume && settings.volume < volume ? settings.volume : volume
+      voice = settings.voice ? settings.voice : voice
     }
+    
 
     let cmd = 'powershell.exe ' + this.cmd
     cmd += `$speak.SelectVoice('${voice}'); `
@@ -285,7 +299,6 @@ export default class TextToSpeech extends BaseCommand {
   }
 
   findUser(chatUser : ChatUser) : IUser{
-
     let user = this.db.data.users.find((user)=>user.id === chatUser.id)
     if (!user){
       user = { id: chatUser.id,
@@ -293,5 +306,33 @@ export default class TextToSpeech extends BaseCommand {
       this.db.data.users.push(user)
     }
     return user
+  }
+
+  findUserSettingsByUsername(username: string): ITtsSettings{
+    username = username[0] === '@' ? username.slice(1) : username
+    const user = this.db.data.users.find((user) => user.nickname.toLowerCase() === username.toLowerCase())
+    if (!user)
+      return undefined
+    return { speed: user.speed, volume: user.volume, voice: user.voice }
+  }
+
+  findUserSettingsById(userId: string): ITtsSettings{
+    const user = this.db.data.users.find((user) => user.id === userId)
+    if (!user)
+      return undefined
+    return { speed: user.speed, volume: user.volume, voice: user.voice }
+  }
+
+  checkUser(args: string): string{
+    const settings = this.findUserSettingsByUsername(args)
+    if (settings)
+    {
+      let result = `${this.options.description}`
+      result += settings.speed ? `, speed: ${settings.speed}` : ''
+      result += settings.volume ? `, volume: ${settings.volume}` : ''
+      result += settings.voice ? `, voice: ${settings.voice}` : ''
+      return result
+    }
+    else { return `${args} не ставил настройки` }
   }
 }
