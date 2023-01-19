@@ -1,0 +1,24 @@
+{
+  "rewards": [
+    {
+      "title": "Заказ фильма",
+      "baseCost": 8000,
+      "currentCost": 7500,
+      "increment": 500,
+      "queueLength": 16
+    },
+    {
+      "title": "Заказ игры на стрим",
+      "baseCost": 15000,
+      "currentCost": 15000,
+      "increment": 2000
+    }
+  ],
+  "blackhole": {
+    "title": "Чёрная дыра",
+    "prompt": "Чем больше ест тем больше растёт",
+    "isEnabled": true,
+    "currentCost": 1,
+    "count": 1
+  }
+}
