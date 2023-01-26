@@ -202,7 +202,8 @@ export default class TextToSpeech extends BaseCommand {
         this.db.data.voice = voice
       } else {
         const user = this.findUser(msg.author)
-        Object.assign(user, { voice: voice })
+
+        Object.assign(user, { voice: voice.substring(0,this.VOICE_NAME_MAX_LENGTH) })
       }
       this.db.write()
     } else {
