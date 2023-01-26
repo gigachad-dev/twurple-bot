@@ -214,17 +214,20 @@ export default class TextToSpeech extends BaseCommand {
 
   changeSpeed(msg: ChatMessage, speed: string) {
     try {
-      const spd = Number(speed)
+      let spd = clamp(Number(speed),0,10000)
 
       if (isNaN(spd)) {
         throw false
       }
+
+      spd = Math.round(spd * 100) / 100
+ 
       if (msg.author.isBroadcaster)
       {
         this.db.data.speed = spd
       } else {
         const user = this.findUser(msg.author)
-        Object.assign(user, { speed: speed })
+        Object.assign(user, { speed: spd })
       }
       this.db.write()
     } catch (err) {
@@ -234,11 +237,13 @@ export default class TextToSpeech extends BaseCommand {
 
   changeVolume(msg: ChatMessage, volume: string) {
     try {
-      const vol = Number(volume)
+      let vol = Number(volume)
 
       if (isNaN(vol)) {
         throw false
       }
+
+      vol = Math.round(vol * 100) / 100
 
       if (vol > 100 || vol < 0) {
         throw false
@@ -249,7 +254,7 @@ export default class TextToSpeech extends BaseCommand {
        
       } else {
         const user = this.findUser(msg.author)
-        Object.assign(user, { volume: volume })
+        Object.assign(user, { volume: vol })
       }
       this.db.write()
     } catch (err) {
