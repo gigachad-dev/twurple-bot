@@ -328,6 +328,9 @@ export default class TextToSpeech extends BaseCommand {
   }
 
   checkUser(args: string): string{
+    if (!args){
+      return 'Укажите чаттерса'
+    }
     const settings = this.findUserSettingsByUsername(args)
     if (settings)
     {
