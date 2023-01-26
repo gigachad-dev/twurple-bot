@@ -139,8 +139,8 @@ export default class TextToSpeech extends BaseCommand {
     }
   }
 
-  skipSpeech(msg: ChatMessage) {
-    if (this.playing > 1) {
+  skipAllSpeech(msg: ChatMessage) {
+    if (this.playing > 0) {
       while (this.playingNow.length > 0) {
         spawn('taskkill', [
           '/pid',
@@ -149,7 +149,11 @@ export default class TextToSpeech extends BaseCommand {
           '/t'
         ])
       }
-    } else if (this.playing > 0 && msg.author.isRegular) {
+    }
+  }
+
+  skipSpeech(msg: ChatMessage){
+    if (this.playing > 1) {
       while (this.playingNow.length > 0) {
         spawn('taskkill', [
           '/pid',
