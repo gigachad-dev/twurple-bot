@@ -9,14 +9,29 @@ import { ClientCredentialsAuthProvider } from '@twurple/auth'
 import type { TwurpleClient } from './TwurpleClient'
 import type { PubSubRedemptionMessage } from '@twurple/pubsub'
 import migration from '../migrations/eventsub.json'
+import type { HelixUpdateCustomRewardData } from '@twurple/api'
 import { ApiClient, HelixCustomRewardRedemption } from '@twurple/api'
-import { forEach, values } from 'lodash'
+import { forEach, iteratee, values } from 'lodash'
 import type { EventSubListener } from '@twurple/eventsub'
 import { NgrokAdapter } from '@twurple/eventsub-ngrok'
 import { EventSubWsListener } from '@twurple/eventsub-ws'
 
 // TODO: иногда не апдейтятся реварды, особенно когда это происходит несколько раз за короткий промежуток времени.
 // сделать отлов неудачных попыток и запускать ещё раз обновление через какое-то время
+
+interface Variable{
+  name: string;
+  baseText: string;
+  0: string;
+  1: string;
+  '2-4': string;
+  other: string;
+}
+
+interface Description{
+  text: string;
+  variables: Variable[];
+}
 
 interface Reward {
   id?: string;
@@ -28,6 +43,7 @@ interface Reward {
   increment: number;
   queueLength?: number;
   prompt: string;
+  description?: Description;
 }
 
 interface EventSubs {
@@ -37,7 +53,6 @@ interface EventSubs {
 
 export class EventSubClient {
   private client: TwurpleClient
-  private eventsubClient: ApiClient
   private tokenInfo: TokenInfo
 
   private db: LowSync<EventSubs>
@@ -87,12 +102,6 @@ export class EventSubClient {
     
     await esClient.eventSub.deleteAllSubscriptions()
 
-    // const listener = new EventSubListener({
-    //   apiClient: esClient,
-    //   adapter: new NgrokAdapter(),
-    //   secret: this.tokenInfo.userId,
-    //   strictHostCheck: true
-    // })
     const listener = new EventSubWsListener({ apiClient: this.client.api })
 
     await this.registerOnRedemption(listener)
@@ -102,52 +111,6 @@ export class EventSubClient {
   }
 
   private async registerOnRedemption(listener: EventSubWsListener) {
-    // await this.client.pubsub.pubsub.onRedemption(
-    //   this.tokenInfo.userId,
-    //   (event) => {
-    //     const reward = this.rewards.find(
-    //       (redemption) => redemption.id === event.rewardId
-    //     )
-    //     if (reward) {
-    //       if (reward.increment) {
-    //         reward.queueLength++
-    //         reward.currentCost += reward.increment
-    //         this.client.api.channelPoints.updateCustomReward(
-    //           this.tokenInfo.userId,
-    //           reward.id,
-    //           { cost: reward.currentCost }
-    //         )
-    //         Object.assign(reward, { currentCost: reward.currentCost, queueLength: reward.queueLength })
-    //         this.db.write()
-    //       }
-    //     }
-    //     //Увеличиваем черную дыру
-    //     if (event.rewardId === this.blackhole.id) {
-    //       this.blackhole.currentCost +=
-    //         Math.floor(this.blackhole.currentCost * 0.1) < 1
-    //           ? Math.ceil(this.blackhole.currentCost * 0.1)
-    //           : Math.floor(this.blackhole.currentCost * 0.1)
-    //       this.blackhole.count++
-    //       this.client.api.channelPoints.updateCustomReward(
-    //         this.tokenInfo.userId,
-    //         this.blackhole.id,
-    //         {
-    //           cost: this.blackhole.currentCost,
-    //           title: this.blackhole.title + ` lvl.${this.blackhole.count}`
-    //         }
-    //       ).then((reason)=>{
-    //         this.client.logger.info('Reward updated')
-    //       },(reason)=>{
-    //         this.client.logger.info(reason)
-    //       })
-    //       Object.assign(this.blackhole, {
-    //         currentCost: this.blackhole.currentCost,
-    //         count: this.blackhole.count
-    //       })
-    //       this.db.write()
-    //     }
-    //   }
-    // )
 
     listener.subscribeToChannelRedemptionAddEventsForReward(this.tokenInfo.userId,
       this.blackhole.id,
@@ -178,6 +141,7 @@ export class EventSubClient {
 
     this.rewards.forEach((reward) => {
       this.client.logger.info(`Bind events for ${reward.title}`, 'EventSub')
+      // Юзер купил награду
       listener.subscribeToChannelRedemptionAddEventsForReward(this.tokenInfo.userId,
         reward.id,
         (data) =>{
@@ -188,10 +152,14 @@ export class EventSubClient {
           if (rewardToUpdate.increment) {
             rewardToUpdate.queueLength++
             rewardToUpdate.currentCost += rewardToUpdate.increment
+            
+            const newData = this.getDescription(rewardToUpdate)
+
             this.client.api.channelPoints.updateCustomReward(
               this.tokenInfo.userId,
               rewardToUpdate.id,
-              { cost: rewardToUpdate.currentCost }
+              { cost: rewardToUpdate.currentCost,
+                ...newData }
             )
             Object.assign(rewardToUpdate, { currentCost: rewardToUpdate.currentCost,
               queueLength: rewardToUpdate.queueLength })
@@ -199,6 +167,7 @@ export class EventSubClient {
           }
         })
 
+      // Стример нажал вернуть поинты или забрал себе
       listener.subscribeToChannelRedemptionUpdateEventsForReward(
         this.tokenInfo.userId,
         reward.id,
@@ -210,10 +179,13 @@ export class EventSubClient {
           if (data.status !== 'UNFULFILLED') {
             rewardToUpdate.queueLength--
             rewardToUpdate.currentCost -= rewardToUpdate.increment
+
+            const newData = this.getDescription(rewardToUpdate)
+
             this.client.api.channelPoints.updateCustomReward(
               this.tokenInfo.userId,
               rewardToUpdate.id,
-              { cost: rewardToUpdate.currentCost }
+              { cost: rewardToUpdate.currentCost, ...newData }
             ).then((rew) => { this.client.logger.info('Reward updated', 'EventSub') },
               (reason)=>{
                 this.client.logger.info(reason, 'EventSub')
@@ -228,6 +200,35 @@ export class EventSubClient {
         }
       )
     })
+  }
+
+  private getDescription(rew: Reward): HelixUpdateCustomRewardData{
+    if(!rew.description)
+      return {}
+    let newText = rew.description.text
+    for (const k of rew.description.variables){
+      const v = rew[k.name]
+      let tempText = this.parsePlural(k,v).replace('%v', v)
+      tempText = k.baseText.replace('%v', tempText)
+      newText = newText.replace('%v', tempText)
+    }
+    return { prompt: newText }
+  }
+
+  private parsePlural(v : Variable, num:number): string{
+    const div10 = num % 10
+    const div100 = num % 100
+    if (num === 0){
+      return v[0]
+    }
+    if (div10 === 1){
+      return v[1]
+    }
+    if ((div10 >= 1 && div10 <= 4) && !(div100 >= 11 && div100 <= 14))
+    {
+      return v['2-4']
+    }
+    return v['other']
   }
 
   private updateLocalInfo(){
@@ -313,6 +314,5 @@ export class EventSubClient {
 
     Object.assign(this.blackhole, { id: this.blackhole.id, count: 0 })
     this.db.write()
-    
   }
 }
