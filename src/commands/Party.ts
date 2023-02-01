@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { clamp } from 'lodash'
 import type { LowSync } from 'lowdb-hybrid'
 import path from 'path'
@@ -7,11 +8,13 @@ import { BaseCommand } from '../client'
 
 interface IParty{
   emotions: string[]
+  whitelist: string[]
 }
 
 export default class Party extends BaseCommand {
   private db: LowSync<IParty>
   private emotions: string[]
+  private whitelist: string[]
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -26,6 +29,7 @@ export default class Party extends BaseCommand {
     })
   
     this.emotions = this.db.data.emotions
+    this.whitelist = _.union(this.db.data.emotions,this.db.data.whitelist)
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
@@ -33,7 +37,7 @@ export default class Party extends BaseCommand {
   }
 
   private generateParty(msg: ChatMessage, args: string[] ) : void{
-    args = this.emotions.filter(value => args.includes(value))
+    args = this.whitelist.filter(value => args.includes(value))
     // Select emotions
     const MAX_MSG_LENGTH = 500
     const selectedEmotes = args.length ? args : this.selectEmotes()
