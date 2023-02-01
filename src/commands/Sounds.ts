@@ -32,13 +32,18 @@ export default class Sounds extends BaseCommand {
   private soundQueue: Sound[]
   private sounds: Sound[]
   private usedBy: UsedBy[]
+  private enabled = true
 
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'sounds',
       userlevel: 'everyone',
       description: 'Воспроизведение звуков на стриме',
-      aliases: ['звуки']
+      aliases: ['звуки'],
+      allowed: {
+        watcher: ['on', 'off']
+      }
+    })
     })
 
     this.db = this.client.lowdbAdapter<IPlaySound>({
@@ -53,12 +58,13 @@ export default class Sounds extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
+
     if (!args.length) {
       return this.soundsList(msg)
     }
 
-    if (msg.author.isRegular) {
-      const command = args.shift()
+    const command = this.getAllowedCommand(args.shift(), msg)
+     
       const value = args.shift()
 
       switch (command) {
@@ -105,9 +111,16 @@ export default class Sounds extends BaseCommand {
           msg.reply(message.join('; '))
           break
         }
+      case 'off':{
+        this.enabled = false
+        break
+      }
+      case 'on':{
+        this.enabled = true
+        break
+      }
         default:
           this.unknownArgument(msg)
-      }
     }
   }
 
@@ -151,6 +164,8 @@ export default class Sounds extends BaseCommand {
   }
 
   async execute(msg: ChatMessage): Promise<void> {
+    if (!this.enabled)
+      return
     const name = msg.author.displayName
     const command = msg.text.slice(1).toLowerCase()
 

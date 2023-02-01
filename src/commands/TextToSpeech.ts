@@ -51,8 +51,15 @@ export default class TextToSpeech extends BaseCommand {
         'tts voices',
         'tts voice <voice>',
         'tts speed <speed>',
-        'tts volume <volume>'
-      ]
+        'tts volume <volume>',
+        'tts user <username>'
+      ],
+      allowed: {
+        watcher: ['on', 'off'],
+        subscriber: ['skip', 'voices', 'voice', 'speed', 'volume', 'user'],
+        vip: ['skip', 'voices', 'voice', 'speed', 'volume', 'user'],
+        everyone: ['help']
+      }
     })
 
     this.cmd =
@@ -72,10 +79,11 @@ export default class TextToSpeech extends BaseCommand {
       return
     }
 
+
     if (args.length) {
-      // if (msg.author.isRegular)
-      // {
-      switch (args[0]){
+      const cmd = this.getAllowedCommand(args[0],msg)
+
+      switch (cmd){
         case 'on':
           if(msg.author.isRegular)
             this.enabled = true

@@ -47,6 +47,10 @@ export interface CommandOptions {
    */
   message?: string
   sendType?: keyof typeof MessageType
+  /**
+   * Describes, which commands available to which user level
+   */
+  allowed?: Allowed
 }
 
 export interface CommandArgument {
@@ -77,7 +81,8 @@ export enum UserLevel {
   regular = 'regular',
   subscriber = 'subscriber',
   moderator = 'moderator',
-  broadcaster = 'broadcaster'
+  broadcaster = 'broadcaster',
+  watcher = 'watcher'
 }
 
 export enum MessageType {
@@ -85,6 +90,10 @@ export enum MessageType {
   actionReply = 'actionReply',
   say = 'say',
   actionSay = 'actionSay'
+}
+
+export type Allowed = {
+  [commands in UserLevel]?: string[]
 }
 
 export type NamedParameters = Record<string, string | number | boolean>
@@ -96,7 +105,6 @@ export class BaseCommand {
     public client: TwurpleClient,
     public options: CommandOptions
   ) { }
-
   /**
    * Method called when execCommand()
    *
@@ -182,6 +190,10 @@ export class BaseCommand {
       validationPassed = true
     }
 
+    if (this.options.userlevel === UserLevel.watcher && msg.author.username.toLowerCase() !== this.client.config.watcher){
+      return 'This command can be executed only from movie requester'
+    }
+
     if (this.options.userlevel === UserLevel.regular) {
       if (![...this.client.config.botOwners, this.client.getUsername()].includes(msg.author.username)) {
         return 'This command can be executed only from bot owners'
@@ -213,5 +225,30 @@ export class BaseCommand {
     }
 
     return true
+  }
+
+  getAllowedCommand(command: string, msg: ChatMessage) : string{
+    const author = msg.author
+    const allowed = this.options.allowed
+    if (author.displayName.toLowerCase() === this.client.config.watcher)
+    {
+      const cmd = allowed.watcher.find((item) => item === command)
+      if(cmd)
+        return cmd
+    }
+    if (author.isVip){
+      const cmd = allowed.vip.find((item) => item === command)
+      if(cmd)
+        return cmd
+    }
+    if (author.isSubscriber){
+      const cmd = allowed.subscriber.find((item) => item === command)
+      if(cmd)
+        return cmd
+    }
+    if (author.isRegular){
+      return command
+    }
+    return allowed.everyone.find((item) => item === command)
   }
 }
