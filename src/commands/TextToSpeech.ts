@@ -7,6 +7,7 @@ import type { UserLevel } from '../client'
 import { BaseCommand } from '../client'
 import { ClearMsg } from '@twurple/chat/lib'
 import { markAsUntransferable } from 'worker_threads'
+import { clamp } from 'lodash'
 
 interface IPlayingTts{
   cp: ChildProcess
@@ -39,6 +40,7 @@ export default class TextToSpeech extends BaseCommand {
   private playingNow: IPlayingTts[] = []
   private queue: {msg: string, userId: string}[] = []
   private db: LowSync<ITextToSpeech>
+  private VOICE_NAME_MAX_LENGTH = 50
 
   constructor(client: TwurpleClient) {
     super(client, {
@@ -47,6 +49,7 @@ export default class TextToSpeech extends BaseCommand {
       description: 'Text to speech',
       aliases: ['ттс', 'ttsf', 'ттсф'],
       examples: [
+        'tts',
         'tts skip',
         'tts voices',
         'tts voice <voice>',
@@ -71,8 +74,6 @@ export default class TextToSpeech extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]) {
-    //this.client.logger.info(`${msg.text} | ${args}`)
-
     const forceChar = msg.text.split(' ')[0].slice(-1)
     if (forceChar === 'f' || forceChar === 'ф'){
       this.speech(args, msg.author.id, true)
@@ -85,12 +86,10 @@ export default class TextToSpeech extends BaseCommand {
 
       switch (cmd){
         case 'on':
-          if(msg.author.isRegular)
-            this.enabled = true
+          this.enabled = true
           break
         case 'off':
-          if(msg.author.isRegular)
-            this.enabled = false
+          this.enabled = false
           break
         case 'voices':
           this.getVoices((response) => msg.reply(response))
@@ -108,6 +107,12 @@ export default class TextToSpeech extends BaseCommand {
         case 'user':
           msg.reply(this.checkUser(args[1]))
           break
+        case 'skip':
+          this.skipSpeech(msg)
+          break
+        case 'reset':
+          this.skipAllSpeech(msg)
+          break
         case 'help':
           msg.reply(
             `Доступные аргументы: ${this.options.examples.join(
@@ -115,32 +120,18 @@ export default class TextToSpeech extends BaseCommand {
             )}`
           )
           break
-      }
-      // }
-      // else
-      // {
-      switch (args[0]) {
-        case 'skip':
-          if (
-            msg.author.isModerator ||
-              msg.author.isSubscriber ||
-              msg.author.isVip ||
-              msg.author.isRegular
-          )
-            this.skipSpeech(msg)
-          break
-       
         default:
           this.speech(args, msg.author.id)
-          break
       }
-      // }
     } else {
       let { speed, volume, voice } = this.db.data
       const settings = this.findUserSettingsById(msg.author.id)
-      speed = settings.speed ? settings.speed : speed
-      volume = settings.volume ? settings.volume : volume
-      voice = settings.voice ? settings.voice : voice
+      if (settings)
+      {
+        speed = settings.speed ? settings.speed : speed
+        volume = settings.volume ? settings.volume : volume
+        voice = settings.voice ? settings.voice : voice
+      }
       msg.reply(
         `${this.options.description}, speed: ${speed}, volume: ${volume}, voice: ${voice}`
       )
@@ -327,7 +318,7 @@ export default class TextToSpeech extends BaseCommand {
   }
 
   findUserSettingsByUsername(username: string): ITtsSettings{
-    username = username[0] === '@' ? username.slice(1) : username
+    username = username.replace('@', '')
     const user = this.db.data.users.find((user) => user.nickname.toLowerCase() === username.toLowerCase())
     if (!user)
       return undefined
