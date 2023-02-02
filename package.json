@@ -36,6 +36,9 @@
     "@twurple/auth": "^5.0.18",
     "@twurple/auth-tmi": "^5.0.18",
     "@twurple/chat": "^5.0.18",
+    "@twurple/eventsub": "^5.0.18",
+    "@twurple/eventsub-ngrok": "^5.0.18",
+    "@twurple/eventsub-ws": "^5.3.1",
     "@twurple/pubsub": "^5.0.18",
     "cors": "^2.8.5",
     "deckstrings": "^2.2.1",
@@ -50,6 +53,7 @@
     "tmi.js": "^1.8.5",
     "vm2": "^3.9.11",
     "winston": "^3.6.0",
+    "xstate": "^4.35.2",
     "youtube-search": "^1.1.6"
   }
 }
