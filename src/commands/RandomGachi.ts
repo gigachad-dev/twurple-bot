@@ -16,19 +16,12 @@ export default class RandomGachi extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'gachi',
-      userlevel: 'regular',
+      userlevel: 'everyone',
       description: 'Рандомная ссылка на gachi видео',
-      aliases: [
-        'гачи'
-      ]
+      aliases: ['гачи']
     })
 
-    this.orders = [
-      'title',
-      'rating',
-      'relevance',
-      'viewCount'
-    ]
+    this.orders = ['title', 'rating', 'relevance', 'viewCount']
 
     this.blacklist = [
       'звёздные войны',
@@ -85,8 +78,11 @@ export default class RandomGachi extends BaseCommand {
           this.result = results[randomInt(0, results.length - 1)]
           console.log(this.result.title)
         } while (
-          this.history.some(v => this.result.link === v) ||
-          (this.blacklist.some(v => this.result.title.toLowerCase().indexOf(v) > -1) && this.result.kind === 'youtube#video')
+          this.history.some((v) => this.result.link === v) ||
+          (this.blacklist.some(
+            (v) => this.result.title.toLowerCase().indexOf(v) > -1
+          ) &&
+            this.result.kind === 'youtube#video')
         )
 
         this.history.push(this.result.link)

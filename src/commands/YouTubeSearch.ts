@@ -9,14 +9,10 @@ export default class YouTubeSearch extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'youtube',
-      userlevel: 'regular',
+      userlevel: 'everyone',
       description: 'Поиск видео на YouTube',
-      aliases: [
-        'видео'
-      ],
-      examples: [
-        'youtube <query>'
-      ]
+      aliases: ['видео'],
+      examples: ['youtube <query>']
     })
 
     this.opts = {

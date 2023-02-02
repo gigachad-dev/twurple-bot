@@ -5,9 +5,9 @@ import { BaseCommand } from '../client'
 
 interface GiphyApiResponse {
   data: {
-    bitly_url: string
-    title: string
-  }[]
+    bitly_url: string;
+    title: string;
+  }[];
 }
 
 export default class Giphy extends BaseCommand {
@@ -16,7 +16,7 @@ export default class Giphy extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'giphy',
-      userlevel: 'regular'
+      userlevel: 'everyone'
     })
 
     this.key = process.env.GIPHY_KEY
@@ -43,13 +43,16 @@ export default class Giphy extends BaseCommand {
 
   async search(msg: ChatMessage, args: string[]) {
     const query = args.join(' ')
-    const { body } = await got<GiphyApiResponse>('https://api.giphy.com/v1/gifs/search', {
-      responseType: 'json',
-      searchParams: {
-        api_key: this.key,
-        q: query
+    const { body } = await got<GiphyApiResponse>(
+      'https://api.giphy.com/v1/gifs/search',
+      {
+        responseType: 'json',
+        searchParams: {
+          api_key: this.key,
+          q: query
+        }
       }
-    })
+    )
 
     if (body.data.length) {
       const { bitly_url, title } = this.gif(body)
@@ -60,10 +63,13 @@ export default class Giphy extends BaseCommand {
   }
 
   async trending(msg: ChatMessage) {
-    const { body } = await got<GiphyApiResponse>('https://api.giphy.com/v1/gifs/trending', {
-      responseType: 'json',
-      searchParams: { api_key: this.key }
-    })
+    const { body } = await got<GiphyApiResponse>(
+      'https://api.giphy.com/v1/gifs/trending',
+      {
+        responseType: 'json',
+        searchParams: { api_key: this.key }
+      }
+    )
 
     if (body.data.length) {
       const { bitly_url, title } = this.gif(body)

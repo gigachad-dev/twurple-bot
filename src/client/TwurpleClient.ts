@@ -22,34 +22,33 @@ import type { ChatterState } from './ChatMessage'
 import type { CommandArguments } from './CommandParser'
 import { EventSubClient } from './EventSubClient'
 
-export type TwurpleTokens = AccessToken & Omit<RefreshConfig, 'onRefresh'>;
+export type TwurpleTokens = AccessToken & Omit<RefreshConfig, 'onRefresh'>
 
 export interface TwurpleConfig extends TwurpleTokens {
-  channels: string[];
-  botOwners: string[];
-  ignoreList: string[];
-  bots: string[];
-  prefix: string;
+  channels: string[]
+  botOwners: string[]
+  ignoreList: string[]
+  bots: string[]
+  prefix: string
   server: {
-    hostname: string;
-    port: number;
-  };
+    hostname: string
+    port: number
+  }
+  watcher: string
 }
 
 export interface TwurpleOptions {
-  config: string;
-  commands: string;
+  config: string
+  commands: string
 }
 
 export interface TwurpleEvents {
-  message: (msg: ChatMessage) => void;
+  message: (msg: ChatMessage) => void
 }
 
-type TwurpleEmitter = StrictEventEmitter<EventEmitter, TwurpleEvents>;
+type TwurpleEmitter = StrictEventEmitter<EventEmitter, TwurpleEvents>
 
-export class TwurpleClient extends (EventEmitter as {
-  new (): TwurpleEmitter;
-}) {
+export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
   public config: TwurpleConfig
   public tmi: Client
   public auth: RefreshingAuthProvider
@@ -119,26 +118,15 @@ export class TwurpleClient extends (EventEmitter as {
 
     this.server = new Server(this)
 
-    this.server.app.listen(
-      this.config.server.port,
-      this.config.server.hostname,
-      () => {
-        this.logger.info(
-          `Server now listening on http://${this.config.server.hostname}:${this.config.server.port}`
-        )
+    this.server.app.listen(this.config.server.port, this.config.server.hostname, () => {
+      this.logger.info(`Server now listening on http://${this.config.server.hostname}:${this.config.server.port}`)
 
-        this.auth
-          .refresh()
-          .then(() => {
-            this.connect()
-          })
-          .catch(() => {
-            this.logger.info(
-              `Login with twitch http://${this.config.server.hostname}:${this.config.server.port}/twitch/auth`
-            )
-          })
-      }
-    )
+      this.auth.refresh().then(() => {
+        this.connect()
+      }).catch(() => {
+        this.logger.info(`Login with twitch http://${this.config.server.hostname}:${this.config.server.port}/twitch/auth`)
+      })
+    })
   }
 
   updateConfig(config: Partial<TwurpleConfig>) {
@@ -190,8 +178,8 @@ export class TwurpleClient extends (EventEmitter as {
 
   private registerCommands(): void {
     readdirSync(this.options.commands)
-      .filter((file) => !file.includes('.d.ts'))
-      .forEach((file) => {
+      .filter(file => !file.includes('.d.ts'))
+      .forEach(file => {
         let commandFile = require(path.join(this.options.commands, file))
 
         if (typeof commandFile.default === 'function') {
@@ -208,12 +196,7 @@ export class TwurpleClient extends (EventEmitter as {
       }, this)
   }
 
-  private async onMessage(
-    channel: string,
-    userstate: ChatUserstate,
-    messageText: string,
-    self: boolean
-  ): Promise<void> {
+  private async onMessage(channel: string, userstate: ChatUserstate, messageText: string, self: boolean): Promise<void> {
     if (self) {
       return
     }
@@ -226,14 +209,8 @@ export class TwurpleClient extends (EventEmitter as {
     const msg = new ChatMessage(this, chatter, channel)
 
     if (msg.author.username === this.getUsername()) {
-      if (
-        !(
-          msg.author.isBroadcaster ||
-          msg.author.isModerator ||
-          msg.author.isVip
-        )
-      ) {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+      if (!(msg.author.isBroadcaster || msg.author.isModerator || msg.author.isVip)) {
+        await new Promise(resolve => setTimeout(resolve, 1000))
       }
     }
 
@@ -257,18 +234,11 @@ export class TwurpleClient extends (EventEmitter as {
   }
 
   private onRaid(channel: string, username: string, viewers: number): void {
-    this.say(
-      channel,
-      `${username} проводит рейд в количестве ${viewers} ${
-        viewers === 1 ? 'зрителя' : 'зрителей'
-      } KonCha`
-    )
+    this.say(channel, `${username} проводит рейд в количестве ${viewers} ${viewers === 1 ? 'зрителя' : 'зрителей'} KonCha`)
   }
 
-  findCommand(
-    parserResult: Partial<CommandArguments>
-  ): BaseCommand | undefined {
-    return this.commands.find((command) => {
+  findCommand(parserResult: Partial<CommandArguments>): BaseCommand | undefined {
+    return this.commands.find(command => {
       if (command.options.aliases?.includes(parserResult.command)) {
         return command
       }
@@ -309,12 +279,10 @@ export class TwurpleClient extends (EventEmitter as {
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types
-  lowdbAdapter<T extends object>(opts: {
-    path: string;
-    initialData?: T;
-    merge?: Array<keyof T>;
-  }): LowSync<T> {
-    const db = new LowSync<T>(new JSONFileSync(opts.path))
+  lowdbAdapter<T extends object>(opts: { path: string, initialData?: T, merge?: Array<keyof T> }): LowSync<T> {
+    const db = new LowSync<T>(
+      new JSONFileSync(opts.path)
+    )
 
     db.read()
 
@@ -354,7 +322,7 @@ export class TwurpleClient extends (EventEmitter as {
         { responseType: 'json' }
       )
 
-      this.config.bots = body.bots.map((bot) => bot[0])
+      this.config.bots = body.bots.map(bot => bot[0])
     } catch (err) {
       console.log(err)
     }

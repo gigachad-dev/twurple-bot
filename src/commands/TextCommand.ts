@@ -3,9 +3,17 @@ import type { LowSync } from 'lowdb-hybrid'
 import Commands from './Commands'
 import { vm } from '../utils'
 import type { ChatMessage, CommandOptions, TwurpleClient } from '../client'
-import { CommandVariables, BaseCommand, MessageType, UserLevel } from '../client'
+import {
+  CommandVariables,
+  BaseCommand,
+  MessageType,
+  UserLevel
+} from '../client'
 
-type ITextCommand = Pick<CommandOptions, 'name' | 'message' | 'sendType' | 'hideFromHelp' | 'userlevel'>
+type ITextCommand = Pick<
+CommandOptions,
+'name' | 'message' | 'sendType' | 'hideFromHelp' | 'userlevel'
+>;
 
 const TEMPLATE_LITERALS = /\${(.+)}/g
 
@@ -46,7 +54,7 @@ export default class TextCommandManager extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'command',
-      userlevel: 'regular',
+      userlevel: 'moderator',
       description: 'Эта команда позволяет управлять текстовыми командами.',
       examples: [
         'command edit <name> <new_message>',
@@ -64,7 +72,7 @@ export default class TextCommandManager extends BaseCommand {
       initialData: []
     })
 
-    this.commands.data.forEach(command => {
+    this.commands.data.forEach((command) => {
       this.client.commands.push(new TextCommand(this.client, command))
       this.client.logger.info(`Register command ${command.name}`)
     })
@@ -122,6 +130,7 @@ export default class TextCommandManager extends BaseCommand {
       return msg.reply(`Команда "${commandName}" не найдена`)
     }
 
+
     if (!newMessage) {
       return msg.reply('Укажите новое сообщение для команды')
     }
@@ -133,7 +142,11 @@ export default class TextCommandManager extends BaseCommand {
     msg.reply(`Команда "${commandName}" обновлена`)
   }
 
-  addCommand(msg: ChatMessage, name: string, message: string): Promise<[string, string] | [string]> {
+  addCommand(
+    msg: ChatMessage,
+    name: string,
+    message: string
+  ): Promise<[string, string] | [string]> {
     if (!message.length) {
       return msg.reply('Укажите сообщение команды')
     }
@@ -170,11 +183,15 @@ export default class TextCommandManager extends BaseCommand {
   }
 
   removeCommand(msg: ChatMessage, name: string): void {
-    const command = this.commands.data.find(cmd => cmd.name === name)
+    const command = this.commands.data.find((cmd) => cmd.name === name)
 
     if (command) {
-      this.client.commands = this.client.commands.filter(cmd => name !== cmd.options.name)
-      this.commands.data = this.commands.data.filter(cmd => name !== cmd.name)
+      this.client.commands = this.client.commands.filter(
+        (cmd) => name !== cmd.options.name
+      )
+      this.commands.data = this.commands.data.filter(
+        (cmd) => name !== cmd.name
+      )
       this.commands.write()
 
       msg.reply(`Команда ${this.client.config.prefix}${command.name} удалена`)
@@ -185,7 +202,7 @@ export default class TextCommandManager extends BaseCommand {
 
   commandList(msg: ChatMessage): void {
     const commands = this.commands.data
-      .map(command => {
+      .map((command) => {
         return this.client.config.prefix + command.name
       })
       .join(', ')
@@ -193,7 +210,9 @@ export default class TextCommandManager extends BaseCommand {
     if (commands.length) {
       msg.reply(`Текстовые команды: ${commands}`)
     } else {
-      msg.reply(`Создайте свою первую команду, используя ${this.client.config.prefix}${this.options.examples[0]}`)
+      msg.reply(
+        `Создайте свою первую команду, используя ${this.client.config.prefix}${this.options.examples[0]}`
+      )
     }
   }
 
@@ -202,7 +221,9 @@ export default class TextCommandManager extends BaseCommand {
 
     if (command) {
       const { message, userlevel, sendType } = command.options
-      msg.reply(`Параметры: message - ${message}, userlevel - ${userlevel}, sendType - ${sendType}`)
+      msg.reply(
+        `Параметры: message - ${message}, userlevel - ${userlevel}, sendType - ${sendType}`
+      )
     } else {
       msg.reply(`Команда ${this.client.config.prefix}${name} не найдена`)
     }
@@ -230,12 +251,15 @@ export default class TextCommandManager extends BaseCommand {
     }
   }
 
-  updateCommandOptions(name: string, { ...options }: Partial<ITextCommand>): void {
-    const command = this.commands.data.find(command => command.name === name)
+  updateCommandOptions(
+    name: string,
+    { ...options }: Partial<ITextCommand>
+  ): void {
+    const command = this.commands.data.find((command) => command.name === name)
     Object.assign(command, options)
     this.commands.write()
 
-    this.client.commands.forEach(command => {
+    this.client.commands.forEach((command) => {
       if (command.options.name === name) {
         command.options = {
           ...command.options,
