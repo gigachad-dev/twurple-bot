@@ -1,5 +1,8 @@
 {
-  "speed": 0.5,
-  "volume": 60,
-  "voice": "IVONA 2 Tatyana OEM"
+  "speed": 35,
+  "volume": 45,
+  "minSpeed": 0,
+  "voice": "IVONA 2 Tatyana OEM",
+  "users": [
+  ]
 }
