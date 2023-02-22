@@ -16,7 +16,7 @@ export default class Timeout extends BaseCommand {
 
   async onPubSub(event: PubSubRedemptionMessage): Promise<void> {
     const username = this.parseArgs(event.message.split(' ')[0])
-    const channel = this.client.getUsername()
+    const channel = this.client.getMe().name
 
     try {
       const user = await this.client.api.users.getUserByName(username)
@@ -27,7 +27,10 @@ export default class Timeout extends BaseCommand {
 
       const moderators = await this.client.tmi.mods(channel)
       if (!moderators.includes(user.name) && channel !== user.name) {
-        this.client.say(channel, `/timeout ${user.name} 600`)
+        await this.client.api.moderation.banUser(channel, channel, {
+          userId: user.id,
+          reason: 'Banned by bot'
+        })
       } else {
         this.client.say(channel, `@${event.userName} Запрещено отстранять модераторов и стримера (-15K KEKU)`)
       }

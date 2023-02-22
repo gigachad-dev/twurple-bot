@@ -96,7 +96,7 @@ export class ChatUser {
   get isRegular(): boolean {
     return [
       ...this.client.config.botOwners,
-      this.client.getUsername()
+      this.client.getMe().name
     ].includes(this.username)
   }
 }

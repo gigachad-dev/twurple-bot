@@ -45,7 +45,6 @@ export default class Sounds extends BaseCommand {
     this.db = this.client.lowdbAdapter<IPlaySound>({
       path: path.join(__dirname, '../../config/sounds.json'),
       initialData: migration
-      // merge: ['sounds']
     })
 
     this.sounds = this.db.data.sounds

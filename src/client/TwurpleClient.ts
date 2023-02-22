@@ -6,6 +6,7 @@ import { EventEmitter } from 'events'
 import { LowSync, JSONFileSync } from 'lowdb-hybrid'
 import type StrictEventEmitter from 'strict-event-emitter-types'
 
+import type { HelixPrivilegedUser } from '@twurple/api'
 import { ApiClient } from '@twurple/api'
 import { Client } from '@twurple/auth-tmi'
 import { RefreshingAuthProvider } from '@twurple/auth'
@@ -59,6 +60,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
   private options: TwurpleOptions
   private parser: typeof CommandParser
   private server: Server
+  private channel: HelixPrivilegedUser
 
   constructor(options: TwurpleOptions) {
     super()
@@ -161,13 +163,12 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
       logger: this.logger
     })
 
+    this.channel = await this.api.users.getMe()
     this.pubsub = new PubSubClient(this)
     await this.pubsub.connect()
 
     this.tmi.on('message', this.onMessage.bind(this))
     await this.tmi.connect()
-
-    await this.loadTwitchBots()
   }
 
   private registerCommands(): void {
@@ -202,7 +203,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     const chatter = { ...userstate, message: messageText } as ChatterState
     const msg = new ChatMessage(this, chatter, channel)
 
-    if (msg.author.username === this.getUsername()) {
+    if (msg.author.username === this.tmi.getUsername()) {
       if (!(msg.author.isBroadcaster || msg.author.isModerator || msg.author.isVip)) {
         await new Promise(resolve => setTimeout(resolve, 1000))
       }
@@ -260,8 +261,8 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     return await this.tmi.whisper(username, message)
   }
 
-  getUsername(): string {
-    return this.tmi.getUsername()
+  getMe(): HelixPrivilegedUser {
+    return this.channel
   }
 
   getChannels(): string[] {
@@ -301,20 +302,5 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     db.write()
 
     return db
-  }
-
-  async loadTwitchBots() {
-    try {
-      this.logger.info('Loading current online twitch viewer bots..')
-
-      const { body } = await got<{ bots: [string, number, number][] }>(
-        'https://api.twitchinsights.net/v1/bots/online',
-        { responseType: 'json' }
-      )
-
-      this.config.bots = body.bots.map(bot => bot[0])
-    } catch (err) {
-      console.log(err)
-    }
   }
 }

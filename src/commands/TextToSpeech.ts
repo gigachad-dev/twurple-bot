@@ -57,10 +57,15 @@ export default class TextToSpeech extends BaseCommand {
     }
   }
 
-  private sendSkipMessage(): void {
-    this.client.say(
-      this.client.getUsername(),
-      '/me Балаболка заткнута pepeSmack'
+  private async sendSkipMessage(): Promise<void> {
+    const userId = this.client.getMe().id
+    await this.client.api.chat.sendAnnouncement(
+      userId,
+      userId,
+      {
+        message: 'Балаболка заткнута pepeSmack',
+        color: 'purple'
+      }
     )
   }
 

@@ -39,12 +39,6 @@ export default class Vip extends BaseCommand {
     }
   }
 
-  // private async claimVipByUsername(
-  //   { channel: channel, claimed, target }: PayloadVip
-  // ): Promise<void> {
-  //   this.addVip(channel, claimed, target)
-  // }
-
   private async claimVip(
     { channel: channel, claimed }: PayloadVip
   ): Promise<void> {
@@ -64,9 +58,13 @@ export default class Vip extends BaseCommand {
   ): Promise<void> {
     await this.unVip(ch, target)
     await this.client.api.channels.addVip(ch.id, claimed.id)
-    this.client.say(
-      ch.name,
-      `/announce @${claimed.name} украл EZ VIP у @${target.name} D:`
+    await this.client.api.chat.sendAnnouncement(
+      ch.id,
+      ch.id,
+      {
+        message: `EZ ${claimed.name} украл VIP у ${target.name} D:`,
+        color: 'orange'
+      }
     )
   }
 

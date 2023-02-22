@@ -166,7 +166,7 @@ export class BaseCommand {
     }
 
     if (this.options.botChannelOnly) {
-      if (msg.channel.name !== this.client.getUsername()) {
+      if (msg.channel.name !== this.client.getMe().name) {
         return 'This command can be executed only in the bot channel'
       }
     }
@@ -186,7 +186,7 @@ export class BaseCommand {
     }
 
     if (this.options.userlevel === UserLevel.regular) {
-      if (![...this.client.config.botOwners, this.client.getUsername()].includes(msg.author.username)) {
+      if (![...this.client.config.botOwners, this.client.getMe().name].includes(msg.author.username)) {
         return 'This command can be executed only from bot owners'
       }
     }
