@@ -10,6 +10,8 @@ interface PayloadVip {
   channel: HelixUser
 }
 
+const MAX_VIPS = 50
+
 export default class Vip extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
@@ -40,27 +42,40 @@ export default class Vip extends BaseCommand {
   }
 
   private async claimVip(
-    { channel: channel, claimed }: PayloadVip
+    { channel, claimed }: PayloadVip
   ): Promise<void> {
     const vips = await this.getVips(channel)
-    const randomVip = vips[randomInt(0, vips.length - 1)]
-    this.addVip(channel, claimed, randomVip)
+
+    if (vips.length === MAX_VIPS) {
+      const randomVip = vips[randomInt(0, vips.length - 1)]
+      this.addVip(channel, claimed, randomVip)
+    } else if (vips.length > MAX_VIPS || vips.length < MAX_VIPS) {
+      await this.client.api.chat.sendAnnouncement(
+        channel.id,
+        channel.id,
+        { message: `@${channel.displayName} Лимит VIP-ов был увеличен` }
+      )
+
+      await this.client.api.channels.addVip(channel.id, claimed.id)
+    }
   }
 
   private async unVip(
-    ch: HelixUser, user: HelixUser | HelixUserRelation
+    channel: HelixUser, user: HelixUser | HelixUserRelation
   ): Promise<void> {
-    this.client.api.channels.removeVip(ch, user.id)
+    this.client.api.channels.removeVip(channel, user.id)
   }
 
   private async addVip(
-    ch: HelixUser, claimed: HelixUser, target: HelixUser | HelixUserRelation
+    channel: HelixUser,
+    claimed: HelixUser,
+    target: HelixUser | HelixUserRelation
   ): Promise<void> {
-    await this.unVip(ch, target)
-    await this.client.api.channels.addVip(ch.id, claimed.id)
+    await this.unVip(channel, target)
+    await this.client.api.channels.addVip(channel.id, claimed.id)
     await this.client.api.chat.sendAnnouncement(
-      ch.id,
-      ch.id,
+      channel.id,
+      channel.id,
       {
         message: `EZ ${claimed.name} украл VIP у ${target.name} D:`,
         color: 'orange'
@@ -68,18 +83,18 @@ export default class Vip extends BaseCommand {
     )
   }
 
-  private async getVips(ch: HelixUser): Promise<HelixUserRelation[]> {
+  private async getVips(channel: HelixUser): Promise<HelixUserRelation[]> {
     const vips = await this.client.api.channels.getVips(
-      ch.id,
+      channel.id,
       { limit: 100 }
     )
 
     return vips.data
   }
 
-  private async checkForVips(ch: HelixUser, userId: string): Promise<boolean> {
+  private async checkForVips(channel: HelixUser, userId: string): Promise<boolean> {
     return await this.client.api.channels
-      .checkVipForUser(ch.id, userId)
+      .checkVipForUser(channel.id, userId)
   }
 
   private async getUserByName(username: string): Promise<HelixUser> {
