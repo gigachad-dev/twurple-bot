@@ -21,7 +21,7 @@ export default class TextToSpeech extends BaseCommand {
   constructor(client: TwurpleClient) {
     super(client, {
       name: 'tts',
-      userlevel: 'vip',
+      userlevel: 'everyone',
       description: 'Text to speech',
       aliases: ['ттс'],
       examples: [
