@@ -1,4 +1,3 @@
-export * from './CommandVariables'
 export * from './TwurpleClient'
 export * from './CommandParser'
 export * from './BaseCommand'

@@ -7,19 +7,18 @@ import { LowSync, JSONFileSync } from 'lowdb-hybrid'
 import type StrictEventEmitter from 'strict-event-emitter-types'
 
 import { ApiClient } from '@twurple/api'
+import type { ChatUserstate } from '@twurple/auth-tmi'
 import { Client } from '@twurple/auth-tmi'
 import { RefreshingAuthProvider } from '@twurple/auth'
-import type { ChatUserstate } from '@twurple/auth-tmi'
 import type { AccessToken, RefreshConfig } from '@twurple/auth'
 
 import { Logger } from './Logger'
 import { Server } from '../server'
 import { BaseCommand } from './BaseCommand'
-import { PubSubClient } from './PubSubClient'
-import { ChatMessage } from './ChatMessage'
 import { CommandParser } from './CommandParser'
-import type { ChatterState } from './ChatMessage'
 import type { CommandArguments } from './CommandParser'
+import type { ChatterState } from './ChatMessage'
+import { ChatMessage } from './ChatMessage'
 
 export type TwurpleTokens = AccessToken & Omit<RefreshConfig, 'onRefresh'>
 
@@ -51,7 +50,6 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
   public tmi: Client
   public auth: RefreshingAuthProvider
   public api: ApiClient
-  public pubsub: PubSubClient
   public commands: BaseCommand[]
   public logger: typeof Logger
   public db: LowSync<TwurpleConfig>
@@ -159,13 +157,8 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
       logger: this.logger
     })
 
-    this.pubsub = new PubSubClient(this)
-    await this.pubsub.connect()
-
-    this.tmi.on('raided', this.onRaid.bind(this))
     this.tmi.on('message', this.onMessage.bind(this))
     await this.tmi.connect()
-
     await this.loadTwitchBots()
   }
 

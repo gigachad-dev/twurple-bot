@@ -13,10 +13,4 @@ client.on('message', (msg) => {
   if (msg.text.startsWith(client.config.prefix)) {
     return client.execCommand('sounds', msg)
   }
-
-  if (!msg.author.isMods) {
-    client.execCommand('automod', msg)
-  }
-
-  client.execCommand('hsdeck', msg)
 })
