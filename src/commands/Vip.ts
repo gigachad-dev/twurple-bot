@@ -73,13 +73,9 @@ export default class Vip extends BaseCommand {
   ): Promise<void> {
     await this.unVip(channel, target)
     await this.client.api.channels.addVip(channel.id, claimed.id)
-    await this.client.api.chat.sendAnnouncement(
-      channel.id,
-      channel.id,
-      {
-        message: `EZ ${claimed.name} украл VIP у ${target.name} D:`,
-        color: 'orange'
-      }
+    this.client.say(
+      channel.name,
+      `EZ ${claimed.name} украл VIP у ${target.name} D:`
     )
   }
 
