@@ -16,6 +16,7 @@ import type { AccessToken, RefreshConfig } from '@twurple/auth'
 import { Logger } from './Logger'
 import { Server } from '../server'
 import { BaseCommand } from './BaseCommand'
+import { PubSubClient } from './PubSubClient'
 import { ChatMessage } from './ChatMessage'
 import { CommandParser } from './CommandParser'
 import type { ChatterState } from './ChatMessage'
@@ -51,6 +52,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
   public tmi: Client
   public auth: RefreshingAuthProvider
   public api: ApiClient
+  public pubsub: PubSubClient
   public commands: BaseCommand[]
   public logger: typeof Logger
   public db: LowSync<TwurpleConfig>
@@ -162,6 +164,8 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     })
 
     this.channel = await this.api.users.getMe()
+    this.pubsub = new PubSubClient(this)
+    await this.pubsub.connect()
 
     this.tmi.on('message', this.onMessage.bind(this))
     await this.tmi.connect()
