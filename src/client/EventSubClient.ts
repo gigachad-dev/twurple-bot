@@ -1,20 +1,12 @@
 import ms from 'ms'
 import path from 'path'
-import { VM } from 'vm2'
-import { PubSubClient as PubSub } from '@twurple/pubsub'
-import type { StringValue } from 'ms'
 import type { LowSync } from 'lowdb-hybrid'
-import type { TokenInfo } from '@twurple/auth'
-import { ClientCredentialsAuthProvider } from '@twurple/auth'
 import type { TwurpleClient } from './TwurpleClient'
-import type { PubSubRedemptionMessage } from '@twurple/pubsub'
 import migration from '../migrations/eventsub.json'
 import type { HelixUpdateCustomRewardData } from '@twurple/api'
-import { ApiClient, HelixCustomRewardRedemption } from '@twurple/api'
-import { forEach, iteratee, values } from 'lodash'
-import type { EventSubListener } from '@twurple/eventsub'
-import { NgrokAdapter } from '@twurple/eventsub-ngrok'
+import { ApiClient } from '@twurple/api'
 import { EventSubWsListener } from '@twurple/eventsub-ws'
+import { getUsersData } from 'src/utils/getUserId'
 
 // TODO: иногда не апдейтятся реварды, особенно когда это происходит несколько раз за короткий промежуток времени.
 // сделать отлов неудачных попыток и запускать ещё раз обновление через какое-то время
@@ -26,6 +18,11 @@ interface Variable{
   1: string;
   '2-4': string;
   other: string;
+}
+
+interface User{
+  id: string;
+  name: string;
 }
 
 interface Description{
@@ -53,7 +50,7 @@ interface EventSubs {
 
 export class EventSubClient {
   private client: TwurpleClient
-  private tokenInfo: TokenInfo
+  private users: User[]
 
   private db: LowSync<EventSubs>
   private blackhole: Reward
@@ -72,24 +69,21 @@ export class EventSubClient {
   }
 
   async connect() {
-    this.tokenInfo = await this.client.api.getTokenInfo()
+    this.users = await getUsersData(this.client.api.users, this.client.db.data.channels)
 
-    this.updateLocalInfo()
+    for (const user of this.users){
+      this.updateLocalInfo(user.id)
 
-    //Создаём реварды
-    await this.createRewards()
+      //Создаём реварды
+      await this.createRewards(user.id)
 
-
-    //Создаём блекхол
-    await this.createBlackhole()
-
+      //Создаём блекхол
+      await this.createBlackhole(user.id)
+    }
 
     //Event Sub
     const esClient = new ApiClient({
-      authProvider: new ClientCredentialsAuthProvider(
-        this.tokenInfo.clientId,
-        this.client.config.clientSecret
-      ),
+      authProvider: this.client.auth,
       logger: {
         timestamps: true,
         colors: true,
@@ -97,22 +91,22 @@ export class EventSubClient {
         minLevel: 3
       }
     })
-
-    const adapter = new NgrokAdapter()
     
     await esClient.eventSub.deleteAllSubscriptions()
 
     const listener = new EventSubWsListener({ apiClient: this.client.api })
 
-    await this.registerOnRedemption(listener)
+    for (const user of this.users) {
+      await this.registerOnRedemption(listener, user.id)
+    }
 
-    await listener.start()
+    listener.start()
     
   }
 
-  private async registerOnRedemption(listener: EventSubWsListener) {
+  private async registerOnRedemption(listener: EventSubWsListener, userId: string) {
 
-    listener.subscribeToChannelRedemptionAddEventsForReward(this.tokenInfo.userId,
+    listener.onChannelRedemptionAddForReward(userId,
       this.blackhole.id,
       (data) => {
         this.blackhole.currentCost +=
@@ -121,7 +115,7 @@ export class EventSubClient {
               : Math.floor(this.blackhole.currentCost * 0.1)
         this.blackhole.count++
         this.client.api.channelPoints.updateCustomReward(
-          this.tokenInfo.userId,
+          userId,
           this.blackhole.id,
           {
             cost: this.blackhole.currentCost,
@@ -142,7 +136,7 @@ export class EventSubClient {
     this.rewards.forEach((reward) => {
       this.client.logger.info(`Bind events for ${reward.title}`, 'EventSub')
       // Юзер купил награду
-      listener.subscribeToChannelRedemptionAddEventsForReward(this.tokenInfo.userId,
+      listener.onChannelRedemptionAddForReward(userId,
         reward.id,
         (data) =>{
           const rewardToUpdate = this.rewards.find(
@@ -155,12 +149,13 @@ export class EventSubClient {
             
             const newData = this.getDescription(rewardToUpdate)
 
+            this.client.logger.info(`Updating cost: ${rewardToUpdate.currentCost - rewardToUpdate.increment} -> ${rewardToUpdate.currentCost}`,'EventSub')
             this.client.api.channelPoints.updateCustomReward(
-              this.tokenInfo.userId,
+              userId,
               rewardToUpdate.id,
               { cost: rewardToUpdate.currentCost,
                 ...newData }
-            )
+            ).then((v)=> this.client.logger.info('OK', 'EventSub'), (r)=> this.client.logger.info(r, 'EventSub'))
             Object.assign(rewardToUpdate, { currentCost: rewardToUpdate.currentCost,
               queueLength: rewardToUpdate.queueLength })
             this.db.write()
@@ -168,8 +163,8 @@ export class EventSubClient {
         })
 
       // Стример нажал вернуть поинты или забрал себе
-      listener.subscribeToChannelRedemptionUpdateEventsForReward(
-        this.tokenInfo.userId,
+      listener.onChannelRedemptionUpdateForReward(
+        userId,
         reward.id,
         (data) => {
           const rewardToUpdate = this.rewards.find(
@@ -183,7 +178,7 @@ export class EventSubClient {
             const newData = this.getDescription(rewardToUpdate)
 
             this.client.api.channelPoints.updateCustomReward(
-              this.tokenInfo.userId,
+              userId,
               rewardToUpdate.id,
               { cost: rewardToUpdate.currentCost, ...newData }
             ).then((rew) => { this.client.logger.info('Reward updated', 'EventSub') },
@@ -231,13 +226,13 @@ export class EventSubClient {
     return v['other']
   }
 
-  private updateLocalInfo(){
+  private updateLocalInfo(userId: string){
     const checkRewards = this.rewards.filter((val)=> val.id)
     for (const reward of checkRewards)
     {
-      this.client.api.channelPoints.getRedemptionsForBroadcaster(this.tokenInfo.userId,
+      this.client.api.channelPoints.getRedemptionsForBroadcaster(userId,
         reward.id,
-        'UNFULFILLED', {})
+        'UNFULFILLED',{})
         .then((val) => {
           Object.assign(reward, { queueLength: val.data.length,
             currentCost: reward.baseCost + reward.increment * val.data.length })
@@ -246,14 +241,14 @@ export class EventSubClient {
     }
   }
 
-  private async createRewards(){
+  private async createRewards(userId: string){
     if (!this.rewards.some((reward) => !reward.id))
       return
     
     //Создаём доступный боту ревард на основе существующего, если уже не создан
     const existingRewards =
       await this.client.api.channelPoints.getCustomRewards(
-        this.tokenInfo.userId,
+        userId,
         false
       )
     //Берём реварды, которых нет и которые нужно создать
@@ -270,14 +265,14 @@ export class EventSubClient {
         (value) => value.title === reward.title
       )
       const newReward = await this.client.api.channelPoints.createCustomReward(
-        this.tokenInfo.userId,
+        userId,
         {
           cost:
             reward.cost +
             thisReward.increment *
               (thisReward.queueLength ? thisReward.queueLength : 0),
           title: reward.title + ' (BOT)',
-          autoFulfill: reward.autoApproved,
+          autoFulfill: reward.autoFulfill,
           backgroundColor: reward.backgroundColor,
           globalCooldown: reward.globalCooldown,
           isEnabled: reward.isEnabled,
@@ -295,11 +290,11 @@ export class EventSubClient {
     }
   }
 
-  private async createBlackhole(){
+  private async createBlackhole(userId: string){
     if (this.blackhole.id)
       return
     const newReward = await this.client.api.channelPoints.createCustomReward(
-      this.tokenInfo.userId,
+      userId,
       {
         cost: this.blackhole.currentCost,
         title: this.blackhole.title,

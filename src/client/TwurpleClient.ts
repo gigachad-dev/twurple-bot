@@ -111,22 +111,27 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
       {
         clientId: this.config.clientId,
         clientSecret: this.config.clientSecret,
-        onRefresh: (tokens) => this.updateConfig(tokens)
-      },
-      this.db.data
+        onRefresh: (userId, newTokenData) => {
+          this.logger.info(JSON.stringify(newTokenData))
+
+          this.updateConfig(newTokenData) },
+        onRefreshFailure:(userId) =>
+          this.logger.info(`Login with twitch http://${this.config.server.hostname}:${this.config.server.port}/twitch/auth`)
+        
+      }
     )
 
     this.server = new Server(this)
 
     this.server.app.listen(this.config.server.port, this.config.server.hostname, () => {
       this.logger.info(`Server now listening on http://${this.config.server.hostname}:${this.config.server.port}`)
-
-      this.auth.refresh().then(() => {
-        this.connect()
-      }).catch(() => {
-        this.logger.info(`Login with twitch http://${this.config.server.hostname}:${this.config.server.port}/twitch/auth`)
-      })
     })
+
+    if (!this.db.data.accessToken){
+      this.logger.info(`Login with twitch http://${this.config.server.hostname}:${this.config.server.port}/twitch/auth`)
+      return
+    }
+    this.connect()
   }
 
   updateConfig(config: Partial<TwurpleConfig>) {
@@ -135,6 +140,8 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
   }
 
   async connect(): Promise<void> {
+    await this.auth.addUserForToken(this.db.data, ['chat'])
+
     this.registerCommands()
 
     this.logger.info('Current default prefix is ' + this.config.prefix)

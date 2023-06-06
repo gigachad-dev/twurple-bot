@@ -4,10 +4,11 @@ import { VM } from 'vm2'
 import { PubSubClient as PubSub } from '@twurple/pubsub'
 import type { StringValue } from 'ms'
 import type { LowSync } from 'lowdb-hybrid'
-import type { TokenInfo } from '@twurple/auth/lib'
+import type { TokenInfo } from '@twurple/auth'
 import type { TwurpleClient } from './TwurpleClient'
 import type { PubSubRedemptionMessage } from '@twurple/pubsub'
 import migration from '../migrations/pubsub.json'
+import { getUsersData } from 'src/utils/getUserId'
 
 interface Redemption {
   title: string
@@ -42,15 +43,13 @@ export class PubSubClient {
   }
 
   async connect() {
-    this.pubsub = new PubSub()
+    this.pubsub = new PubSub({ authProvider: this.client.auth })
+
+    const users = await getUsersData(this.client.api.users, this.client.db.data.channels)
+
     this.tokenInfo = await this.client.api.getTokenInfo()
 
-    await this.pubsub.registerUserListener(this.client.auth, this.tokenInfo.userId)
-    await this.registerOnRedemtion()
-  }
-
-  private async registerOnRedemtion() {
-    await this.pubsub.onRedemption(this.tokenInfo.userId, (event) => {
+    this.pubsub.onRedemption(users[0].id, (event) => {
       const redemption = this.redemptions.find((redemption) => redemption.title === event.rewardTitle)
       if (redemption) {
         if (redemption.action) {

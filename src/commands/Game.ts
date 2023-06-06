@@ -37,7 +37,7 @@ export default class Game extends BaseCommand {
   }
 
   async everyone(msg: ChatMessage): Promise<void> {
-    const { gameName } = await this.client.api.channels.getChannelInfo(msg.channel.id)
+    const { gameName } = await this.client.api.channels.getChannelInfoById(msg.channel.id)
     msg.reply(gameName)
   }
 

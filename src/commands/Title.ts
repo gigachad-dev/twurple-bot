@@ -33,7 +33,7 @@ export default class Title extends BaseCommand {
   }
 
   async everyone(msg: ChatMessage): Promise<void> {
-    const { title } = await this.client.api.channels.getChannelInfo(msg.channel.id)
+    const { title } = await this.client.api.channels.getChannelInfoById(msg.channel.id)
     msg.reply(title)
   }
 
