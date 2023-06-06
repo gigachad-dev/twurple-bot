@@ -31,7 +31,7 @@ export default class Commands extends BaseCommand {
   async commandList(msg: ChatMessage): Promise<void> {
     const commands = this.client.commands
       .map(command => {
-        if (!command.options.hideFromHelp) {
+        if (!command.options.hideFromHelp && !command.options.disabled) {
           return this.client.config.prefix + command.options.name
         }
       })

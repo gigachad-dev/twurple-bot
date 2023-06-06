@@ -12,6 +12,8 @@ export interface CommandOptions {
    */
   userlevel: keyof typeof UserLevel
 
+  disabled?: boolean
+
   /**
    * Command description (required for output to !help <command>)
    */
@@ -128,6 +130,8 @@ export class BaseCommand {
    * @param parameters
    */
   async prepareRun(msg: ChatMessage, parameters: string[]): Promise<any> {
+    if (this.options.disabled) return
+
     const namedParameters: NamedParameters = {}
 
     if (this.options.args && this.options.args.length > 0) {
@@ -165,6 +169,7 @@ export class BaseCommand {
    * @param msg
    */
   preValidate(msg: ChatMessage): string | boolean {
+    if (this.options.disabled) return false
     // TODO: withWhisper command option
     if (msg.messageType === 'whisper') {
       return 'This command can be executed only in the bot channel'

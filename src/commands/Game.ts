@@ -7,6 +7,7 @@ export default class Game extends BaseCommand {
       name: 'game',
       userlevel: 'everyone',
       description: 'Текущая игра стрима',
+      disabled: true,
       aliases: [
         'игра'
       ],
@@ -18,6 +19,7 @@ export default class Game extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]): Promise<void> {
+    if (this.options.disabled) return
     if (msg.author.isMods && args.length) {
       this.moderator(msg, args)
     } else {

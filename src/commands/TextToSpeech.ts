@@ -46,6 +46,7 @@ export default class TextToSpeech extends BaseCommand {
     super(client, {
       name: 'tts',
       userlevel: 'everyone',
+      disabled: true,
       description: 'Text to speech',
       aliases: ['ттс', 'ttsf', 'ттсф'],
       examples: [
@@ -74,6 +75,7 @@ export default class TextToSpeech extends BaseCommand {
   }
 
   async prepareRun(msg: ChatMessage, args: string[]) {
+    if (this.options.disabled) return true
     const forceChar = msg.text.split(' ')[0].slice(-1)
     if (forceChar === 'f' || forceChar === 'ф'){
       this.speech(args, msg.author.id, true)
