@@ -6,7 +6,7 @@ import migration from '../migrations/eventsub.json'
 import type { HelixUpdateCustomRewardData } from '@twurple/api'
 import { ApiClient } from '@twurple/api'
 import { EventSubWsListener } from '@twurple/eventsub-ws'
-import { getUsersData } from 'src/utils/getUserId'
+import { getUsersData } from '../utils'
 
 // TODO: иногда не апдейтятся реварды, особенно когда это происходит несколько раз за короткий промежуток времени.
 // сделать отлов неудачных попыток и запускать ещё раз обновление через какое-то время

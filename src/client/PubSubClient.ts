@@ -8,7 +8,7 @@ import type { TokenInfo } from '@twurple/auth'
 import type { TwurpleClient } from './TwurpleClient'
 import type { PubSubRedemptionMessage } from '@twurple/pubsub'
 import migration from '../migrations/pubsub.json'
-import { getUsersData } from 'src/utils/getUserId'
+import { getUsersData } from '../utils'
 
 interface Redemption {
   title: string
