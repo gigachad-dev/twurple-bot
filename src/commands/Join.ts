@@ -1,5 +1,5 @@
-import type { TwurpleClient, ChatMessage } from '../client'
 import { BaseCommand } from '../client'
+import type { ChatMessage, TwurpleClient } from '../client'
 
 export default class Join extends BaseCommand {
   constructor(client: TwurpleClient) {
@@ -19,29 +19,32 @@ export default class Join extends BaseCommand {
     })
   }
 
-  async run(msg: ChatMessage, { channel }: { channel: string }): Promise<[string, string] | [string]> {
+  async run(
+    msg: ChatMessage,
+    { channel }: { channel: string }
+  ): Promise<[string, string] | [string]> {
     if (!channel) {
       return msg.reply('Укажите ник канала')
     }
 
     const { channels } = this.client.db.data
-    const findedChannel = channels.find(v => {
+    const findedChannel = channels.find((v) => {
       return channel === v.replace('#', '')
     })
 
     if (!findedChannel && channel !== this.client.getUsername()) {
-      this.client.tmi.join(channel).then(() => {
-        this.client.updateConfig({
-          channels: [
-            ...channels,
-            '#' + channel
-          ]
-        })
+      this.client.tmi
+        .join(channel)
+        .then(() => {
+          this.client.updateConfig({
+            channels: [...channels, '#' + channel]
+          })
 
-        msg.reply(`Бот на канале ${channel} успешно включен`)
-      }).catch(() => {
-        msg.reply('Ошибка подключения')
-      })
+          msg.reply(`Бот на канале ${channel} успешно включен`)
+        })
+        .catch(() => {
+          msg.reply('Ошибка подключения')
+        })
     } else {
       msg.reply(`Канал ${channel} уже подключен`)
     }

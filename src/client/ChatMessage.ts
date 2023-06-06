@@ -1,5 +1,5 @@
-import { ChatUser } from './ChatUser'
 import { ChatChannel } from './ChatChannel'
+import { ChatUser } from './ChatUser'
 import type { TwurpleClient } from './TwurpleClient'
 import type { ChatUserstate, CommonUserstate } from '@twurple/auth-tmi'
 
@@ -12,10 +12,17 @@ export class ChatMessage {
   private _author: ChatUser
   private _timestamp: Date
 
-  constructor(client: TwurpleClient, originalMessage: ChatterState, channel: string) {
+  constructor(
+    client: TwurpleClient,
+    originalMessage: ChatterState,
+    channel: string
+  ) {
     this.client = client
     this.originalMessage = originalMessage
-    this._channel = new ChatChannel({ channel, room_id: originalMessage['room-id'] })
+    this._channel = new ChatChannel({
+      channel,
+      room_id: originalMessage['room-id']
+    })
     this._author = new ChatUser(originalMessage, client)
     this._timestamp = new Date()
   }
@@ -85,7 +92,10 @@ export class ChatMessage {
     if (this.messageType === 'whisper') {
       return this.client.whisper(this.author.username, text)
     } else {
-      return this.client.say(this.channel.name, `@${this.author.displayName}, ${text}`)
+      return this.client.say(
+        this.channel.name,
+        `@${this.author.displayName}, ${text}`
+      )
     }
   }
 
@@ -95,7 +105,10 @@ export class ChatMessage {
    * @param text
    */
   async actionReply(text: string): Promise<[string]> {
-    return this.client.action(this.channel.name, `@${this.author.displayName}, ${text}`)
+    return this.client.action(
+      this.channel.name,
+      `@${this.author.displayName}, ${text}`
+    )
   }
 
   /**

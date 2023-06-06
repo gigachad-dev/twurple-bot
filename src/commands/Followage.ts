@@ -1,6 +1,6 @@
-import { declOfNum, dateDiff } from '../utils'
-import type { TwurpleClient, ChatMessage } from '../client'
 import { BaseCommand } from '../client'
+import { dateDiff, declOfNum } from '../utils'
+import type { ChatMessage, TwurpleClient } from '../client'
 
 export default class Followage extends BaseCommand {
   constructor(client: TwurpleClient) {
@@ -8,13 +8,8 @@ export default class Followage extends BaseCommand {
       name: 'followage',
       userlevel: 'everyone',
       description: 'Время отслеживания канала',
-      aliases: [
-        'олд'
-      ],
-      examples: [
-        'followage',
-        'followage <username>'
-      ],
+      aliases: ['олд'],
+      examples: ['followage', 'followage <username>'],
       args: [
         {
           type: String,
@@ -29,7 +24,10 @@ export default class Followage extends BaseCommand {
     })
   }
 
-  async run(msg: ChatMessage, { username }: { username: string }): Promise<void> {
+  async run(
+    msg: ChatMessage,
+    { username }: { username: string }
+  ): Promise<void> {
     if (msg.author.isBroadcaster && !username) {
       this.followByBroadcaster(msg)
     } else if (username) {
@@ -77,7 +75,10 @@ export default class Followage extends BaseCommand {
   }
 
   async getFollows(user: string, followedUser: string) {
-    const { total, data } = await this.client.api.users.getFollows({ user, followedUser })
+    const { total, data } = await this.client.api.users.getFollows({
+      user,
+      followedUser
+    })
     return {
       total,
       user: data[0]
@@ -89,7 +90,11 @@ export default class Followage extends BaseCommand {
 
     return {
       formatDate,
-      days: `${fullDays} ${declOfNum(fullDays, ['день', 'дня', 'дней'])}`
+      days: `${fullDays} ${declOfNum(fullDays, [
+        'день',
+        'дня',
+        'дней'
+      ])}`
     }
   }
 }

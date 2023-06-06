@@ -1,7 +1,7 @@
-import type { Express } from 'express'
 import { Router } from 'express'
-import type { TwurpleClient } from '../../client/TwurpleClient'
 import { TwitchControllers } from '../controllers/twitch.controller'
+import type { TwurpleClient } from '../../client/TwurpleClient'
+import type { Express } from 'express'
 
 export default function twitch(client: TwurpleClient, app: Express) {
   const router = Router()

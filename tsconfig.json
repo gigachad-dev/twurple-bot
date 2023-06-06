@@ -10,13 +10,8 @@
     "outDir": "dist",
     "baseUrl": "."
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "src/**/*",
-    "types/*"
-  ],
+  "exclude": ["node_modules"],
+  "include": ["src/**/*", "types/*"],
   "ts-node": {
     "files": true
   }

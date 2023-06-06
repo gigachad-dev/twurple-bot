@@ -1,7 +1,7 @@
+import dotenv from 'dotenv'
 import { join } from 'path'
 import { TwurpleClient } from './client/TwurpleClient'
 
-import dotenv from 'dotenv'
 dotenv.config()
 
 const client = new TwurpleClient({

@@ -1,7 +1,7 @@
-import type { YouTubeSearchOptions } from 'youtube-search'
 import search from 'youtube-search'
-import type { TwurpleClient, ChatMessage } from '../client'
 import { BaseCommand } from '../client'
+import type { ChatMessage, TwurpleClient } from '../client'
+import type { YouTubeSearchOptions } from 'youtube-search'
 
 export default class YouTubeSearch extends BaseCommand {
   private opts: YouTubeSearchOptions

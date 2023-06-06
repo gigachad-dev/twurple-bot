@@ -20,7 +20,9 @@ export const dateDiff = (startDate: string | number | Date) => {
     timeZone: 'UTC'
   }).format(new Date(startDate))
 
-  let timeDiff = Math.ceil((new Date().getTime() - new Date(startDate).getTime()) / 1000)
+  let timeDiff = Math.ceil(
+    (new Date().getTime() - new Date(startDate).getTime()) / 1000
+  )
 
   const date = {
     years: 0,
@@ -37,7 +39,9 @@ export const dateDiff = (startDate: string | number | Date) => {
     timeDiff -= date[i] * TIMESPANS[i]
   })
 
-  const fullDays = Math.ceil(Math.abs(new Date().getTime() - new Date(startDate).getTime()) / 86400000)
+  const fullDays = Math.ceil(
+    Math.abs(new Date().getTime() - new Date(startDate).getTime()) / 86400000
+  )
 
   return {
     fullDays,

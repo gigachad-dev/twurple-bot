@@ -1,5 +1,5 @@
-import type { TwurpleClient, ChatMessage } from '../client'
 import { BaseCommand } from '../client'
+import type { ChatMessage, TwurpleClient } from '../client'
 
 export default class Title extends BaseCommand {
   constructor(client: TwurpleClient) {
@@ -7,10 +7,7 @@ export default class Title extends BaseCommand {
       name: 'title',
       userlevel: 'everyone',
       description: 'Получение/изменение название стрима',
-      examples: [
-        'title',
-        'title <text>'
-      ]
+      examples: ['title', 'title <text>']
     })
   }
 
@@ -33,18 +30,20 @@ export default class Title extends BaseCommand {
   }
 
   async everyone(msg: ChatMessage): Promise<void> {
-    const { title } = await this.client.api.channels.getChannelInfo(msg.channel.id)
+    const { title } = await this.client.api.channels.getChannelInfoById(
+      msg.channel.id
+    )
     msg.reply(title)
   }
 
   changeTitle(msg: ChatMessage, title: string): void {
-    this.client.api.channels.updateChannelInfo(
-      msg.channel.id,
-      { title }
-    ).then(() => {
-      msg.reply(`Название стрима изменено: ${title}`)
-    }).catch(err => {
-      this.client.logger.error(err, this.constructor.name)
-    })
+    this.client.api.channels
+      .updateChannelInfo(msg.channel.id, { title })
+      .then(() => {
+        msg.reply(`Название стрима изменено: ${title}`)
+      })
+      .catch((err) => {
+        this.client.logger.error(err, this.constructor.name)
+      })
   }
 }

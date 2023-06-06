@@ -1,6 +1,6 @@
 import got from 'got'
-import type { TwurpleClient, ChatMessage } from '../client'
 import { BaseCommand } from '../client'
+import type { ChatMessage, TwurpleClient } from '../client'
 
 interface WeatherApiResponse {
   id: number
@@ -31,12 +31,8 @@ export default class Weather extends BaseCommand {
       name: 'weather',
       userlevel: 'everyone',
       description: 'Поиск погоды через openweathermap.org',
-      aliases: [
-        'погода'
-      ],
-      examples: [
-        'weather <location>'
-      ]
+      aliases: ['погода'],
+      examples: ['weather <location>']
     })
 
     this.key = process.env.WEATHER_KEY
@@ -54,17 +50,23 @@ export default class Weather extends BaseCommand {
       try {
         const query = args.join(' ')
         const { body } = await got<WeatherApiResponse>(
-          `https://api.openweathermap.org/data/2.5/weather?appid=${this.key}&lang=ru&units=metric&q=${encodeURI(query)}`,
+          `https://api.openweathermap.org/data/2.5/weather?appid=${
+            this.key
+          }&lang=ru&units=metric&q=${encodeURI(query)}`,
           { responseType: 'json' }
         )
 
         const { name, main, clouds, wind, sys } = body
         const celsius = main.temp.toFixed(1)
-        const weather = body.weather.map(({ description }) => {
-          return description.charAt(0).toUpperCase() + description.slice(1)
-        }).join(', ')
+        const weather = body.weather
+          .map(({ description }) => {
+            return description.charAt(0).toUpperCase() + description.slice(1)
+          })
+          .join(', ')
 
-        msg.reply(`${name} (${sys.country}): ${weather}, 🌡️ ${celsius}°C, ☁️ ${clouds.all}%, 💦 ${main.humidity}%, 💨 ${wind.speed}m/sec`)
+        msg.reply(
+          `${name} (${sys.country}): ${weather}, 🌡️ ${celsius}°C, ☁️ ${clouds.all}%, 💦 ${main.humidity}%, 💨 ${wind.speed}m/sec`
+        )
       } catch (err) {
         msg.reply('Город не найден')
       }

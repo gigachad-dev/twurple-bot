@@ -1,9 +1,9 @@
 import { decode } from 'html-entities'
-import { randomInt } from '../utils'
-import type { YouTubeSearchResults } from 'youtube-search'
 import search from 'youtube-search'
-import type { TwurpleClient, ChatMessage } from '../client'
 import { BaseCommand } from '../client'
+import { randomInt } from '../utils'
+import type { ChatMessage, TwurpleClient } from '../client'
+import type { YouTubeSearchResults } from 'youtube-search'
 
 export default class RandomGachi extends BaseCommand {
   private orders: string[]
@@ -21,7 +21,12 @@ export default class RandomGachi extends BaseCommand {
       aliases: ['гачи']
     })
 
-    this.orders = ['title', 'rating', 'relevance', 'viewCount']
+    this.orders = [
+      'title',
+      'rating',
+      'relevance',
+      'viewCount'
+    ]
 
     this.blacklist = [
       'звёздные войны',

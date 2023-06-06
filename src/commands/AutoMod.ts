@@ -1,8 +1,8 @@
 import path from 'path'
-import migration from '../migrations/automod.json'
 import { BaseCommand } from '../client'
+import migration from '../migrations/automod.json'
+import type { ChatMessage, TwurpleClient } from '../client'
 import type { LowSync } from 'lowdb-hybrid'
-import type { TwurpleClient, ChatMessage } from '../client'
 
 interface IAutoMod {
   enabled: boolean
@@ -50,7 +50,7 @@ export default class AutoMod extends BaseCommand {
   }
 
   findWord(word: string): string | undefined {
-    return this.db.data.rules.find(v => word === v)
+    return this.db.data.rules.find((v) => word === v)
   }
 
   addWord(msg: ChatMessage, word: string): void {
@@ -65,7 +65,7 @@ export default class AutoMod extends BaseCommand {
 
   removeWord(msg: ChatMessage, word: string): void {
     if (this.findWord(word)) {
-      this.db.data.rules = this.db.data.rules.filter(v => word !== v)
+      this.db.data.rules = this.db.data.rules.filter((v) => word !== v)
       this.db.write()
       msg.reply('Правило удалено VoteYea')
     } else {
@@ -83,7 +83,9 @@ export default class AutoMod extends BaseCommand {
   async execute(msg: ChatMessage): Promise<void> {
     if (this.db.data.enabled) {
       const message = msg.text.toLowerCase()
-      const word = this.db.data.rules.find(word => message.indexOf(word) !== -1)
+      const word = this.db.data.rules.find(
+        (word) => message.indexOf(word) !== -1
+      )
 
       if (word) {
         const { total } = await this.client.api.users.getFollows({
@@ -92,7 +94,7 @@ export default class AutoMod extends BaseCommand {
         })
 
         if (total) {
-          if ((msg.author.isVip || msg.author.isSubscriber)) {
+          if (msg.author.isVip || msg.author.isSubscriber) {
             this.client.tmi
               .deletemessage(msg.channel.name, msg.id)
               .then(() => this.banMessage(msg, word))
@@ -115,7 +117,11 @@ export default class AutoMod extends BaseCommand {
 
   banMessage(msg: ChatMessage, word: string): void {
     if (!this.db.data.silence) {
-      msg.reply(`Отлетаешь по причине: ${word.slice(0, 2) + '*'.repeat(word.length - 2)} OSFrog`)
+      msg.reply(
+        `Отлетаешь по причине: ${
+          word.slice(0, 2) + '*'.repeat(word.length - 2)
+        } OSFrog`
+      )
     }
   }
 

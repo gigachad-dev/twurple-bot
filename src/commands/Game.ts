@@ -1,5 +1,5 @@
-import type { TwurpleClient, ChatMessage } from '../client'
 import { BaseCommand } from '../client'
+import type { ChatMessage, TwurpleClient } from '../client'
 
 export default class Game extends BaseCommand {
   constructor(client: TwurpleClient) {
@@ -7,13 +7,8 @@ export default class Game extends BaseCommand {
       name: 'game',
       userlevel: 'everyone',
       description: 'Текущая игра стрима',
-      aliases: [
-        'игра'
-      ],
-      examples: [
-        'game',
-        'game <game>'
-      ]
+      aliases: ['игра'],
+      examples: ['game', 'game <game>']
     })
   }
 
@@ -37,17 +32,25 @@ export default class Game extends BaseCommand {
   }
 
   async everyone(msg: ChatMessage): Promise<void> {
-    const { gameName } = await this.client.api.channels.getChannelInfo(msg.channel.id)
+    const { gameName } = await this.client.api.channels.getChannelInfoById(
+      msg.channel.id
+    )
     msg.reply(gameName)
   }
 
-  changeGame(msg: ChatMessage, { gameId, gameName }: { gameId: string; gameName: string }): void {
-    this.client.api.channels.updateChannelInfo(msg.channel.id, {
-      gameId
-    }).then(() => {
-      msg.reply(`Игра изменена: ${gameName}`)
-    }).catch(err => {
-      this.client.logger.error(err, this.constructor.name)
-    })
+  changeGame(
+    msg: ChatMessage,
+    { gameId, gameName }: { gameId: string; gameName: string }
+  ): void {
+    this.client.api.channels
+      .updateChannelInfo(msg.channel.id, {
+        gameId
+      })
+      .then(() => {
+        msg.reply(`Игра изменена: ${gameName}`)
+      })
+      .catch((err) => {
+        this.client.logger.error(err, this.constructor.name)
+      })
   }
 }

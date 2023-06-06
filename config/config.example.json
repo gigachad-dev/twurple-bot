@@ -1,7 +1,5 @@
 {
-  "channels": [
-    "#le_xot"
-  ],
+  "channels": ["#le_xot"],
   "botOwners": [],
   "ignoreList": [
     "moobot",

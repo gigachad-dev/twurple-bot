@@ -4,9 +4,7 @@ export interface OriginalMessage {
 }
 
 export class ChatChannel {
-  constructor(
-    private originalMessage: OriginalMessage
-  ) { }
+  constructor(private originalMessage: OriginalMessage) {}
 
   /**
    * Get channel name

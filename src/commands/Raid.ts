@@ -1,6 +1,6 @@
-import { randomInt } from '../utils'
-import type { TwurpleClient, ChatMessage } from '../client'
 import { BaseCommand } from '../client'
+import { randomInt } from '../utils'
+import type { ChatMessage, TwurpleClient } from '../client'
 
 export default class Raid extends BaseCommand {
   constructor(client: TwurpleClient) {
@@ -12,7 +12,9 @@ export default class Raid extends BaseCommand {
   }
 
   async run(msg: ChatMessage): Promise<void> {
-    const stream = await this.client.api.streams.getStreamByUserId(msg.channel.id)
+    const stream = await this.client.api.streams.getStreamByUserId(
+      msg.channel.id
+    )
 
     if (stream) {
       const { data } = await this.client.api.streams.getStreams({
@@ -22,12 +24,14 @@ export default class Raid extends BaseCommand {
         limit: 100
       })
 
-      const streams = data.filter(stream => stream.userId !== msg.channel.id)
+      const streams = data.filter((stream) => stream.userId !== msg.channel.id)
 
       if (streams.length) {
         const { userName } = streams[randomInt(0, streams.length - 1)]
         msg.say(`/raid ${userName}`)
-        msg.say(`Проводим рейд в количестве ${stream.viewers} зрителей на канал twitch.tv/${userName}`)
+        msg.say(
+          `Проводим рейд в количестве ${stream.viewers} зрителей на канал twitch.tv/${userName}`
+        )
       } else {
         msg.reply(`Стримов в разделе ${stream.gameName} не найдено`)
       }

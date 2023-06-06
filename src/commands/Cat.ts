@@ -1,7 +1,7 @@
 import got from 'got'
-import { randomInt } from '../utils'
-import type { TwurpleClient, ChatMessage } from '../client'
 import { BaseCommand } from '../client'
+import { randomInt } from '../utils'
+import type { ChatMessage, TwurpleClient } from '../client'
 
 export interface CatApiResponse {
   id: string
@@ -16,9 +16,7 @@ export default class Cat extends BaseCommand {
       name: 'cat',
       userlevel: 'everyone',
       description: 'Случайная картинка котейки',
-      aliases: [
-        'кот'
-      ]
+      aliases: ['кот']
     })
   }
 
@@ -29,7 +27,11 @@ export default class Cat extends BaseCommand {
         { responseType: 'json' }
       )
 
-      const cats = ['CoolCat', 'DxCat', 'GlitchCat']
+      const cats = [
+        'CoolCat',
+        'DxCat',
+        'GlitchCat'
+      ]
       const emote = cats[randomInt(0, cats.length - 1)]
 
       msg.reply(`${emote} cataas.com${body.url}`)

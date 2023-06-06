@@ -5,9 +5,11 @@ export class Logger {
     winston.format.timestamp({
       format: 'YYYY/MM/DD HH:mm:ss'
     }),
-    winston.format.printf(info =>
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      `[${info.timestamp}]${info.module ? ` (${info.module}) ` : ' '}${info.level.toUpperCase()}: ${info.message}`
+    winston.format.printf(
+      (info) =>
+        `[${info.timestamp}]${
+          info.module ? ` (${info.module}) ` : ' '
+        }${info.level.toUpperCase()}: ${info.message}`
     )
   )
 
@@ -33,6 +35,7 @@ export class Logger {
         filename: 'log_full.log',
         format: this.formatter
       })
+
     ]
   })
 

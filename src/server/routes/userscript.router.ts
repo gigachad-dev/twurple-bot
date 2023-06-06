@@ -1,6 +1,6 @@
-import type { Response, Express } from 'express'
 import { Router } from 'express'
 import type { TwurpleClient } from '../../client/TwurpleClient'
+import type { Express, Response } from 'express'
 
 async function checkUsernameRoute(
   data: any,

@@ -1,16 +1,14 @@
 import cors from 'cors'
-import type { Express } from 'express'
 import express from 'express'
 import twitch from './routes/twitch.router'
 import users from './routes/userscript.router'
 import type { TwurpleClient } from '../client/TwurpleClient'
+import type { Express } from 'express'
 
 export class Server {
   public app: Express
 
-  constructor(
-    private client: TwurpleClient
-  ) {
+  constructor(private client: TwurpleClient) {
     this.app = express()
 
     this.app.disable('x-powered-by')
