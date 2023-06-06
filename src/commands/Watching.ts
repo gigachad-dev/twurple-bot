@@ -65,6 +65,7 @@ export default class Watching extends BaseCommand {
       }
       msg.say(`Смотрим фильм${filmName ? ' '+filmName : '' }! @${watcher}, теперь тебе доступны команды 
       !sounds on/off, !tts on/off, !emotes on/off. Приятного просмотра!`)
+      msg.say('!game Just Chatting')
     } else {
       msg.reply(this.client.config.watcher ? `Фильмовожатый: ${this.client.config.watcher}` : 'Фильм не смотрим PoroSad')
     }
