@@ -235,18 +235,21 @@ export class BaseCommand {
   getAllowedCommand(command: string, msg: ChatMessage) : string{
     const author = msg.author
     const allowed = this.options.allowed
-    if (author.displayName.toLowerCase() === this.client.config.watcher)
+
+    if (msg.author.isBroadcaster) return command
+
+    if (author.displayName.toLowerCase() === this.client.config.watcher && allowed.watcher)
     {
       const cmd = allowed.watcher.find((item) => item === command)
       if(cmd)
         return cmd
     }
-    if (author.isVip){
+    if (author.isVip && allowed.vip){
       const cmd = allowed.vip.find((item) => item === command)
       if(cmd)
         return cmd
     }
-    if (author.isSubscriber){
+    if (author.isSubscriber && allowed.subscriber){
       const cmd = allowed.subscriber.find((item) => item === command)
       if(cmd)
         return cmd
