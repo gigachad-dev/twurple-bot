@@ -2,6 +2,7 @@ import cors from 'cors'
 import type { Express } from 'express'
 import express from 'express'
 import twitch from './routes/twitch.router'
+import users from './routes/users.router'
 import type { TwurpleClient } from '../client/TwurpleClient'
 
 export class Server {
@@ -17,5 +18,6 @@ export class Server {
     this.app.use(express.json())
 
     twitch(this.client, this.app)
+    users(this.client, this.app)
   }
 }
