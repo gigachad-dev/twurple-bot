@@ -236,6 +236,10 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
     }
   }
 
+  getUsername(): string {
+    return this.tmi.getUsername()
+  }
+
   findCommand(parserResult: Partial<CommandArguments>): BaseCommand | undefined {
     return this.commands.find(command => {
       if (command.options.aliases?.includes(parserResult.command)) {
