@@ -6,5 +6,6 @@ declare namespace NodeJS {
     GIPHY_KEY: string
     DUBTRACK_ROOM: string
     DUBTRACK_SESSION: string
+    USERSCRIPT_PASSWORD: string
   }
 }

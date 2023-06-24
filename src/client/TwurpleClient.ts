@@ -1,6 +1,5 @@
-import got from 'got'
 import path from 'path'
-import lodash from 'lodash'
+import lodash, { intersection } from 'lodash'
 import { readdirSync } from 'fs'
 import { EventEmitter } from 'events'
 import { LowSync, JSONFileSync } from 'lowdb-hybrid'
@@ -37,11 +36,19 @@ export interface TwurpleConfig extends TwurpleTokens {
 
 export interface TwurpleOptions {
   config: string
+  userscriptDbPath: string
   commands: string
 }
 
 export interface TwurpleEvents {
   message: (msg: ChatMessage) => void
+}
+
+interface UserscriptDb {
+  users: {
+    id: string
+    name: string
+  }[]
 }
 
 type TwurpleEmitter = StrictEventEmitter<EventEmitter, TwurpleEvents>
@@ -59,6 +66,7 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
   private parser: typeof CommandParser
   private server: Server
   private channel: HelixPrivilegedUser
+  userscriptDb: LowSync<UserscriptDb>
 
   constructor(options: TwurpleOptions) {
     super()
@@ -70,6 +78,11 @@ export class TwurpleClient extends (EventEmitter as { new(): TwurpleEmitter }) {
 
     this.db = this.lowdbAdapter<TwurpleConfig>({
       path: options.config
+    })
+
+    this.userscriptDb = this.lowdbAdapter<UserscriptDb>({
+      path: options.userscriptDbPath,
+      initialData: { users: [] }
     })
 
     this.logger.info('Loading config file..')

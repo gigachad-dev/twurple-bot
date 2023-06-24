@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const client = new TwurpleClient({
+  userscriptDbPath: join(__dirname, '../config/userscript.json'),
   config: join(__dirname, '../config/config.json'),
   commands: join(__dirname, './commands')
 })
