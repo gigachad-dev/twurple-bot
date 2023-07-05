@@ -1,0 +1,20 @@
+{
+  "redemptions": [
+    {
+      "title": "Обмен валюты StreamAvatars",
+      "action": "!баланс дать ${event.userName} ${event.rewardCost / 2}"
+    },
+    {
+      "title": "5 минут чат только для смайликов",
+      "action": "/emoteonly",
+      "timeout": {
+        "time": "5m",
+        "action": "/emoteonlyoff"
+      }
+    },
+    {
+      "title": "VIP",
+      "action": "/vip ${event.userName}"
+    }
+  ]
+}

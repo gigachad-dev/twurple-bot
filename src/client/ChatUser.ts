@@ -6,7 +6,7 @@ export class ChatUser {
   constructor(
     private originalMessage: ChatterState,
     private client: TwurpleClient
-  ) { }
+  ) {}
 
   /**
    * Get display-name
@@ -96,7 +96,7 @@ export class ChatUser {
   get isRegular(): boolean {
     return [
       ...this.client.config.botOwners,
-      this.client.getMe().name
+      this.client.getUsername()
     ].includes(this.username)
   }
 }

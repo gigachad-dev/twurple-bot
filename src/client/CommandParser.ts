@@ -5,8 +5,14 @@ export interface CommandArguments {
 }
 
 export class CommandParser {
-  public static parse(message: string, prefix: string): CommandArguments | null {
-    const regex = new RegExp('^(' + this.escapePrefix(prefix) + ')([^\\s]+) ?(.*)', 'gims')
+  public static parse(
+    message: string,
+    prefix: string
+  ): CommandArguments | null {
+    const regex = new RegExp(
+      '^(' + this.escapePrefix(prefix) + ')([^\\s]+) ?(.*)',
+      'gims'
+    )
     const matches = regex.exec(message)
 
     if (matches) {
@@ -19,11 +25,10 @@ export class CommandParser {
       }
 
       if (matches.length > 3) {
-        result.args =
-          matches[3]
-            .trim()
-            .split(' ')
-            .filter(v => v !== '')
+        result.args = matches[3]
+          .trim()
+          .split(' ')
+          .filter((v) => v !== '')
       }
 
       return result

@@ -1,6 +1,6 @@
 import got from 'got'
 import type { TwurpleClient } from '../../client/TwurpleClient'
-import type { Request, Response, NextFunction } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 
 interface TwitchTokens {
   scope: string[]
@@ -13,20 +13,24 @@ export class TwitchControllers {
   private authRedirect: string
   private authUri: string
 
-  constructor(
-    private client: TwurpleClient
-  ) {
+  constructor(private client: TwurpleClient) {
     this.auth = this.auth.bind(this)
     this.callback = this.callback.bind(this)
 
     this.authRedirect = `http://${this.client.config.server.hostname}:${this.client.config.server.port}/twitch/callback`
-    this.authUri = `https://id.twitch.tv/oauth2/authorize?client_id=${this.client.config.clientId}&redirect_uri=${this.authRedirect}&response_type=code&scope=${this.client.config.scope.join('+')}`
+    this.authUri = `https://id.twitch.tv/oauth2/authorize?client_id=${
+      this.client.config.clientId
+    }&redirect_uri=${
+      this.authRedirect
+    }&response_type=code&scope=${this.client.config.scope.join('+')}`
   }
 
   async auth(req: Request, res: Response, next: NextFunction) {
-    res.writeHead(301, {
-      Location: this.authUri
-    }).end()
+    res
+      .writeHead(301, {
+        Location: this.authUri
+      })
+      .end()
   }
 
   async callback(req: Request, res: Response, next: NextFunction) {
@@ -51,20 +55,27 @@ export class TwitchControllers {
   }
 
   private async getAuthToken(code: string) {
-    const response = await got<TwitchTokens>('https://id.twitch.tv/oauth2/token', {
-      method: 'POST',
-      responseType: 'json',
-      searchParams: {
-        client_id: this.client.config.clientId,
-        client_secret: this.client.config.clientSecret,
-        grant_type: 'authorization_code',
-        redirect_uri: this.authRedirect,
-        code
+    const response = await got<TwitchTokens>(
+      'https://id.twitch.tv/oauth2/token',
+      {
+        method: 'POST',
+        responseType: 'json',
+        searchParams: {
+          client_id: this.client.config.clientId,
+          client_secret: this.client.config.clientSecret,
+          grant_type: 'authorization_code',
+          redirect_uri: this.authRedirect,
+          code
+        }
       }
-    })
+    )
 
     if (response.statusCode !== 200) {
-      this.client.logger.error(`Bad response from twitch getting oauth token.\nStatus: ${response.statusCode}\nBody: ${JSON.stringify(response.body)}`)
+      this.client.logger.error(
+        `Bad response from twitch getting oauth token.\nStatus: ${
+          response.statusCode
+        }\nBody: ${JSON.stringify(response.body)}`
+      )
       throw new Error('Bad response from twitch getting oauth token.')
     }
 
@@ -75,7 +86,7 @@ export class TwitchControllers {
       accessToken: access_token,
       refreshToken: refresh_token,
       expiresIn: expires_in,
-      obtainmentTimestamp: +new Date
+      obtainmentTimestamp: +new Date()
     }
   }
 }

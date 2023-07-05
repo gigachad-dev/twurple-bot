@@ -1,6 +1,6 @@
 {
   "name": "twurple-bot",
-  "version": "1.4.3-pre.2",
+  "version": "1.6.1",
   "description": "Twitch chat bot built with Twurple",
   "scripts": {
     "start": "npm run build && node dist/index.js",
@@ -8,8 +8,7 @@
     "dev:debug": "nodemon --inspect src/index.ts",
     "build": "tsc",
     "prebuild": "rimraf dist",
-    "lint": "eslint --ext ts src",
-    "lint:fix": "eslint --fix --ext ts src"
+    "format": "prettier --write '**/*.{js,ts,tsx,json}'"
   },
   "author": {
     "name": "Vitalij Ryndin",
@@ -18,7 +17,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@crashmax/eslint-config": "^1.1.0",
+    "@crashmax/prettier-config": "^3.2.1",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/lodash": "^4.14.180",
@@ -32,11 +31,14 @@
     "typescript": "^4.6.2"
   },
   "dependencies": {
-    "@twurple/api": "^5.2.4",
-    "@twurple/auth": "^5.2.4",
-    "@twurple/auth-tmi": "^5.2.4",
-    "@twurple/chat": "^5.2.4",
-    "@twurple/pubsub": "^5.2.4",
+    "@twurple/api": "^6.2.1",
+    "@twurple/auth": "^6.2.1",
+    "@twurple/auth-tmi": "^6.2.1",
+    "@twurple/chat": "^6.2.1",
+    "@twurple/eventsub-http": "^6.2.1",
+    "@twurple/eventsub-ngrok": "^6.2.1",
+    "@twurple/eventsub-ws": "^6.2.1",
+    "@twurple/pubsub": "^6.2.1",
     "cors": "^2.8.5",
     "deckstrings": "^2.2.1",
     "express": "^4.17.3",

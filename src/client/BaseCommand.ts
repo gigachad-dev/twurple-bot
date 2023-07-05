@@ -1,6 +1,6 @@
-import type { PubSubRedemptionMessage } from '@twurple/pubsub/lib'
 import type { ChatMessage } from './ChatMessage'
 import type { TwurpleClient } from './TwurpleClient'
+import type { PubSubRedemptionMessage } from '@twurple/pubsub/lib'
 
 export interface CommandOptions {
   /**
@@ -39,8 +39,8 @@ export interface CommandOptions {
   hideFromHelp?: boolean
 
   /**
-  * The command is available only on the bot channel
-  */
+   * The command is available only on the bot channel
+   */
   botChannelOnly?: boolean
 
   /**
@@ -69,7 +69,10 @@ export interface CommandArgument {
   /**
    * Prepare value
    */
-  prepare?: (value: unknown, msg?: ChatMessage) => string | number | boolean | void
+  prepare?: (
+    value: unknown,
+    msg?: ChatMessage
+  ) => string | number | boolean | void
 }
 
 export enum UserLevel {
@@ -93,12 +96,12 @@ export type NamedParameters = Record<string, string | number | boolean>
 export type CommandProvider = Record<string, CommandOptions>
 
 export class BaseCommand {
-  constructor(
-    public client: TwurpleClient,
-    public options: CommandOptions
-  ) { }
+  constructor(public client: TwurpleClient, public options: CommandOptions) {}
 
-  async onPubSub(event: PubSubRedemptionMessage, args?: string[]): Promise<void> {}
+  async onPubSub(
+    event: PubSubRedemptionMessage,
+    args?: string[]
+  ): Promise<void> {}
 
   /**
    * Method called when execCommand()
@@ -106,7 +109,7 @@ export class BaseCommand {
    * @param msg
    * @param chatter
    */
-  async execute(msg: ChatMessage): Promise<any> { }
+  async execute(msg: ChatMessage): Promise<any> {}
 
   /**
    * Method called when command is executed
@@ -114,7 +117,7 @@ export class BaseCommand {
    * @param msg
    * @param parameters
    */
-  async run(msg: ChatMessage, parameters: unknown): Promise<any> { }
+  async run(msg: ChatMessage, parameters: unknown): Promise<any> {}
 
   /**
    * Prepare the command to be executed
@@ -135,7 +138,9 @@ export class BaseCommand {
           }
 
           if (args.prepare) {
-            const preparedValue = args.prepare(namedParameters[args.name] || parameters[i])
+            const preparedValue = args.prepare(
+              namedParameters[args.name] || parameters[i]
+            )
 
             if (preparedValue) {
               namedParameters[args.name] = preparedValue
@@ -166,7 +171,7 @@ export class BaseCommand {
     }
 
     if (this.options.botChannelOnly) {
-      if (msg.channel.name !== this.client.getMe().name) {
+      if (msg.channel.name !== this.client.getUsername()) {
         return 'This command can be executed only in the bot channel'
       }
     }
@@ -186,7 +191,11 @@ export class BaseCommand {
     }
 
     if (this.options.userlevel === UserLevel.regular) {
-      if (![...this.client.config.botOwners, this.client.getMe().name].includes(msg.author.username)) {
+      if (
+        ![...this.client.config.botOwners, this.client.getUsername()].includes(
+          msg.author.username
+        )
+      ) {
         return 'This command can be executed only from bot owners'
       }
     }
