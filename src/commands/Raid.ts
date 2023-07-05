@@ -36,8 +36,13 @@ export default class Raid extends BaseCommand {
 
     const randomStream = streams[randomInt(0, streams.length - 1)]
 
+    // govno
+    try {
+      await this.client.api.raids.cancelRaid(msg.channel.id)
+    } catch {}
+
     this.client.api.raids
-      .startRaid(msg.channel.id, randomStream.id)
+      .startRaid(msg.channel.id, randomStream.userId)
       .then(() => {
         msg.say(
           `Проводим рейд в количестве Baby ${stream.viewers} зрителей Baby на канал twitch.tv/${randomStream.userName}`
