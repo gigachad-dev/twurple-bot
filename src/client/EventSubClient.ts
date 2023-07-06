@@ -1,8 +1,6 @@
 import { ApiClient } from '@twurple/api'
 import { EventSubWsListener } from '@twurple/eventsub-ws'
-import ms from 'ms'
 import path from 'path'
-import { getUsersData } from 'src/utils/getUserId'
 import migration from '../migrations/eventsub.json'
 import type { TwurpleClient } from './TwurpleClient'
 import type { HelixUpdateCustomRewardData } from '@twurple/api'
@@ -49,8 +47,6 @@ interface EventSubs {
 
 export class EventSubClient {
   private client: TwurpleClient
-  private users: User[]
-
   private db: LowSync<EventSubs>
   private rewards: Reward[]
 
@@ -66,17 +62,9 @@ export class EventSubClient {
   }
 
   async connect() {
-    this.users = await getUsersData(
-      this.client.api.users,
-      this.client.db.data.channels
-    )
-
-    for (const user of this.users) {
-      this.updateLocalInfo(user.id)
-
-      //Создаём реварды
-      await this.createRewards(user.id)
-    }
+    this.updateLocalInfo(this.client.channel.id)
+    //Создаём реварды
+    await this.createRewards(this.client.channel.id)
 
     //Event Sub
     const esClient = new ApiClient({
@@ -93,9 +81,7 @@ export class EventSubClient {
 
     const listener = new EventSubWsListener({ apiClient: this.client.api })
 
-    for (const user of this.users) {
-      await this.registerOnRedemption(listener, user.id)
-    }
+    await this.registerOnRedemption(listener, this.client.channel.id)
 
     listener.start()
   }

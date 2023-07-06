@@ -1,4 +1,4 @@
-import { ApiClient } from '@twurple/api'
+import { ApiClient, HelixUser } from '@twurple/api'
 import { RefreshingAuthProvider } from '@twurple/auth'
 import { Client } from '@twurple/auth-tmi'
 import { EventEmitter } from 'events'
@@ -37,7 +37,6 @@ export interface TwurpleConfig extends TwurpleTokens {
 
 export interface TwurpleOptions {
   config: string
-  userscriptDbPath: string
   commands: string
 }
 
@@ -45,18 +44,12 @@ export interface TwurpleEvents {
   message: (msg: ChatMessage) => void
 }
 
-export interface UserscriptDb {
-  users: {
-    id: string
-    name: string
-  }[]
-}
-
 type TwurpleEmitter = StrictEventEmitter<EventEmitter, TwurpleEvents>
 
 export class TwurpleClient extends (EventEmitter as {
   new (): TwurpleEmitter
 }) {
+  public channel: HelixUser
   public config: TwurpleConfig
   public tmi: Client
   public auth: RefreshingAuthProvider
@@ -70,7 +63,6 @@ export class TwurpleClient extends (EventEmitter as {
   private options: TwurpleOptions
   private parser: typeof CommandParser
   private server: Server
-  userscriptDb: LowSync<UserscriptDb>
 
   constructor(options: TwurpleOptions) {
     super()
@@ -82,11 +74,6 @@ export class TwurpleClient extends (EventEmitter as {
 
     this.db = this.lowdbAdapter<TwurpleConfig>({
       path: options.config
-    })
-
-    this.userscriptDb = this.lowdbAdapter<UserscriptDb>({
-      path: options.userscriptDbPath,
-      initialData: { users: [] }
     })
 
     this.logger.info('Loading config file..')
@@ -185,7 +172,7 @@ export class TwurpleClient extends (EventEmitter as {
     this.server.app.listen(
       this.config.server.port,
       this.config.server.hostname,
-      () => {
+      async () => {
         this.logger.info(
           `Server now listening on http://${this.config.server.hostname}:${this.config.server.port}`
         )
@@ -198,6 +185,7 @@ export class TwurpleClient extends (EventEmitter as {
       )
       return
     }
+
     this.connect()
   }
 
@@ -219,7 +207,7 @@ export class TwurpleClient extends (EventEmitter as {
         timestamps: true,
         colors: true,
         emoji: true,
-        minLevel: 3
+        minLevel: 0
       }
     })
 
@@ -236,13 +224,19 @@ export class TwurpleClient extends (EventEmitter as {
       logger: this.logger
     })
 
+    this.channel = await this.api.users.getUserByName(
+      this.db.data.channels[0].replace('#', '')
+    )
+
+    this.logger.info('Connecting to PubSub..')
     this.pubsub = new PubSubClient(this)
     await this.pubsub.connect()
 
-    //Важно, чтобы евент саб был запущен после пабсаба. Евенсаб юзает пабсаб
+    this.logger.info('Connecting to EventSub..')
     this.eventsub = new EventSubClient(this)
     await this.eventsub.connect()
 
+    this.logger.info('Connecting to Twitch IRC..')
     this.tmi.on('raided', this.onRaid.bind(this))
     this.tmi.on('message', this.onMessage.bind(this))
     await this.tmi.connect()

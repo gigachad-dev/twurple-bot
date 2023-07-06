@@ -1,7 +1,6 @@
 import { PubSubClient as PubSub } from '@twurple/pubsub'
 import ms from 'ms'
 import path from 'path'
-import { getUsersData } from 'src/utils/getUserId'
 import { VM } from 'vm2'
 import migration from '../migrations/pubsub.json'
 import type { TwurpleClient } from './TwurpleClient'
@@ -24,10 +23,10 @@ interface PubSubs {
 }
 
 export class PubSubClient {
-  private client: TwurpleClient
   public pubsub: PubSub
-  private tokenInfo: TokenInfo
 
+  private client: TwurpleClient
+  private tokenInfo: TokenInfo
   private db: LowSync<PubSubs>
   private redemptions: Redemption[]
 
@@ -44,15 +43,9 @@ export class PubSubClient {
 
   async connect() {
     this.pubsub = new PubSub({ authProvider: this.client.auth })
-
-    const users = await getUsersData(
-      this.client.api.users,
-      this.client.db.data.channels
-    )
-
     this.tokenInfo = await this.client.api.getTokenInfo()
 
-    this.pubsub.onRedemption(users[0].id, (event) => {
+    this.pubsub.onRedemption(this.client.channel.id, (event) => {
       const redemption = this.redemptions.find(
         (redemption) => redemption.title === event.rewardTitle
       )
