@@ -1,7 +1,7 @@
 import { PubSubClient as PubSub } from '@twurple/pubsub'
 import ms from 'ms'
 import path from 'path'
-import { getUsersData } from 'src/utils/getUserId'
+import { getUsersData } from '../utils/getUserId'
 import { VM } from 'vm2'
 import migration from '../migrations/pubsub.json'
 import type { TwurpleClient } from './TwurpleClient'
