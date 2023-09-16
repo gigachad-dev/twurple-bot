@@ -88,10 +88,13 @@ export default class AutoMod extends BaseCommand {
       )
 
       if (word) {
-        const { total } = await this.client.api.users.getFollows({
-          user: msg.author.id,
-          followedUser: msg.channel.id
-        })
+        const { total } = await this.client.api.channels.getChannelFollowers(
+          msg.channel.id,
+          msg.author.id,
+          {
+            limit: 1
+          }
+        )
 
         if (total) {
           if (msg.author.isVip || msg.author.isSubscriber) {

@@ -16,11 +16,14 @@ import { Logger } from './Logger'
 import { PubSubClient } from './PubSubClient'
 import type { ChatterState } from './ChatMessage'
 import type { CommandArguments } from './CommandParser'
-import type { AccessToken, RefreshConfig } from '@twurple/auth'
+import type { AccessToken } from '@twurple/auth'
 import type { ChatUserstate } from '@twurple/auth-tmi'
 import type StrictEventEmitter from 'strict-event-emitter-types'
 
-export type TwurpleTokens = AccessToken & Omit<RefreshConfig, 'onRefresh'>
+export type TwurpleTokens = AccessToken & {
+  clientId: string
+  clientSecret: string
+}
 
 export interface TwurpleConfig extends TwurpleTokens {
   channels: string[]
@@ -169,15 +172,18 @@ export class TwurpleClient extends (EventEmitter as {
 
     this.auth = new RefreshingAuthProvider({
       clientId: this.config.clientId,
-      clientSecret: this.config.clientSecret,
-      onRefresh: (userId, newTokenData) => {
-        this.logger.info('Token refreshed for ' + userId)
-        this.updateConfig(newTokenData)
-      },
-      onRefreshFailure: (userId) =>
-        this.logger.info(
-          `Login with twitch http://${this.config.server.hostname}:${this.config.server.port}/twitch/auth`
-        )
+      clientSecret: this.config.clientSecret
+    })
+
+    this.auth.onRefresh((userId, newTokenData) => {
+      this.logger.info('Token refreshed for ' + userId)
+      this.updateConfig(newTokenData)
+    })
+
+    this.auth.onRefreshFailure((userId) => {
+      this.logger.info(
+        `Login with twitch http://${this.config.server.hostname}:${this.config.server.port}/twitch/auth`
+      )
     })
 
     this.server = new Server(this)

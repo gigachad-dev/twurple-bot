@@ -46,9 +46,9 @@ export default class Followage extends BaseCommand {
   async followByUsername(msg: ChatMessage, username: string): Promise<void> {
     try {
       const { id, displayName } = await this.getUserInfo(username)
-      const { total, user } = await this.getFollows(id, msg.channel.id)
+      const { user } = await this.getFollows(id, msg.channel.id)
 
-      if (total) {
+      if (user) {
         const { formatDate, days } = this.formatDate(user.followDate)
         msg.reply(`${displayName} отслеживает канал с ${formatDate} (${days})`)
       } else {
@@ -60,9 +60,9 @@ export default class Followage extends BaseCommand {
   }
 
   async followByChatter(msg: ChatMessage): Promise<void> {
-    const { total, user } = await this.getFollows(msg.author.id, msg.channel.id)
+    const { user } = await this.getFollows(msg.author.id, msg.channel.id)
 
-    if (total) {
+    if (user) {
       const { formatDate, days } = this.formatDate(user.followDate)
       msg.reply(`отслеживает канал с ${formatDate} (${days})`)
     } else {
@@ -75,13 +75,17 @@ export default class Followage extends BaseCommand {
   }
 
   async getFollows(user: string, followedUser: string) {
-    const { total, data } = await this.client.api.users.getFollows({
+    const { total, data } = await this.client.api.channels.getChannelFollowers(
+      followedUser,
       user,
-      followedUser
-    })
+      {
+        limit: 1
+      }
+    )
+
     return {
       total,
-      user: data[0]
+      user: data[0] ?? null
     }
   }
 
