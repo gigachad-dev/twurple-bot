@@ -4,10 +4,7 @@ import { randomInt } from '../utils'
 import type { ChatMessage, TwurpleClient } from '../client'
 
 export interface CatApiResponse {
-  id: string
-  created_at: string
-  tags: string[]
-  url: string
+  _id: string
 }
 
 export default class Cat extends BaseCommand {
@@ -34,7 +31,7 @@ export default class Cat extends BaseCommand {
       ]
       const emote = cats[randomInt(0, cats.length - 1)]
 
-      msg.reply(`${emote} cataas.com${body.url}`)
+      msg.reply(`${emote} cataas.com/cat/${body._id}`)
     } catch (err) {
       this.client.logger.error(err, this.constructor.name)
     }
